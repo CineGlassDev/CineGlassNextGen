@@ -1,0 +1,240 @@
+﻿  /*******************************/
+ /*** Standard HTML Overrides ***/
+/*******************************/
+
+body, html
+{
+    height: 100%;
+    width: 100%;
+    margin:0px;
+    padding:0px;
+    background-color:#000;
+    position:absolute;
+    font-family:'Segoe UI', 'Trebuchet MS', Verdana !important;
+}
+
+
+  /*******************************/
+ /*** jQuery Mobile Overrides ***/
+/*******************************/
+
+.ui-body-c
+{
+    text-shadow:none;
+    color:#fff;
+}
+
+
+  /**************************/
+ /****** GENERAL PAGE ******/
+/**************************/
+
+#page 
+{
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+
+    background-image: url("/cineglass/Images/cg-bg-7.png");
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-color:#000;
+}
+
+.footerLogo
+{
+    position:absolute;
+    right:0.25em;
+    bottom:0.35em;
+}
+
+.footerMenu
+{
+    position:absolute;
+    left:0.25em;
+    bottom:0em;
+}
+
+
+  /*****************************/
+ /****** PHASES TIMELINE ******/
+/*****************************/
+
+
+#timeline
+{
+    position:absolute;
+    top:4.5em;
+    bottom:2.75em;
+    width:99.5%;
+    left:0.25%;
+
+    display:block;
+    display:inline-block;
+    overflow:hidden;
+
+    -webkit-box-shadow:0 0 15px #ffffff; 
+    -moz-box-shadow: 0 0 15px #ffffff; 
+    box-shadow:0 0 15px #ffffff;
+
+    padding-bottom:2px;
+}
+
+div.timeline-frame
+{
+
+}
+
+div.timeline-axis-text {
+    color: #fff !important;
+    font-size:0.75em !important;
+}
+
+div.timeline-axis-grid
+{
+    border-left-style: none !important;
+}
+
+div.timeline-event
+{
+    cursor:pointer !important;
+    text-align:center !important;
+    text-shadow: 0px 0px 20px rgba(255, 255, 255, 1) !important;
+}
+
+div.timeline-item-critical {    
+    background-color: rgba(255,0,0,0.15) !important;
+    border-color: darkred !important;
+    color: #fff !important;
+    box-shadow: 0 0 40px pink !important;    
+}
+
+div.timeline-event-selected.timeline-item-critical {
+    background-color: red !important;
+    border-color: darkred !important;
+    color: #000 !important;
+}
+
+div.timeline-item-warning {    
+    background-color: rgba(235,230,35,0.35) !important;
+    border-color: darkkhaki !important;
+    color: #fff !important;
+    box-shadow: 0 0 40px lightyellow !important;
+}
+
+div.timeline-event-selected.timeline-item-warning {
+    background-color: rgb(235,230,35) !important;
+    border-color: darkkhaki !important;
+    color:#000 !important;
+}
+
+div.timeline-item-okay {
+    background-color: rgba(49,181,43,0.35) !important;
+    border-color: green !important;  
+    /*border-left:none !important;
+    border-right:none !important;*/  
+    color: #fff !important;
+    box-shadow: 0 0 40px lightgreen !important;
+}
+
+div.timeline-event-selected.timeline-item-okay {
+    background-color: limegreen !important;
+    border-color: darkgreen !important;
+    color: #000 !important;
+}
+
+div.timeline-item-inactive {
+    background-color: rgba(255,255,255,0.35) !important;
+    border-color: lightgray !important;    
+    color: rgb(212,212,212) !important;
+}
+
+div.timeline-event-selected.timeline-item-inactive {
+    background-color: white !important;
+    border-color: lightgray !important;
+    color: #000 !important;
+}
+
+div.timeline-event-box
+{
+    background-color: rgba(0,0,255,0.25) !important;
+    border-color: white !important;    
+    color: #fff !important;
+    box-shadow: 0 0 40px lightblue !important;
+}
+
+div.timeline-event-line
+{
+    margin-top:1px !important;
+    border-left:1px solid #fff !important;
+}
+
+div.timeline-event-dot
+{
+    border-color:white !important;
+    opacity:0.75 !important;
+}
+
+
+  /********************/
+ /****** HEADER ******/
+/********************/
+
+.headerLogo
+{
+    height:4.4em;
+}
+
+#headerRight
+{
+    top:0;
+    right:0.25em;
+    position:fixed;
+    text-align:right;
+}
+
+#titleWatermark
+{
+    position:absolute;
+    top:0px;
+    left: 170px;
+    right: 170px;
+    width:auto;
+    height:70px;
+    text-align:center;
+    line-height:70px;
+    font-weight:bold;
+    color:rgba(61,101,136,0.5);
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 1);
+}
+
+#clock
+{
+    opacity:0.55;
+    position:relative;
+    top:1.25em;
+    right:0.25em;
+    text-align:right;
+    text-shadow: 1px 2px 3px rgba(223, 211, 255, 1);
+    font-size:0.75em;
+}
+
+    #clock .label
+    {       
+        position:relative;
+    }
+    #clock .daysLeft
+    {
+        position:relative; 
+        top:-0.15em; 
+        font-size:1.85em;     
+    }
+    #clock .unit
+    {
+        font-size:0.7em;          
+    }
+    
+        

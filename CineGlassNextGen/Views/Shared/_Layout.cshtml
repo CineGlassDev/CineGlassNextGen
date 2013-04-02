@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>CineGlass - @ViewBag.Title</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+      
+        <link rel="stylesheet" href="~/Content/jquery/jquery.mobile-1.2.0.min.css" />
+        <link rel="stylesheet" href="~/Content/jquery/jquery.ui.datepicker.mobile.css" />
+        <link rel="stylesheet" href="~/Content/themes/cineglass-theme.css" />
+        <link rel="stylesheet" href="~/Content/boilerplate.css" />
+        <link rel="stylesheet" href="~/Content/Site.css" />
+
+        <script type="text/javascript" src="~/Scripts/modernizr-latest.js"></script>
+        <script type="text/javascript" src="~/Scripts/three.min.js"></script>
+		<script type="text/javascript" src="~/Scripts/tween.min.js"></script>
+        <script type="text/javascript" src="~/Scripts/trackball-controls.js"></script>
+        <script type="text/javascript" src="~/Scripts/css-3d-renderer.js"></script>
+
+        <!-- THE ORDER OF THE FOLLOWING SCRIPT BLOCKS IS IMPORTANT...DO NOT MODIFY! -->
+        <script type="text/javascript" src="~/Scripts/jquery-1.8.2.min.js"></script>
+        <script type="text/javascript" src="~/Scripts/jquery.mobile-1.2.0.min.js"></script>
+        <script type="text/javascript" src="~/Scripts/jquery-ui-1.10.1.datepicker.min.js"></script>
+
+        <script type="text/javascript">
+            //reset type=date inputs to text
+            $(document).bind("mobileinit", function () {
+                $.mobile.page.prototype.options.degradeInputs.date = true;
+            });
+        </script>		
+    </head>
+    <body>
+
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div id="page">
+            @Html.ImageLink(
+                "Index",
+                "Home",
+                null,
+                null,
+                "/cineglass/Images/cg-logo-14.png",
+                "CineGlass",
+                new Dictionary<string, object>() { { "class", "headerLogo" }})
+
+            <div id="headerRight">
+                @RenderSection("headerRight", required: false)
+            </div>
+
+            <div id="headerCenter">
+                @RenderSection("headerCenter", required: false)
+            </div>
+
+            <div>
+                @RenderSection("content", required: true)
+            </div>
+
+            <div class="footerMenu">
+                <a href="index.html" data-role="button" data-icon="home" data-iconpos="notext" data-theme="f" style="float:left;">Home</a>
+                <a href="index.html" data-role="button" data-icon="gear" data-iconpos="notext" data-theme="f" style="float:left;">Options</a>
+            </div>
+
+            @Html.ImageLink(
+                "http://www.technicolor.com",
+                new Dictionary<string, string>() { { "target", "_blank" }},
+                "/cineglass/Images/technicolor-for-footer.png",
+                "Technicolor",
+                new Dictionary<string, object>() { { "class", "footerLogo" }})
+        </div>
+
+    </body>
+</html>

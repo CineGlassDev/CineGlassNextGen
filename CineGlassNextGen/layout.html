@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style>
+        body, html
+        {
+            height: 100%;
+            width: 100%;
+            margin:0px;
+            padding:0px;
+        }
+        #main {
+            height:100%;
+            width:100%;
+            margin:0 auto;
+            padding:0;
+            position:relative;
+            background-color:blue;
+        }
+
+        #header {
+            position: absolute;
+            top:0px;
+            left:0px;
+            right:0px;
+            height:60px;
+            width:100%;
+            background-color:red;
+            display:block;
+            display:inline-block;
+
+        }
+
+        #content {
+
+            position: absolute;
+            top:60px;
+            left:0px;
+            right:0px;
+            bottom:34px;
+            width:100%;
+            border:0 solid green;
+            display:block;
+            display:inline-block;
+            overflow:auto;
+            background-color:yellow;
+        }
+
+        #footer {
+
+            position: absolute;
+            bottom:0px;
+            left:0px;
+            right:0px;
+            height:34px;
+            width:100%;
+            display:block;
+            display:inline-block;
+            background-color:magenta;
+        }
+
+        #test
+        {            
+            background-color:cyan;
+
+            position:absolute;
+            left:20px;
+            right:20px;
+            top:20px;
+            bottom:20px;
+            display:block;
+            display:inline-block;
+
+
+
+            /*margin:20px;
+
+            width: calc(100% - 40px);
+            width: -moz-calc(100% - 40px);
+            width: -khtml-calc(100% - 40px);
+            width: -webkit-calc(100% - 40px);
+            width: -o-calc(100% - 40px);
+            width: -ms-calc(100% - 40px);
+
+            height: calc(100% - 40px);
+            height: -moz-calc(100% - 40px);
+            height: -khtml-calc(100% - 40px);
+            height: -webkit-calc(100% - 40px);
+            height: -o-calc(100% - 40px);
+            height: -ms-calc(100% - 40px);*/
+        }
+    </style>
+</head>
+<body>
+    <div id="main">
+        <div id="header">
+            header
+        </div>
+        <div id="content">
+            <div id="test">
+                this is a test!
+            </div>
+        </div>
+        <div id="footer">
+            footer
+        </div>
+    </div>
+</body>
+</html>
