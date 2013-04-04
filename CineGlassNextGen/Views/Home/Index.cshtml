@@ -2,140 +2,33 @@
     ViewBag.Title = "Home Page";
 }
 
-@section headerRight {
-
-    <script type="text/javascript" src="~/Scripts/jquery.countdown.js"></script>
-
-    <script type="text/javascript">
-
-        $(function () {
-            var currentDate = new Date();
-            $('div#clock').countdown("5/3/2013", function (event) {
-                $this = $(this);
-                switch (event.type) {
-                    case "days":
-                        $this.find('.daysLeft').html(event.value + ' <span class="unit">DAYS</span>');
-                        break;
-                    case "finished":
-                        $this.fadeTo('slow', .5);
-                        break;
-                }
-            });
-        });
-
-    </script>
-
-    <div id="clock">
-        <div class="label">THEATRICAL RELEASE IN</div>
-        <div class="daysLeft"></div>      
-    </div>
-  
-}
-
-@section headerCenter {
-
-    <div id="titleWatermark">
-        Iron Man 3     
-    </div>
-
-}
-
-
-
 @section content {
-
-    <script type="text/javascript" src="~/Scripts/timeline.js"></script>
-
-    <script type="text/javascript" src="~/Scripts/activities.js"></script>
-
-    <script type="text/javascript">
         
-        var timeline;
+    <script type="text/javascript">                
 
-        function createTimeline() {
+        function showProducerView() {
+            $.mobile.changePage("/cineglass/producer");
+        };
 
-            var phaseData = [];
-
-            var dev = {
-                'name': "Development",
-                'start': new Date("03/11/2011"),
-                'end': new Date("09/29/2011")
-            };
-            phaseData.push(dev);
-
-            var preProd = {
-                'name': "Pre-Prod",
-                'start': new Date("09/29/2011"),
-                'end': new Date("04/30/2012")
-            };
-            phaseData.push(preProd);
-
-            var prod = {
-                'name': "Prod",
-                'start': new Date("4/30/2012"),
-                'end': new Date("11/9/2012")
-            };
-            phaseData.push(prod);
-
-            var postProd = {
-                'name': "Post-Prod",
-                'start': new Date("11/9/2012"),
-                'end': new Date("4/24/2013")
-            };
-            phaseData.push(postProd);
-
-            var dist = {
-                'name': "Dist",
-                'start': new Date("4/24/2013"),
-                'end': new Date("1/8/2014")
-            };
-            phaseData.push(dist);
-
-
-            var data = getActivities();
-            timeline = new links.Timeline(document.getElementById('timeline'));
-            var timelineOptions = {
-                height: "100%",
-                showPhases: true,
-                phases: phaseData,
-                //showWatermark: true,
-                //watermark: "Iron Man 3",
-                min: new Date("1/11/2011"),
-                max: new Date("3/10/2014"),
-                start: new Date("1/11/2011"),
-                end: new Date("3/11/2014")
-            };
-            timeline.draw(data, timelineOptions);
-        }        
-
-        // called when the Visualization API is loaded
-        function drawVisualization() {
-            createTimeline();
-        }
-
-        function resizeTitleWatermark() {
-            $('#titleWatermark').css('font-size', ($(window).width() * 0.03) + 'px');
-        }
-
-        $(window).resize(function () {
-            var range = timeline.getVisibleChartRange();
-            timeline.setVisibleChartRange(range.start, range.end);
-            resizeTitleWatermark();
-        });
-
-        $(document).ready(function () {
-            drawVisualization();
-            resizeTitleWatermark();
-        });
+        function showExecutiveView() {
+            $.mobile.changePage("/cineglass/executive");
+        };
 
     </script>
-
-
-    <link rel="stylesheet" type="text/css" href="~/Content/timeline.css">
 
     <section>
 
-        <div id="timeline"></div>
+        <div id="mainNav">            
+            <div id="producerNav" onclick="showProducerView()">
+                <img src="~/Images/producer-view.png" alt="Producer View" />
+                <div>Producer View</div>
+            </div>
+            <div id="executiveNav" onclick="showExecutiveView()">
+                <img src="~/Images/executive-view.png" alt="Executive View" />
+                <div>Executive View</div>
+            </div>
+        </div>
 
     </section>
+
 }

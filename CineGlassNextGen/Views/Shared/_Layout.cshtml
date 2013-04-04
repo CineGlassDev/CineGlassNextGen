@@ -5,7 +5,7 @@
         <title>CineGlass - @ViewBag.Title</title>
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-      
+
         <link rel="stylesheet" href="~/Content/jquery/jquery.mobile-1.2.0.min.css" />
         <link rel="stylesheet" href="~/Content/jquery/jquery.ui.datepicker.mobile.css" />
         <link rel="stylesheet" href="~/Content/themes/cineglass-theme.css" />
@@ -37,38 +37,46 @@
         <![endif]-->
 
         <div id="page">
-            @Html.ImageLink(
-                "Index",
-                "Home",
-                null,
-                null,
-                "/cineglass/Images/cg-logo-14.png",
-                "CineGlass",
-                new Dictionary<string, object>() { { "class", "headerLogo" }})
 
-            <div id="headerRight">
-                @RenderSection("headerRight", required: false)
-            </div>
-
-            <div id="headerCenter">
-                @RenderSection("headerCenter", required: false)
+            <div id="header">
+                <div id="headerLeft">
+                    @Html.ImageLink(
+                        "Index",
+                        "Home",
+                        null,
+                        null,
+                        "/cineglass/Images/cg-logo-16.png",
+                        "CineGlass",
+                        new Dictionary<string, object>() { { "id", "headerLogo" }})
+                </div>              
+                <div id="headerCenter">
+                    @RenderSection("headerCenter", required: false)
+                </div>        
+                <div id="headerRight">
+                    @RenderSection("headerRight", required: false)
+                </div>
             </div>
 
             <div>
                 @RenderSection("content", required: true)
             </div>
 
-            <div class="footerMenu">
-                <a href="index.html" data-role="button" data-icon="home" data-iconpos="notext" data-theme="f" style="float:left;">Home</a>
-                <a href="index.html" data-role="button" data-icon="gear" data-iconpos="notext" data-theme="f" style="float:left;">Options</a>
+            <div id="footer">
+                <div id="footerLeft">
+                    @RenderSection("footerLeft", required: false)                
+                </div>
+
+                <div id="footerRight">
+                    @Html.ImageLink(
+                        "http://www.technicolor.com",
+                        new Dictionary<string, string>() { { "target", "_blank" }},
+                        "/cineglass/Images/technicolor-for-footer.png",
+                        "Technicolor",
+                        new Dictionary<string, object>() { { "id", "footerLogo" }})
+                </div>
             </div>
 
-            @Html.ImageLink(
-                "http://www.technicolor.com",
-                new Dictionary<string, string>() { { "target", "_blank" }},
-                "/cineglass/Images/technicolor-for-footer.png",
-                "Technicolor",
-                new Dictionary<string, object>() { { "class", "footerLogo" }})
+
         </div>
 
     </body>

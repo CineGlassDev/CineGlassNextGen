@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "Executive View";
+}
+
+@section headerRight {
+
+    
+}
+
+
+@section content {
+
+    <script type="text/javascript" src="~/Scripts/timeline.js"></script>
+
+    <script type="text/javascript" src="~/Scripts/titles.js"></script>
+
+    <script type="text/javascript">
+        
+        var timeline;
+
+        function createTimeline() {
+            var data = getTitles();
+            timeline = new links.Timeline(document.getElementById('timeline'));
+            var timelineOptions = {
+                height: "100%",
+                showPhases: false,
+                animate: true,
+                animateZoom: true,
+                showWatermark: false,
+                min: new Date("12/11/2010"),
+                max: new Date("1/30/2016"),
+                start: new Date("1/11/2011"),
+                end: new Date("12/31/2015")
+            };
+            timeline.draw(data, timelineOptions);
+        }        
+
+        // called when the Visualization API is loaded
+        function drawVisualization() {
+            createTimeline();
+        }
+
+        $(window).resize(function () {
+            var range = timeline.getVisibleChartRange();
+            timeline.setVisibleChartRange(range.start, range.end);
+        });
+
+        $(window).load(function () {
+            drawVisualization();
+            var range = timeline.getVisibleChartRange();
+            timeline.setVisibleChartRange(range.start, range.end);
+        });
+
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="~/Content/timeline.css">
+
+    <section>
+
+        <div id="timeline"></div>
+
+    </section>
+}
+
+@section footerLeft {
+
+    @Html.ActionLink("Home", "Index", "Home", null, new Dictionary<string, object>() { { "data-role", "button" }, { "data-icon", "home" }, { "data-iconpos", "notext" }, { "data-theme", "f" } })
+    <a href="index.html" data-role="button" data-icon="gear" data-iconpos="notext" data-theme="f" style="float:left;">Options</a>
+    <a href="index.html" data-role="button" data-icon="info" data-iconpos="notext" data-theme="f" style="float:left;">Information</a>
+    
+}

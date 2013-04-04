@@ -1975,15 +1975,20 @@ links.Timeline.prototype.repaintPhases = function () {
          
                 var item = options.phases[i];
 
-                //var phaseStart = document.createElement("DIV");
-                //phaseStart.className = "timeline-phase-vertical";
-                //phaseStart.style.position = "absolute";
-                //phaseStart.style.top = "0px";
-                //phaseStart.style.height = "100%";
-                //phaseStart.setAttribute('phaseStart', item.start);
-                //phaseStart.setAttribute('phaseEnd', item.end);
-                //phaseStart.setAttribute('phaseName', item.name);                
-                //phases.appendChild(phaseStart);
+                var phase = document.createElement("DIV");
+                phase.className = "timeline-phase";
+                phase.style.position = "absolute";
+                phase.style.top = "0px";
+                phase.setAttribute("start", item.start);
+                phase.setAttribute("end", item.end);
+
+                var phaseText = document.createElement("DIV");
+                phaseText.textContent = item.name;
+                phase.appendChild(phaseText);
+
+                phase.phaseText = phaseText;
+
+                phases.appendChild(phase);
             }
 
             dom.contentTimelines.appendChild(phases);
@@ -1993,38 +1998,33 @@ links.Timeline.prototype.repaintPhases = function () {
 
     if (dom.phases) {
 
+
         for (var i = 0; i < dom.phases.childNodes.length; i++) {
 
             var phaseElement = dom.phases.childNodes[i];            
-            var name = phaseElement.getAttribute('phaseName');
             var visible = false;
 
-            if (phaseElement.className === 'timeline-phase-header') {
+            var start = phaseElement.getAttribute('start');
+            var startOffset = new Date(start.valueOf() + this.clientTimeOffset);
+            var startX = this.timeToScreen(startOffset);
 
-                var start = phaseElement.getAttribute('start');
-                var startOffset = new Date(start.valueOf() + this.clientTimeOffset);
-                var startX = this.timeToScreen(startOffset);
+            var end = phaseElement.getAttribute('end');
+            var endOffset = new Date(end.valueOf() + this.clientTimeOffset);
+            var endX = this.timeToScreen(endOffset);
 
-                var end = phaseElement.getAttribute('end');
-                var endOffset = new Date(end.valueOf() + this.clientTimeOffset);
-                var endX = this.timeToScreen(endOffset);
+            visible = ((startX > -size.contentWidth && startX < 2 * size.contentWidth) ||
+                      (endX > -size.contentWidth && endX < 2 * size.contentWidth));
 
-                visible = ((startX > -size.contentWidth && startX < 2 * size.contentWidth) ||
-                              (endX > -size.contentWidth && endX < 2 * size.contentWidth));
+            phaseElement.style.height = size.contentHeight + 'px';
+            phaseElement.style.left = startX + 'px';
+            phaseElement.style.width = (endX - startX) + 'px';
 
-                phaseElement.style.left = (startX + 7) + 'px';
-                phaseElement.style.width = (endX - startX - 7) + 'px';
-
-            } else {
-
-                var date = phaseElement.getAttribute('date');
-                var offset = new Date(date.valueOf() + this.clientTimeOffset);
-                var x = this.timeToScreen(offset);
-
-                visible = (x > -size.contentWidth && x < 2 * size.contentWidth);
-
-                phaseElement.style.left = x + "px";
-            }
+            phaseElement.phaseText.style.fontSize = Math.round(size.contentHeight * 0.10) + 'px';
+            phaseElement.phaseText.style.width = size.contentHeight + 'px';
+            phaseElement.phaseText.style.height = (endX - startX) + 'px';
+            phaseElement.phaseText.style.left = (endX - startX) + 'px';
+            phaseElement.phaseText.style.top = (size.contentHeight - endX + startX) + 'px';
+            phaseElement.phaseText.style.lineHeight = (endX - startX) + 'px';
 
             phaseElement.style.display = visible ? '' : 'none';            
             
@@ -4211,8 +4211,9 @@ links.Timeline.ItemRange.prototype.repaintTerminators = function () {
     if (!terminatorLeft) {
         terminatorLeft = document.createElement("IMG");
         terminatorLeft.setAttribute('src', divBox.terminator);
+        terminatorLeft.setAttribute('title', divBox.content + '\n\nStart: ' + divBox.start);
         terminatorLeft.style.position = 'absolute';
-        //terminatorLeft.style.opacity = '0.5';
+        terminatorLeft.style.opacity = '0.45';
         dom.appendChild(terminatorLeft);
         dom.terminatorLeft = terminatorLeft;
     }
@@ -4221,98 +4222,39 @@ links.Timeline.ItemRange.prototype.repaintTerminators = function () {
     var terminatorRight = dom.terminatorRight;
     if (!terminatorRight) {
         terminatorRight = document.createElement("IMG");
-        terminatorRight.setAttribute('src', divBox.terminator);        
+        terminatorRight.setAttribute('src', divBox.terminator);
+        terminatorRight.setAttribute('title', divBox.content + '\n\nEnd: ' + divBox.end);
         terminatorRight.style.position = 'absolute';
-        //terminatorRight.style.opacity = '0.5';
+        terminatorRight.style.opacity = '0.45';
         dom.appendChild(terminatorRight);
         dom.terminatorRight = terminatorRight;
     }
 
     if (divBox.rendered) {
-        var overhang = 0;
-        var terminatorWidth = Math.round(divBox.height + overhang * 2);
-        var terminatorHalf = Math.round(terminatorWidth / 2);               
+        
+        var terminatorWidth = Math.round(divBox.height * 0.75);
+        var terminatorMargin = Math.round((divBox.height - terminatorWidth) / 2);
 
         dom.terminatorLeft.style.height = terminatorWidth + 'px';
         dom.terminatorLeft.style.width = terminatorWidth + 'px';
-        dom.terminatorLeft.style.top = -overhang + 'px';
-        dom.terminatorLeft.style.left = -terminatorHalf + 'px';
-        dom.terminatorLeft.style.opacity = "0.50";
+        dom.terminatorLeft.style.top = terminatorMargin + 'px';
+        dom.terminatorLeft.style.left = terminatorMargin + 'px';
         dom.terminatorLeft.style.display = '';
 
         
         dom.terminatorRight.style.height = terminatorWidth + 'px';
         dom.terminatorRight.style.width = terminatorWidth + 'px';
-        dom.terminatorRight.style.top = -overhang + 'px';
-        dom.terminatorRight.style.right = -terminatorHalf + 'px';
-        dom.terminatorRight.style.opacity = "0.50";
+        dom.terminatorRight.style.top = terminatorMargin + 'px';
+        dom.terminatorRight.style.right = terminatorMargin + 'px';
         dom.terminatorRight.style.display = '';
 
-        dom.firstChild.style.marginLeft = terminatorHalf + 'px';
-        dom.firstChild.style.marginRight = terminatorHalf + 'px';
+        dom.firstChild.style.marginLeft = terminatorMargin + 'px';
+        dom.firstChild.style.marginRight = terminatorMargin + 'px';
     }
     else {
         dom.terminatorLeft.style.display = 'none';
         dom.terminatorRight.style.display = 'none';
-    }    
-
-    //console.log(divBox);
-    //console.log(dom.firstChild);
-
-
-    //// create left drag area
-    //var dragLeft = dom.items.dragLeft;
-    //if (!dragLeft) {
-    //    dragLeft = document.createElement("DIV");
-    //    dragLeft.className = "timeline-event-range-drag-left";
-    //    dragLeft.style.position = "absolute";
-
-    //    frame.appendChild(dragLeft);
-    //    dom.items.dragLeft = dragLeft;
-    //}
-
-    //// create right drag area
-    //var dragRight = dom.items.dragRight;
-    //if (!dragRight) {
-    //    dragRight = document.createElement("DIV");
-    //    dragRight.className = "timeline-event-range-drag-right";
-    //    dragRight.style.position = "absolute";
-
-    //    frame.appendChild(dragRight);
-    //    dom.items.dragRight = dragRight;
-    //}
-
-    //// reposition left and right drag area
-    //var index = this.selection ? this.selection.index : -1,
-    //    item = this.selection ? this.items[index] : undefined;
-    //if (item && item.rendered && this.isEditable(item) &&
-    //    (item instanceof links.Timeline.ItemRange)) {
-    //    var left = this.timeToScreen(item.start),
-    //        right = this.timeToScreen(item.end),
-    //        top = item.top,
-    //        height = item.height;
-
-    //    dragLeft.style.left = left + 'px';
-    //    dragLeft.style.top = top + 'px';
-    //    dragLeft.style.width = options.dragAreaWidth + "px";
-    //    dragLeft.style.height = height + 'px';
-    //    dragLeft.style.display = '';
-    //    frame.removeChild(dragLeft);
-    //    frame.appendChild(dragLeft);
-
-    //    dragRight.style.left = (right - options.dragAreaWidth) + 'px';
-    //    dragRight.style.top = top + 'px';
-    //    dragRight.style.width = options.dragAreaWidth + "px";
-    //    dragRight.style.height = height + 'px';
-    //    dragRight.style.display = '';
-    //    frame.removeChild(dragRight);
-    //    frame.appendChild(dragRight);
-    //}
-    //else {
-    //    dragLeft.style.display = 'none';
-    //    dragRight.style.display = 'none';
-    //}
-
+    }
 };
 
 

@@ -1,0 +1,160 @@
+﻿@{
+    ViewBag.Title = "Producer View";
+}
+
+@section headerRight {
+
+    <script type="text/javascript" src="~/Scripts/jquery.countdown.js"></script>
+
+    <script type="text/javascript">
+
+        $(function () {
+            var currentDate = new Date();
+            $('div#clock').countdown("5/3/2013", function (event) {
+                $this = $(this);
+                switch (event.type) {
+                    case "days":
+                        $this.find('.daysLeft').html(event.value + ' <span class="unit">DAYS</span>');
+                        break;
+                    case "finished":
+                        $this.fadeTo('slow', .5);
+                        break;
+                }
+            });
+        });
+
+    </script>
+
+    <div id="clock">
+        <div class="label">THEATRICAL RELEASE IN</div>
+        <div class="daysLeft"></div>      
+    </div>
+  
+}
+
+@section headerCenter {
+
+    <div id="titleWatermark">
+        <img src="/cineglass/Images/iron-man-3-2.png" alt="Iron Man 3" />
+    </div>
+
+}
+
+
+@section content {
+
+    <script type="text/javascript" src="~/Scripts/timeline.js"></script>
+
+    <script type="text/javascript" src="~/Scripts/activities.js"></script>
+
+    <script type="text/javascript">
+        
+        var timeline;
+
+        function createTimeline() {
+
+            var phaseData = [];
+
+            var dev = {
+                'name': "Development",
+                'start': new Date("03/11/2011"),
+                'end': new Date("09/29/2011")
+            };
+            phaseData.push(dev);
+
+            var preProd = {
+                'name': "Pre-Production",
+                'start': new Date("09/29/2011"),
+                'end': new Date("04/30/2012")
+            };
+            phaseData.push(preProd);
+
+            var prod = {
+                'name': "Production",
+                'start': new Date("4/30/2012"),
+                'end': new Date("11/9/2012")
+            };
+            phaseData.push(prod);
+
+            var postProd = {
+                'name': "Post-Production",
+                'start': new Date("11/9/2012"),
+                'end': new Date("4/24/2013")
+            };
+            phaseData.push(postProd);
+
+            var dist = {
+                'name': "Distribution",
+                'start': new Date("4/24/2013"),
+                'end': new Date("1/8/2014")
+            };
+            phaseData.push(dist);
+
+
+            var data = getActivities();
+            timeline = new links.Timeline(document.getElementById('timeline'));
+            var timelineOptions = {
+                height: "100%",
+                showPhases: true,
+                phases: phaseData,
+                animate: true,
+                animateZoom: true,
+                //showWatermark: true,
+                //watermark: "Iron Man 3",
+                min: new Date("12/11/2010"),
+                max: new Date("4/8/2014"),
+                start: new Date("12/11/2010"),
+                end: new Date("4/8/2014")
+            };
+            timeline.draw(data, timelineOptions);
+
+            links.events.addListener(timeline, 'select', onTimelineEventSelect);
+        }
+
+        function onTimelineEventSelect() {
+            //var test = $.mobile.changePage("/cineglass/TempDialog", { role: "dialog" });
+            //console.log(test);
+            alert('Coming Soon To A Dialog Near You!');
+        }
+
+        // called when the Visualization API is loaded
+        function drawVisualization() {
+            createTimeline();
+        }
+
+        //function resizeTitleWatermark() {
+        //    $('#titleWatermark').css('font-size', ($(window).width() * 0.03) + 'px');
+        //}
+
+        $(window).resize(function () {
+            var range = timeline.getVisibleChartRange();
+            timeline.setVisibleChartRange(range.start, range.end);
+            //resizeTitleWatermark();
+        });
+
+        $(window).load(function () {
+            drawVisualization();
+            var range = timeline.getVisibleChartRange();
+            timeline.setVisibleChartRange(range.start, range.end);
+            //resizeTitleWatermark();
+        });
+
+    </script>
+
+
+    <link rel="stylesheet" type="text/css" href="~/Content/timeline.css">
+
+    <section>
+
+        <div id="timeline"></div>
+
+    </section>
+}
+
+@section footerLeft {
+
+    @Html.ActionLink("Home", "Index", "Home", null, new Dictionary<string, object>() { { "data-role", "button" }, { "data-icon", "home" }, { "data-iconpos", "notext" }, { "data-theme", "a" } })
+    <a href="index.html" data-role="button" data-icon="gear" data-iconpos="notext" data-theme="a" style="float:left;">Options</a>
+    <a href="index.html" data-role="button" data-icon="info" data-iconpos="notext" data-theme="a" style="float:left;">Information</a>
+    
+}

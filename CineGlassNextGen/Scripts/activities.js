@@ -6,25 +6,33 @@
     //
     var studioOptionedProperty = {
         'start': new Date("03/13/2011"),
-        'content': 'Studio Optioned Property'
+        'content': 'Studio Optioned Property',
+        'className': 'past',
+        'tooltip': new Date("3/13/2011")
     }
     activities.push(studioOptionedProperty);
 
     var producerAttached = {
         'start': new Date("03/11/2011"),
-        'content': 'Producer Attached'
+        'content': 'Producer Attached',
+        'className': 'past',
+        'tooltip': new Date("3/11/2011")
     };
     activities.push(producerAttached);
 
     var finishedScript = {
         'start': new Date("04/26/2011"),
-        'content': 'Finished Script'
+        'content': 'Finished Script',
+        'className': 'past',
+        'tooltip': new Date("4/26/2011")
     };
     activities.push(finishedScript);
 
     var directorAnnounced = {
         'start': new Date("08/19/2011"),
-        'content': 'Director Announced'
+        'content': 'Director Announced',
+        'className': 'past',
+        'tooltip': new Date("08/19/2011")
     };
     activities.push(directorAnnounced);
     
@@ -108,18 +116,24 @@
     var previewStudioRun = {
         'start': new Date("12/18/2012"),
         'content': 'Preview Studio Run',
+        'className': 'past',
+        'tooltip': new Date("12/18/2012")
     }
     activities.push(previewStudioRun);
 
     var finalPictureLock = {
         'start': new Date("3/28/2013"),
         'content': 'Final Picture Lock',
+        'className': 'past',
+        'tooltip': new Date("3/28/2013")
     }
     activities.push(finalPictureLock);
 
     var firstScreening = {
         'start': new Date("4/17/2013"),
-        'content': '1st Screening Available'
+        'content': '1st Screening Available',
+        'className': 'future',
+        'tooltip': new Date("4/17/2013")
     }
     activities.push(firstScreening);
 
@@ -134,13 +148,17 @@
     
     var lockCreativeCut = {
         'start': new Date("3/11/2013"),
-        'content': 'Lock Creative Cut'
+        'content': 'Lock Creative Cut',
+        'className': 'past',
+        'tooltip': new Date("3/11/2013")
     }
     activities.push(lockCreativeCut);
 
     var trailerDue = {
         'start': new Date("3/26/2013"),
-        'content': 'Trailer Due "THURSDAY MORNING"'
+        'content': 'Trailer Due "THURSDAY MORNING"',
+        'className': 'past',
+        'tooltip': new Date("3/26/2013")
     }
     activities.push(trailerDue);
 
@@ -181,13 +199,16 @@
         'end': new Date("1/8/2014"),
         'content': 'Distribution Plan',
         'tooltip': 'Distribution Plan',
-        'className': 'timeline-item-inactive'
+        'className': 'timeline-item-pending',
+        'terminator': '/cineglass/Images/square-blue.png'
     }
     activities.push(distributionPlan);
 
     var firstRelease = {
         'start': new Date("4/24/2013"),
-        'content': '1st Theatrical Release'
+        'content': '1st Theatrical Release',
+        'className': 'future major',
+        'tooltip': new Date("4/24/2013")
     }
     activities.push(firstRelease);
 

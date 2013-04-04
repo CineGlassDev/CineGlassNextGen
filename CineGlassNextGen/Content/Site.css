@@ -37,189 +37,75 @@ body, html
     top:0;
     left:0;
 
-    background-image: url("/cineglass/Images/cg-bg-7.png");
+    background-image: url("/cineglass/Images/cg-bg-2.jpg");
     background-size:cover;
     background-repeat: no-repeat;
     background-position: right;
     background-color:#000;
 }
 
-.footerLogo
-{
-    position:absolute;
-    right:0.25em;
-    bottom:0.35em;
-}
-
-.footerMenu
-{
-    position:absolute;
-    left:0.25em;
-    bottom:0em;
-}
-
-
-  /*****************************/
- /****** PHASES TIMELINE ******/
-/*****************************/
-
-
-#timeline
-{
-    position:absolute;
-    top:4.5em;
-    bottom:2.75em;
-    width:99.5%;
-    left:0.25%;
-
-    display:block;
-    display:inline-block;
-    overflow:hidden;
-
-    -webkit-box-shadow:0 0 15px #ffffff; 
-    -moz-box-shadow: 0 0 15px #ffffff; 
-    box-shadow:0 0 15px #ffffff;
-
-    padding-bottom:2px;
-}
-
-div.timeline-frame
-{
-
-}
-
-div.timeline-axis-text {
-    color: #fff !important;
-    font-size:0.75em !important;
-}
-
-div.timeline-axis-grid
-{
-    border-left-style: none !important;
-}
-
-div.timeline-event
-{
-    cursor:pointer !important;
-    text-align:center !important;
-    text-shadow: 0px 0px 20px rgba(255, 255, 255, 1) !important;
-}
-
-div.timeline-item-critical {    
-    background-color: rgba(255,0,0,0.15) !important;
-    border-color: darkred !important;
-    color: #fff !important;
-    box-shadow: 0 0 40px pink !important;    
-}
-
-div.timeline-event-selected.timeline-item-critical {
-    background-color: red !important;
-    border-color: darkred !important;
-    color: #000 !important;
-}
-
-div.timeline-item-warning {    
-    background-color: rgba(235,230,35,0.35) !important;
-    border-color: darkkhaki !important;
-    color: #fff !important;
-    box-shadow: 0 0 40px lightyellow !important;
-}
-
-div.timeline-event-selected.timeline-item-warning {
-    background-color: rgb(235,230,35) !important;
-    border-color: darkkhaki !important;
-    color:#000 !important;
-}
-
-div.timeline-item-okay {
-    background-color: rgba(49,181,43,0.35) !important;
-    border-color: green !important;  
-    /*border-left:none !important;
-    border-right:none !important;*/  
-    color: #fff !important;
-    box-shadow: 0 0 40px lightgreen !important;
-}
-
-div.timeline-event-selected.timeline-item-okay {
-    background-color: limegreen !important;
-    border-color: darkgreen !important;
-    color: #000 !important;
-}
-
-div.timeline-item-inactive {
-    background-color: rgba(255,255,255,0.35) !important;
-    border-color: lightgray !important;    
-    color: rgb(212,212,212) !important;
-}
-
-div.timeline-event-selected.timeline-item-inactive {
-    background-color: white !important;
-    border-color: lightgray !important;
-    color: #000 !important;
-}
-
-div.timeline-event-box
-{
-    background-color: rgba(0,0,255,0.25) !important;
-    border-color: white !important;    
-    color: #fff !important;
-    box-shadow: 0 0 40px lightblue !important;
-}
-
-div.timeline-event-line
-{
-    margin-top:1px !important;
-    border-left:1px solid #fff !important;
-}
-
-div.timeline-event-dot
-{
-    border-color:white !important;
-    opacity:0.75 !important;
-}
-
-
   /********************/
  /****** HEADER ******/
 /********************/
 
-.headerLogo
+#header
 {
-    height:4.4em;
+    height:70px;
+    border-bottom:2px solid #000;
+    background-color:rgba(0,0,0,0.25);
+}
+
+#headerLeft
+{
+    position:absolute;
 }
 
 #headerRight
 {
     top:0;
-    right:0.25em;
+    right:15px;
     position:fixed;
     text-align:right;
 }
 
+#headerLogo
+{
+    margin-top:-3px;
+    margin-left:-15px;
+    height:70px;
+}
+
 #titleWatermark
 {
-    position:absolute;
+    text-align:center;
+
+    /*position:absolute;
     top:0px;
     left: 170px;
     right: 170px;
     width:auto;
     height:70px;
-    text-align:center;
-    line-height:70px;
+    line-height:66px;
     font-weight:bold;
-    color:rgba(61,101,136,0.5);
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 1);
+    color: rgba(255,255,255,0.85) !important;
+    text-shadow: 0px -2px 0px #333, 0px 2px 3px #666 !important;*/
 }
+
+    #titleWatermark img
+    {
+        margin-top:3px;
+        height:60px;
+    }
 
 #clock
 {
-    opacity:0.55;
     position:relative;
     top:1.25em;
     right:0.25em;
     text-align:right;
-    text-shadow: 1px 2px 3px rgba(223, 211, 255, 1);
+    text-shadow: 1px 2px 3px rgba(169, 160, 160, 1);
     font-size:0.75em;
+    color:rgba(255,255,255,0.75);
 }
 
     #clock .label
@@ -236,5 +122,250 @@ div.timeline-event-dot
     {
         font-size:0.7em;          
     }
+
+#mainNav
+{
+    margin:0px;
+    width:400px;
+    height:auto;
+    margin:auto;
+}
+    #mainNav div div
+    {
+        font-size:2em;
+        text-align:center;
+        margin-top:5px;
+    }
+#producerNav
+{
+    float:left;
+    cursor:pointer;
+}
+    #producerNav img
+    {
+        width:200px;
+    }
+#executiveNav
+{
+    float:left;
+    margin-left:80px;
+    cursor:pointer;
+}
+    #executiveNav img
+    {
+        width:300px;
+    }
+
+  /********************/
+ /****** FOOTER ******/
+/********************/
+
+#footer
+{
+    position:absolute;
+    width:100%;
+    height:40px;
+    bottom:0px;
+    border-top:2px solid #000;
+    background-color:rgba(0,0,0,0.70);
+}
+
+#footerLeft
+{
+    position:absolute;
+    left:0.25em;
+    bottom:0em;
+}
+    #footerLeft a
+    {
+        float:left;
+    }
+
+#footerRight
+{
+
+}
+
+#footerLogo
+{
+    position:absolute;
+    right:0.25em;
+    bottom:0.35em;
+}
+
+
+  /**********************/
+ /****** TIMELINE ******/
+/**********************/
+
+
+#timeline
+{
+    position:absolute;
+    top:70px;
+    bottom:42px;
+    width:101%;
+    left:-1%;
+
+    display:block;
+    display:inline-block;
+    overflow:hidden;
+
+    -webkit-box-shadow:0 0 15px #ffffff; 
+    -moz-box-shadow: 0 0 15px #ffffff; 
+    box-shadow:0 0 15px #ffffff;
+
+    border-top:none;
+
+    padding-bottom:2px;
+    padding-top:2px;
+}
+
+div.timeline-frame
+{
+    border:none !important;
+}
+
+div.timeline-axis
+{
+    border:none !important;
+    border-top:1px solid #000 !important;
+    background-color: rgba(255,255,255,0.5) !important;
+}
+
+div.timeline-currenttime
+{
+    width:2px !important;
+    z-index:1000 !important;
+    border-right:2px solid red !important;
+}
+
+div.timeline-axis-text {
+    line-height:1em !important;
+    color:#000 !important;
+    text-shadow: 0px 1px 1px #fff !important;
+}
+
+div.timeline-axis-text-major
+{
+    font-size:1.25em !important;
     
-        
+}
+
+div.timeline-axis-text-minor
+{
+    font-size:0.8em !important;
+    margin-top:2px !important;
+
+    
+}
+
+div.timeline-axis-grid
+{
+    border-left-style: none !important;
+}
+
+div.timeline-event
+{
+    cursor:pointer !important;
+    text-align:center !important;
+    text-shadow: 0px 0px 20px rgba(255, 255, 255, 1) !important;
+
+    -webkit-transform: translateZ(0) !important;
+
+
+    border-radius: 5px !important;
+    -moz-border-radius: 5px !important;  /* For Firefox 3.6 and older */
+}
+
+div.timeline-item-critical {    
+    background-color: rgba(255,0,0,0.25) !important;
+    border-color: darkred !important;
+    border-style:dotted !important;
+    color: #fff !important;
+    box-shadow: 0 0 40px pink !important;    
+}
+
+div.timeline-item-warning {    
+    background-color: rgba(235,230,35,0.45) !important;
+    border-color: darkkhaki !important;
+    border-style:dotted !important;
+    color: #fff !important;
+    box-shadow: 0 0 40px lightyellow !important;
+}
+
+div.timeline-item-okay {
+    background-color: rgba(49,181,43,0.45) !important;
+    border-color: green !important;
+    border-style:dotted !important;  
+    color: #fff !important;
+    box-shadow: 0 0 40px lightgreen !important;
+}
+
+div.timeline-item-pending {
+    background-color: rgba(46,147,232,0.25) !important;
+    border-color: #fff !important;   
+    border-style: dotted !important; 
+    box-shadow: 0 0 40px lightblue !important;
+    color: #fff !important;
+}
+
+div.timeline-item-inactive {
+    background-color: rgba(255,255,255,0.25) !important;
+    border-color: #888 !important;
+    border-style:dotted !important;    
+    color: #000 !important;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAPklEQVQYV43M2QkAIAwEUdP2FrBtKxEUj1zz/RhphQB0yZwikhLChXTmwhO58EUmtNAHPXTBCG2YoQkrSOEAkdYmeJ7YO/8AAAAASUVORK5CYII=) repeat;
+}
+
+div.timeline-event-box
+{
+    border-style:solid !important;  
+    box-shadow: 0 0 40px lightblue !important;
+    line-height:50px !important;
+
+    border-radius: 15px !important;
+    -moz-border-radius: 15px !important;  /* For Firefox 3.6 and older */
+}
+
+div.timeline-event-box.future
+{
+    background-color: rgba(0,0,255,0.40) !important;
+    border-color: white !important;   
+    color: #fff !important;
+}
+
+div.timeline-event-box.future.major
+{
+    background-color: rgba(119,33,115,0.40) !important;
+    border-color: #db60d6 !important; 
+}
+    div.timeline-event-box.future.major .timeline-event-content
+    {
+        font-size:32px !important;
+        color: rgba(255,255,255,0.85) !important;
+        text-shadow: 0px -2px 0px #333, 0px 2px 3px #666 !important;
+    }
+
+div.timeline-event-box.past
+{
+    background-color: rgba(0,0,255,0.10) !important;
+    border-color: lightgray !important;   
+    color: lightgray !important;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQYV2NkIALwmZf+ZySkDqTo08luRrwKYYpAhuFUiKwIp0J0RVgVYlOEoRCXIhSF+BTBFRJSBFZIjCKQQgBygCXEmHBeSAAAAABJRU5ErkJggg==) repeat;
+    box-shadow: none !important;
+    
+}
+
+div.timeline-event-line
+{
+    margin-top:1px !important;
+    border-left:1px solid #fff !important;
+}
+
+div.timeline-event-dot
+{
+    border-color:white !important;
+    opacity:0.75 !important;
+}
+

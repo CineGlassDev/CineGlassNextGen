@@ -58,6 +58,8 @@ div.timeline-event-box {
     border-width: 1px;
     border-radius: 5px;
     -moz-border-radius: 5px; /* For Firefox 3.6 and older */
+
+    -webkit-transform: translateZ(0);
 }
 
 div.timeline-event-dot {
@@ -65,6 +67,8 @@ div.timeline-event-dot {
     border-width: 5px;
     border-radius: 5px;
     -moz-border-radius: 5px;  /* For Firefox 3.6 and older */
+
+    -webkit-transform: translateZ(0);
 }
 
 div.timeline-event-range {
@@ -72,6 +76,8 @@ div.timeline-event-range {
     border-width: 1px;
     border-radius: 2px;
     -moz-border-radius: 2px;  /* For Firefox 3.6 and older */
+
+    -webkit-transform: translateZ(0);
 }
 
 div.timeline-event-range-drag-left {
@@ -111,34 +117,37 @@ div.timeline-currenttime {
     width: 2px;
 }
 
-div.timeline-phase-vertical{
+div.timeline-phase {
     border:1px dashed rgba(190,190,190,0.25);
-    background-color: rgba(255,255,255,0.5);
-    width: 4px;
-    height:35px;
-    -webkit-box-shadow:0 0 15px #ffffff; 
-    -moz-box-shadow: 0 0 15px #ffffff; 
-    box-shadow:0 0 15px #ffffff;
+    border-top:none;
+    border-bottom:none;
+    background-color:transparent;   
 }
 
-div.timeline-phase-header{
-    background-color: rgba(153,189,244,0.5);
-    border:1px solid rgba(190,190,190,0.25);
-    color: rgba(255,255,255,0.75);
-    font-size:1.5em;
-    font-weight:bold;
-    overflow:hidden;
-    white-space:nowrap;
+div.timeline-phase div {
+    display: block;
+    writing-mode: tb-rl;
+    -webkit-transform: rotate(270deg);
+    -webkit-transform-origin: bottom left;   
+    -moz-transform: rotate(270deg);
+    -moz-transform-origin: bottom left; 
+    -o-transform: rotate(270deg);
+    -o-transform-origin: bottom left; 
+    -ms-transform: rotate(270deg);
+    -ms-transform-origin: bottom left; 
+    transform: rotate(270deg);
+    transform-origin: bottom left;  
+    position: absolute;
     text-align:center;
-    height:35px;
-    
+    padding-top:30px;
+    /*color:#fff;
+    opacity:0.20;*/
+    /*font-weight:bold;*/
+    color:rgba(255,255,255,0.75);
+    color:transparent;
+    text-shadow: 2px 2px 2px rgba(255, 255, 255, 0.5);
 
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-
-    -webkit-box-shadow:0 0 15px #ffffff; 
-    -moz-box-shadow: 0 0 15px #ffffff; 
-    box-shadow:0 0 15px #ffffff;    
+    text-shadow: rgba(0,0,0,0.5) -1px 0, rgba(0,0,0,0.3) 0 -1px, rgba(255,255,255,0.5) 0 1px, rgba(0,0,0,0.3) -1px -2px;
 }
 
 #timeline-watermark
@@ -182,27 +191,27 @@ div.timeline-navigation-move-left, div.timeline-navigation-move-right {
 }
 
 div.timeline-navigation-new {
-    background: url('img/16/new.png') no-repeat center;
+    /*background: url('img/16/new.png') no-repeat center;*/
 }
 
 div.timeline-navigation-delete {
     padding: 0px;
     padding-left: 5px;
-    background: url('img/16/delete.png') no-repeat center;
+    /*background: url('img/16/delete.png') no-repeat center;*/
 }
 
 div.timeline-navigation-zoom-in {
-    background: url('img/16/zoomin.png') no-repeat center;
+    /*background: url('img/16/zoomin.png') no-repeat center;*/
 }
 
 div.timeline-navigation-zoom-out {
-    background: url('img/16/zoomout.png') no-repeat center;
+    /*background: url('img/16/zoomout.png') no-repeat center;*/
 }
 
 div.timeline-navigation-move-left {
-    background: url('img/16/moveleft.png') no-repeat center;
+    /*background: url('img/16/moveleft.png') no-repeat center;*/
 }
 
 div.timeline-navigation-move-right {
-    background: url('img/16/moveright.png') no-repeat center;
+    /*background: url('img/16/moveright.png') no-repeat center;*/
 }

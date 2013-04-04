@@ -10,9 +10,22 @@ namespace CineGlassNextGen.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
-
             return View();
+        }
+
+        public ActionResult Producer()
+        {
+            return View();
+        }
+
+        public ActionResult Executive()
+        {
+            return View();
+        }
+
+        public ActionResult TempDialog()
+        {
+            return PartialView();
         }
 
         public ActionResult About()
