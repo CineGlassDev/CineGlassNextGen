@@ -115,6 +115,8 @@
             links.events.addListener(timeline, 'doubleClick', onTimelineEventDoubleClick);
 
             timeline.draw(data, timelineOptions);
+
+            redrawTimeline();
         }
 
         function onTimelineEventDoubleClick() {
@@ -140,6 +142,10 @@
         function redrawTimeline() {
             var range = timeline.getVisibleChartRange();
             timeline.setVisibleChartRange(range.start, range.end);
+
+            if (timeline.dom.contentTimelines.clientHeight == 0) {                
+                setTimeout(redrawTimeline, 100);
+            }
         }
 
         $(window).resize(function () {
@@ -150,9 +156,7 @@
             createTimeline();
         });
 
-        $(window).load(function () {
-            redrawTimeline();
-        });
+        
 
     </script>
 
@@ -181,6 +185,7 @@
     <div id="budgetArea">
         <div id ="casing"></div>
         <div id="budgetBar"></div>
+        <div id="actualFlood"></div>
         <div id="actualBar"></div>
         <div id="actualMarker"></div>
         <div id="budgetLabel">Budget</div>

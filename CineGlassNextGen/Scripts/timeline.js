@@ -241,11 +241,11 @@ links.Timeline = function(container) {
     // render for the first time
     this.render();
 
-    // fire the ready event
-    var me = this;
-    setTimeout(function () {
-        me.trigger('ready');
-    }, 0);
+
+    //var me = this;
+    //setTimeout(function () {
+    //    me.trigger('ready');
+    //}, 0);
 };
 
 
@@ -760,6 +760,12 @@ links.Timeline.prototype.render = function(options) {
             });
         }
     }
+
+    var me = this;
+    setTimeout(function () {
+        me.trigger('repaint');
+    }, 0);
+    
 };
 
 /**

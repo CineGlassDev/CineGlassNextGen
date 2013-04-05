@@ -51,6 +51,8 @@
             links.events.addListener(timeline, 'doubleClick', onTimelineEventDoubleClick);
 
             timeline.draw(data, timelineOptions);
+
+            redrawTimeline();
         }
 
         function onTimelineEventDoubleClick() {
@@ -76,6 +78,10 @@
         function redrawTimeline() {
             var range = timeline.getVisibleChartRange();
             timeline.setVisibleChartRange(range.start, range.end);
+
+            if (timeline.dom.contentTimelines.clientHeight == 0) {
+                setTimeout(redrawTimeline, 100);
+            }
         }
 
         $(window).resize(function () {
@@ -84,11 +90,6 @@
 
         $(document).ready(function () {
             createTimeline();
-        });
-
-        $(window).load(function () {           
-            redrawTimeline();
-
         });
 
     </script>
