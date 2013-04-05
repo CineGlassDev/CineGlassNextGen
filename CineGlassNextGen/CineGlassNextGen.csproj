@@ -189,11 +189,24 @@
     <Content Include="Images\cg-logo-13.png" />
     <Content Include="Images\cg-logo-14.png" />
     <Content Include="Images\cg-logo-15.png" />
+    <Content Include="Images\cg-logo-16.png" />
     <Content Include="Images\circle-green.png" />
     <Content Include="Images\diamond-red.png" />
+    <Content Include="Images\disney-toon-studios.jpg" />
     <Content Include="Images\executive-view.png" />
+    <Content Include="Images\iron-man-3-1.png" />
+    <Content Include="Images\iron-man-3-2.png" />
+    <Content Include="Images\iron-man-3-3.png" />
+    <Content Include="Images\iron-man-3.png" />
+    <Content Include="Images\jerry-bruckheimer-films.jpg" />
+    <Content Include="Images\marvel-studios.jpg" />
+    <Content Include="Images\pixar-animation-studios.jpg" />
     <Content Include="Images\producer-view.png" />
     <Content Include="Images\square-blue.png" />
+    <Content Include="Images\touchstone-pictures.jpg" />
+    <Content Include="Images\triangle-yellow.png" />
+    <Content Include="Images\walt-disney-motion-pictures-group.png" />
+    <Content Include="Images\walt-disney-pictures.png" />
     <Content Include="Scripts\activities.js" />
     <Content Include="Content\Site-STOCK.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -277,6 +290,7 @@
     <Content Include="Images\cg-logo-9.png" />
     <Content Include="Images\technicolor-for-footer.png" />
     <Content Include="layout.html" />
+    <Content Include="Scripts\titles.js" />
     <Content Include="Scripts\css-3d-renderer.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.1.datepicker.min.js" />
@@ -329,6 +343,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\TempDialog.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Docs\caged-heat-dailies-workflow.pdf" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

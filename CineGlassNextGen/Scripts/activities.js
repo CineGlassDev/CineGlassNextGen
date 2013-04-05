@@ -204,14 +204,6 @@
     }
     activities.push(distributionPlan);
 
-    var firstRelease = {
-        'start': new Date("4/24/2013"),
-        'content': '1st Theatrical Release',
-        'className': 'future major',
-        'tooltip': new Date("4/24/2013")
-    }
-    activities.push(firstRelease);
-
 
     return activities;
 }

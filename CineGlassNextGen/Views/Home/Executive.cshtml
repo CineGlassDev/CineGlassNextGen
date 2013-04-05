@@ -4,6 +4,18 @@
 
 @section headerRight {
 
+    <section>
+
+        <div id="customerLogo">
+            <img src="~/Images/walt-disney-motion-pictures-group.png" alt="Walt Disney Motion Pictures Group" />
+            <img src="~/Images/disney-toon-studios.jpg" alt="DisneyToon Studios" />
+            <img src="~/Images/jerry-bruckheimer-films.jpg" alt="Jerry Bruckheimer Films" />
+            <img src="~/Images/pixar-animation-studios.jpg" alt="Pixar Animation Studios" />
+            <img src="~/Images/marvel-studios.jpg" alt="Marvel Studios" />
+
+        </div>
+
+    </section>
     
 }
 
@@ -20,35 +32,63 @@
 
         function createTimeline() {
             var data = getTitles();
+
             timeline = new links.Timeline(document.getElementById('timeline'));
+
             var timelineOptions = {
                 height: "100%",
+                axisOnTop: true,
                 showPhases: false,
                 animate: true,
                 animateZoom: true,
                 showWatermark: false,
-                min: new Date("12/11/2010"),
-                max: new Date("1/30/2016"),
+                min: new Date("1/11/2011"),
+                max: new Date("2/1/2016"),
                 start: new Date("1/11/2011"),
-                end: new Date("12/31/2015")
+                end: new Date("2/1/2016")
             };
-            timeline.draw(data, timelineOptions);
-        }        
 
-        // called when the Visualization API is loaded
-        function drawVisualization() {
-            createTimeline();
+            links.events.addListener(timeline, 'doubleClick', onTimelineEventDoubleClick);
+
+            timeline.draw(data, timelineOptions);
+        }
+
+        function onTimelineEventDoubleClick() {
+            //var test = $.mobile.changePage("/cineglass/TempDialog", { role: "dialog" });
+            var selection = timeline.getSelection();
+            if (selection.length) {
+                if (selection[0].row != undefined) {
+                    var item = timeline.getItem(selection[0].row);
+
+                    //switch (item.content) {
+                    //    case "On Set Dailies":
+                    //        alert("Need to open Dailies PDF");
+                    //        break;
+                    //    default:
+                    //        alert("Need to open something else");
+                    //}
+
+                    alert('TODO: Open "' + item.content + '" details');
+                }
+            }
+        }
+
+        function redrawTimeline() {
+            var range = timeline.getVisibleChartRange();
+            timeline.setVisibleChartRange(range.start, range.end);
         }
 
         $(window).resize(function () {
-            var range = timeline.getVisibleChartRange();
-            timeline.setVisibleChartRange(range.start, range.end);
+            redrawTimeline();
         });
 
-        $(window).load(function () {
-            drawVisualization();
-            var range = timeline.getVisibleChartRange();
-            timeline.setVisibleChartRange(range.start, range.end);
+        $(document).ready(function () {
+            createTimeline();
+        });
+
+        $(window).load(function () {           
+            redrawTimeline();
+
         });
 
     </script>

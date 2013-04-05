@@ -24,10 +24,12 @@
         <script type="text/javascript" src="~/Scripts/jquery-ui-1.10.1.datepicker.min.js"></script>
 
         <script type="text/javascript">
+                        
             //reset type=date inputs to text
             $(document).bind("mobileinit", function () {
                 $.mobile.page.prototype.options.degradeInputs.date = true;
             });
+
         </script>		
     </head>
     <body>
@@ -64,6 +66,10 @@
             <div id="footer">
                 <div id="footerLeft">
                     @RenderSection("footerLeft", required: false)                
+                </div>
+
+                <div id="footerCenter">
+                    @RenderSection("footerCenter", required: false)                
                 </div>
 
                 <div id="footerRight">

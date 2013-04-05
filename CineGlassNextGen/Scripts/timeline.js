@@ -206,7 +206,10 @@ links.Timeline = function(container) {
         'showPhases': false, // show phases based on phase option data
         'phases': undefined, // [ { name:'Phase1', start:'01/05/2013', end:'02/08/2013' }, { name:'Phase2', start:'02/08/2013', end:'03/08/2013' } ]
         'showWatermark': false, // show watermark
-        'watermark': undefined
+        'watermark': undefined,
+        'showMajorMarker': false,
+        'majorMarkerDate': undefined,
+        'majorMarkerContent': undefined
     };
 
     this.clientTimeOffset = 0;    // difference between client time and the time
@@ -773,6 +776,7 @@ links.Timeline.prototype.repaint = function() {
     this.repaintPhases();
     this.repaintWatermark();
     this.repaintCustomTime();
+    this.repaintMajorMarker();
 
     return (frameNeedsReflow || axisNeedsReflow || groupsNeedsReflow || itemsNeedsReflow);
 };
@@ -1672,6 +1676,8 @@ links.Timeline.prototype.repaintItems = function() {
         links.imageloader.loadAll(newImageUrls, callback, sendCallbackWhenAlreadyLoaded);
     }
 
+    this.min
+
     return needsReflow;
 };
 
@@ -2083,7 +2089,7 @@ links.Timeline.prototype.repaintCurrentTime = function() {
     var visible = (x > -size.contentWidth && x < 2 * size.contentWidth);
     dom.currentTime.style.display = visible ? '' : 'none';
     dom.currentTime.style.left = x + "px";
-    dom.currentTime.title = "Current time: " + nowOffset;
+    dom.currentTime.title = "Today: " + nowOffset;
 
     // start a timer to adjust for the new time
     if (this.currentTimeTimer != undefined) {
@@ -2099,6 +2105,52 @@ links.Timeline.prototype.repaintCurrentTime = function() {
     if (interval < 30) interval = 30;
     this.currentTimeTimer = setTimeout(onTimeout, interval);
 };
+
+/**
+ * Redraw the major marker
+ */
+links.Timeline.prototype.repaintMajorMarker = function () {
+    var options = this.options,
+        dom = this.dom,
+        size = this.size;
+
+    if (!options.showMajorMarker ||
+        options.majorMarkerDate == undefined) {
+
+        if (dom.majorMarker) {
+            dom.contentTimelines.removeChild(dom.majorMarker);
+            delete dom.majorMarker;
+        }
+
+        return;
+    }
+
+    if (!dom.majorMarker) {
+
+        var majorMarker = document.createElement("DIV");
+        majorMarker.className = "timeline-majormarker";
+        majorMarker.style.position = "absolute";
+        majorMarker.style.top = "0px";
+        majorMarker.style.height = "100%";
+
+        dom.contentTimelines.appendChild(majorMarker);
+        dom.majorMarker = majorMarker;
+    }
+
+    var x = this.timeToScreen(options.majorMarkerDate);
+
+    var visible = (x > -size.contentWidth && x < 2 * size.contentWidth);
+
+    dom.majorMarker.style.display = visible ? '' : 'none';
+    dom.majorMarker.style.left = x + "px";
+
+    if (options.majorMarkerContent != undefined) {
+        dom.majorMarker.title = options.majorMarkerContent + ": " + options.majorMarkerDate;
+    } else {
+        dom.majorMarker.title = majorMarkerDate;
+    }
+
+}
 
 /**
  * Redraw the custom time bar
@@ -2932,6 +2984,7 @@ links.Timeline.prototype.onMouseMove = function (event) {
         this.repaintPhases();
         this.repaintWatermark();
         this.repaintCustomTime();
+        this.repaintMajorMarker();
         this.repaintAxis();
 
         // fire a rangechange event
@@ -3082,9 +3135,15 @@ links.Timeline.prototype.onDblClick = function (event) {
 
     if (params.itemIndex != undefined) {
         var item = this.items[params.itemIndex];
-        if (item && this.isEditable(item)) {
-            // fire the edit event
-            this.trigger('edit');
+
+        if (item) {
+
+            if (this.isEditable(item)) {
+                // fire the edit event
+                this.trigger('edit');
+            }
+
+            this.trigger('doubleClick');
         }
     }
     else {
