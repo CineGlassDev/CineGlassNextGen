@@ -1091,7 +1091,7 @@ links.Timeline.prototype.repaintAxisCharacters = function () {
     if (!axis.characterMinor) {
         text = document.createTextNode("0");
         var characterMinor = document.createElement("DIV");
-        characterMinor.className = "timeline-axis-text timeline-axis-text-minor";
+        characterMinor.className = "timeline-axis-text timeline-axis-text-minor acceleration";
         characterMinor.appendChild(text);
         characterMinor.style.position = "absolute";
         characterMinor.style.visibility = "hidden";
@@ -1106,7 +1106,7 @@ links.Timeline.prototype.repaintAxisCharacters = function () {
     if (!axis.characterMajor) {
         text = document.createTextNode("0");
         var characterMajor = document.createElement("DIV");
-        characterMajor.className = "timeline-axis-text timeline-axis-text-major";
+        characterMajor.className = "timeline-axis-text timeline-axis-text-major acceleration";
         characterMajor.appendChild(text);
         characterMajor.style.position = "absolute";
         characterMajor.style.visibility = "hidden";
@@ -1192,7 +1192,7 @@ links.Timeline.prototype.repaintAxisHorizontal = function() {
         if (!axis.backgroundLine) {
             // create the axis line background (for a background color or so)
             var backgroundLine = document.createElement("DIV");
-            backgroundLine.className = "timeline-axis";
+            backgroundLine.className = "timeline-axis acceleration";
             backgroundLine.style.position = "absolute";
             backgroundLine.style.left = "0px";
             backgroundLine.style.width = "100%";
@@ -1224,7 +1224,7 @@ links.Timeline.prototype.repaintAxisHorizontal = function() {
         else {
             // make the axis line
             var line = document.createElement("DIV");
-            line.className = "timeline-axis";
+            line.className = "timeline-axis acceleration";
             line.style.position = "absolute";
             line.style.left = "0px";
             line.style.width = "100%";
@@ -1266,7 +1266,7 @@ links.Timeline.prototype.repaintAxisMinorText = function (x, text) {
         var content = document.createTextNode("");
         label = document.createElement("DIV");
         label.appendChild(content);
-        label.className = "timeline-axis-text timeline-axis-text-minor";
+        label.className = "timeline-axis-text timeline-axis-text-minor acceleration";
         label.style.position = "absolute";
 
         frame.appendChild(label);
@@ -1301,7 +1301,7 @@ links.Timeline.prototype.repaintAxisMinorLine = function (x) {
     else {
         // create vertical line
         line = document.createElement("DIV");
-        line.className = "timeline-axis-grid timeline-axis-grid-minor";
+        line.className = "timeline-axis-grid timeline-axis-grid-minor acceleration";
         line.style.position = "absolute";
         line.style.width = "0px";
 
@@ -1336,7 +1336,7 @@ links.Timeline.prototype.repaintAxisMajorText = function (x, text) {
         // create label
         var content = document.createTextNode(text);
         label = document.createElement("DIV");
-        label.className = "timeline-axis-text timeline-axis-text-major";
+        label.className = "timeline-axis-text timeline-axis-text-major acceleration";
         label.appendChild(content);
         label.style.position = "absolute";
         label.style.top = "0px";
@@ -1372,7 +1372,7 @@ links.Timeline.prototype.repaintAxisMajorLine = function (x) {
     else {
         // create vertical line
         line = document.createElement("DIV");
-        line.className = "timeline-axis-grid timeline-axis-grid-major";
+        line.className = "timeline-axis-grid timeline-axis-grid-major acceleration";
         line.style.position = "absolute";
         line.style.top = "0px";
         line.style.width = "0px";
@@ -1765,7 +1765,7 @@ links.Timeline.prototype.repaintGroups = function() {
     var frame = dom.groups.frame;
     if (!frame) {
         frame =  document.createElement("DIV");
-        frame.className = "timeline-groups-axis";
+        frame.className = "timeline-groups-axis acceleration";
         frame.style.position = "absolute";
         frame.style.overflow = "hidden";
         frame.style.top = "0px";
@@ -1808,7 +1808,7 @@ links.Timeline.prototype.repaintGroups = function() {
 
         // create text label
         var label = document.createElement("DIV");
-        label.className = "timeline-groups-text";
+        label.className = "timeline-groups-text acceleration";
         label.style.position = "absolute";
         if (options.groupsWidth === undefined) {
             label.style.whiteSpace = "nowrap";
@@ -1819,7 +1819,7 @@ links.Timeline.prototype.repaintGroups = function() {
 
         // create the grid line between the group labels
         var labelLine = document.createElement("DIV");
-        labelLine.className = "timeline-axis-grid timeline-axis-grid-minor";
+        labelLine.className = "timeline-axis-grid timeline-axis-grid-minor acceleration";
         labelLine.style.position = "absolute";
         labelLine.style.left = "0px";
         labelLine.style.width = "100%";
@@ -1830,7 +1830,7 @@ links.Timeline.prototype.repaintGroups = function() {
 
         // create the grid line between the items
         var itemLine = document.createElement("DIV");
-        itemLine.className = "timeline-axis-grid timeline-axis-grid-minor";
+        itemLine.className = "timeline-axis-grid timeline-axis-grid-minor acceleration";
         itemLine.style.position = "absolute";
         itemLine.style.left = "0px";
         itemLine.style.width = "100%";
@@ -1874,7 +1874,7 @@ links.Timeline.prototype.repaintGroups = function() {
     if (!dom.groups.background) {
         // create the axis grid line background
         var background = document.createElement("DIV");
-        background.className = "timeline-axis";
+        background.className = "timeline-axis acceleration";
         background.style.position = "absolute";
         background.style.left = "0px";
         background.style.width = "100%";
@@ -1889,7 +1889,7 @@ links.Timeline.prototype.repaintGroups = function() {
     if (!dom.groups.line) {
         // create the axis grid line
         var line = document.createElement("DIV");
-        line.className = "timeline-axis";
+        line.className = "timeline-axis acceleration";
         line.style.position = "absolute";
         line.style.left = "0px";
         line.style.width = "100%";
@@ -2079,7 +2079,7 @@ links.Timeline.prototype.repaintCurrentTime = function() {
     if (!dom.currentTime) {
         // create the current time bar
         var currentTime = document.createElement("DIV");
-        currentTime.className = "timeline-currenttime";
+        currentTime.className = "timeline-currenttime acceleration";
         currentTime.style.position = "absolute";
         currentTime.style.top = "0px";
         currentTime.style.height = "100%";
@@ -2134,7 +2134,7 @@ links.Timeline.prototype.repaintMajorMarker = function () {
     if (!dom.majorMarker) {
 
         var majorMarker = document.createElement("DIV");
-        majorMarker.className = "timeline-majormarker";
+        majorMarker.className = "timeline-majormarker acceleration";
         majorMarker.style.position = "absolute";
         majorMarker.style.top = "0px";
         majorMarker.style.height = "100%";
@@ -2177,7 +2177,7 @@ links.Timeline.prototype.repaintCustomTime = function() {
 
     if (!dom.customTime) {
         var customTime = document.createElement("DIV");
-        customTime.className = "timeline-customtime";
+        customTime.className = "timeline-customtime acceleration";
         customTime.style.position = "absolute";
         customTime.style.top = "0px";
         customTime.style.height = "100%";
@@ -2218,7 +2218,7 @@ links.Timeline.prototype.repaintDeleteButton = function () {
     if (!deleteButton) {
         // create a delete button
         deleteButton = document.createElement("DIV");
-        deleteButton.className = "timeline-navigation-delete";
+        deleteButton.className = "timeline-navigation-delete acceleration";
         deleteButton.style.position = "absolute";
 
         frame.appendChild(deleteButton);
@@ -2257,7 +2257,7 @@ links.Timeline.prototype.repaintDragAreas = function () {
     var dragLeft = dom.items.dragLeft;
     if (!dragLeft) {
         dragLeft = document.createElement("DIV");
-        dragLeft.className="timeline-event-range-drag-left";
+        dragLeft.className = "timeline-event-range-drag-left acceleration";
         dragLeft.style.position = "absolute";
 
         frame.appendChild(dragLeft);
@@ -2268,7 +2268,7 @@ links.Timeline.prototype.repaintDragAreas = function () {
     var dragRight = dom.items.dragRight;
     if (!dragRight) {
         dragRight = document.createElement("DIV");
-        dragRight.className="timeline-event-range-drag-right";
+        dragRight.className = "timeline-event-range-drag-right acceleration";
         dragRight.style.position = "absolute";
 
         frame.appendChild(dragRight);
@@ -2322,7 +2322,7 @@ links.Timeline.prototype.repaintNavigation = function () {
             // create a navigation bar containing the navigation buttons
             navBar = document.createElement("DIV");
             navBar.style.position = "absolute";
-            navBar.className = "timeline-navigation";
+            navBar.className = "timeline-navigation acceleration";
             if (options.groupsOnRight) {
                 navBar.style.left = '10px';
             }
@@ -2342,7 +2342,7 @@ links.Timeline.prototype.repaintNavigation = function () {
         if (options.editable && options.showButtonNew) {
             // create a new in button
             navBar.addButton = document.createElement("DIV");
-            navBar.addButton.className = "timeline-navigation-new";
+            navBar.addButton.className = "timeline-navigation-new acceleration";
 
             navBar.addButton.title = "Create new event";
             var onAdd = function(event) {
@@ -2401,7 +2401,7 @@ links.Timeline.prototype.repaintNavigation = function () {
         if (options.showNavigation) {
             // create a zoom in button
             navBar.zoomInButton = document.createElement("DIV");
-            navBar.zoomInButton.className = "timeline-navigation-zoom-in";
+            navBar.zoomInButton.className = "timeline-navigation-zoom-in acceleration";
             navBar.zoomInButton.title = "Zoom in";
             var onZoomIn = function(event) {
                 links.Timeline.preventDefault(event);
@@ -2415,7 +2415,7 @@ links.Timeline.prototype.repaintNavigation = function () {
 
             // create a zoom out button
             navBar.zoomOutButton = document.createElement("DIV");
-            navBar.zoomOutButton.className = "timeline-navigation-zoom-out";
+            navBar.zoomOutButton.className = "timeline-navigation-zoom-out acceleration";
             navBar.zoomOutButton.title = "Zoom out";
             var onZoomOut = function(event) {
                 links.Timeline.preventDefault(event);
@@ -2429,7 +2429,7 @@ links.Timeline.prototype.repaintNavigation = function () {
 
             // create a move left button
             navBar.moveLeftButton = document.createElement("DIV");
-            navBar.moveLeftButton.className = "timeline-navigation-move-left";
+            navBar.moveLeftButton.className = "timeline-navigation-move-left acceleration";
             navBar.moveLeftButton.title = "Move left";
             var onMoveLeft = function(event) {
                 links.Timeline.preventDefault(event);
@@ -2443,7 +2443,7 @@ links.Timeline.prototype.repaintNavigation = function () {
 
             // create a move right button
             navBar.moveRightButton = document.createElement("DIV");
-            navBar.moveRightButton.className = "timeline-navigation-move-right";
+            navBar.moveRightButton.className = "timeline-navigation-move-right acceleration";
             navBar.moveRightButton.title = "Move right";
             var onMoveRight = function(event) {
                 links.Timeline.preventDefault(event);
@@ -3836,7 +3836,7 @@ links.Timeline.ItemBox.prototype.createDOM = function () {
 
     // contents box (inside the background box). used for making margins
     var divContent = document.createElement("DIV");
-    divContent.className = "timeline-event-content";
+    divContent.className = "timeline-event-content acceleration";
     divContent.innerHTML = this.content;
     divBox.appendChild(divContent);
 
@@ -3925,14 +3925,14 @@ links.Timeline.ItemBox.prototype.updateDOM = function () {
         divBox.firstChild.innerHTML = this.content;
 
         // update class
-        divBox.className = "timeline-event timeline-event-box";
-        divLine.className = "timeline-event timeline-event-line";
-        divDot.className  = "timeline-event timeline-event-dot";
+        divBox.className = "timeline-event timeline-event-box acceleration";
+        divLine.className = "timeline-event timeline-event-line acceleration";
+        divDot.className = "timeline-event timeline-event-dot acceleration";
 
         if (this.isCluster) {
-            links.Timeline.addClassName(divBox, 'timeline-event-cluster');
-            links.Timeline.addClassName(divLine, 'timeline-event-cluster');
-            links.Timeline.addClassName(divDot, 'timeline-event-cluster');
+            links.Timeline.addClassName(divBox, 'timeline-event-cluster acceleration');
+            links.Timeline.addClassName(divLine, 'timeline-event-cluster acceleration');
+            links.Timeline.addClassName(divDot, 'timeline-event-cluster acceleration');
         }
 
         // add item specific class name when provided
@@ -4096,7 +4096,7 @@ links.Timeline.ItemRange.prototype.createDOM = function () {
 
     // contents box
     var divContent = document.createElement("DIV");
-    divContent.className = "timeline-event-content";
+    divContent.className = "timeline-event-content acceleration";
     divBox.appendChild(divContent);
 
     this.dom = divBox;
@@ -4158,7 +4158,7 @@ links.Timeline.ItemRange.prototype.updateDOM = function () {
         divBox.firstChild.innerHTML = this.content;
 
         // update class
-        divBox.className = "timeline-event timeline-event-range";
+        divBox.className = "timeline-event timeline-event-range acceleration";
 
         // add the tooltip
         if (this.tooltip != undefined) {
@@ -4166,7 +4166,7 @@ links.Timeline.ItemRange.prototype.updateDOM = function () {
         }
 
         if (this.isCluster) {
-            links.Timeline.addClassName(divBox, 'timeline-event-cluster');
+            links.Timeline.addClassName(divBox, 'timeline-event-cluster acceleration');
         }
         
         // add item specific class name when provided
@@ -4404,7 +4404,7 @@ links.Timeline.ItemDot.prototype.createDOM = function () {
 
     // contents box, right from the dot
     var divContent = document.createElement("DIV");
-    divContent.className = "timeline-event-content";
+    divContent.className = "timeline-event-content acceleration";
     divBox.appendChild(divContent);
 
     // dot at start
@@ -4475,11 +4475,11 @@ links.Timeline.ItemDot.prototype.updateDOM = function () {
         divBox.firstChild.innerHTML = this.content;
 
         // update class
-        divDot.className  = "timeline-event timeline-event-dot";
+        divDot.className = "timeline-event timeline-event-dot acceleration";
 
         if (this.isCluster) {
-            links.Timeline.addClassName(divBox, 'timeline-event-cluster');
-            links.Timeline.addClassName(divDot, 'timeline-event-cluster');
+            links.Timeline.addClassName(divBox, 'timeline-event-cluster acceleration');
+            links.Timeline.addClassName(divDot, 'timeline-event-cluster acceleration');
         }
 
         // add item specific class name when provided
@@ -4670,7 +4670,7 @@ links.Timeline.prototype.createItem = function(itemData) {
     var initialTop,
         options = this.options;
     if (options.axisOnTop) {
-        initialTop = this.size.axis.height + options.eventMarginAxis + options.eventMargin / 2;
+        initialTop = this.size.axis.height + options.eventMarginAxis + options.eventMargin / 2;        
     }
     else {
         initialTop = this.size.contentHeight - options.eventMarginAxis - options.eventMargin / 2;

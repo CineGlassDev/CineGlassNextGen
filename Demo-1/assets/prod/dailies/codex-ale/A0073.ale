@@ -1,0 +1,17 @@
+Heading
+AUDIO_FORMAT	48khz
+VIDEO_FORMAT	1080
+FPS	24
+FIELD_DELIM	TABS
+TAPE	A0073
+
+Column
+Name	Start	End	Tracks	Take	Production	Camera	Channel ID V1	ShootDate	Production Company	Unit	Director	DP	Location	Codex Operator	Source Name	Source Type	Scene	WB	Day	Day/Night	Interior/Exterior	Filter	Lens	Codex Serial	Codex Version	Camroll	Alexa Colour Version	CC	EI	Alexa Lut Name	Source Revision	Source Firmware	Serial No	Source Camera ID	Shutter Angle	OriginalFrameRate	Alexa Project Rate	MirrorShutterRunning	Alexa ND Filter Type	Alexa Active Left	Alexa Active Top	Alexa Active Width	Alexa Active Height	Soundroll	Look	Codex UUID	Creation Date
+
+Data
+089C_001_A0073	18:24:09:19	18:27:09:02	V	001	Jupiter Ascending	A	V1	04_23_2013	warner Bros	main	lana & Andy Wachowski	Jonh Toll	leavsden	Ben Appleton	ARRI Alexa	Arri Alexa 4:3	089C	3200	DAY_16	NIGHT	INT	NONE	50MM	1118	2012.r2.2610	A0073	4	-2	800	None	1	22601	1085	L0U5	172.800	24.000	24.000	No	0	6	4	2868	2152	SR035	89C A+B.cdl	e2aeb262-bb9f-4f5d-9d30-db24e56f27c9	23-04-2013 17:48:49:992
+089C_002_A0073	18:38:10:10	18:41:10:23	V	002	Jupiter Ascending	A	V1	04_23_2013	warner Bros	main	lana & Andy Wachowski	Jonh Toll	leavsden	Ben Appleton	ARRI Alexa	Arri Alexa 4:3	089C	3200	DAY_16	NIGHT	INT	NONE	50MM	1118	2012.r2.2610	A0073	4	-2	800	None	1	22601	1085	L0U5	172.800	24.000	24.000	No	0	6	4	2868	2152	SR035	89C A+B.cdl	edd8ab6a-0225-4f9e-a15b-fe696f6dde2b	23-04-2013 18:33:20:636
+089C_003_A0073	18:44:42:15	18:47:32:14	V	003	Jupiter Ascending	A	V1	04_23_2013	warner Bros	main	lana & Andy Wachowski	Jonh Toll	leavsden	Ben Appleton	ARRI Alexa	Arri Alexa 4:3	089C	3200	DAY_16	NIGHT	INT	NONE	50MM	1118	2012.r2.2610	A0073	4	-2	800	None	1	22601	1085	L0U5	172.800	24.000	24.000	No	0	6	4	2868	2152	SR035	89C A+B.cdl	3f2fa590-31f0-4bc4-96c5-ffca9ee6e41c	23-04-2013 18:47:22:414
+089C_004_A0073	18:51:19:21	18:54:19:22	V	004	Jupiter Ascending	A	V1	04_23_2013	warner Bros	main	lana & Andy Wachowski	Jonh Toll	leavsden	Ben Appleton	ARRI Alexa	Arri Alexa 4:3	089C	3200	DAY_16	NIGHT	INT	NONE	50MM	1118	2012.r2.2610	A0073	4	-2	800	None	1	22601	1085	L0U5	172.800	24.000	24.000	No	0	6	4	2868	2152	SR035	89C A+B.cdl	0bf3041c-8557-4f58-866a-6b0958fc230e	23-04-2013 18:53:43:959
+089C_005_A0073	18:59:01:03	19:02:12:05	V	005	Jupiter Ascending	A	V1	04_23_2013	warner Bros	main	lana & Andy Wachowski	Jonh Toll	leavsden	Ben Appleton	ARRI Alexa	Arri Alexa 4:3	089C	3200	DAY_16	NIGHT	INT	NONE	50MM	1118	2012.r2.2610	A0073	4	-2	800	None	1	22601	1085	L0U5	172.800	24.000	24.000	No	0	6	4	2868	2152	SR035	89C A+B.cdl	f05e43cc-0022-409c-9f34-00e3c2169309	23-04-2013 19:00:31:380
+

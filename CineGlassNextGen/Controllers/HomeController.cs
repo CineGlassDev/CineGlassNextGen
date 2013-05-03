@@ -23,7 +23,7 @@ namespace CineGlassNextGen.Controllers
             return View();
         }
 
-        public ActionResult TempDialog()
+        public ActionResult Temp()
         {
             return PartialView();
         }
