@@ -24,6 +24,7 @@ CG.Demo1.DemoData = function () {
         },
         currentPhase: 'Post-Production',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        phases: null
     };
     warnerBrothers.catalog.push(allYouNeedIsSkill);
 
@@ -38,7 +39,8 @@ CG.Demo1.DemoData = function () {
             stars: ' Vera Farmiga, Lili Taylor, Patrick Wilson'
         },
         currentPhase: 'Distribution',
-        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls'
+        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        phases: null
     }
     warnerBrothers.catalog.push(conjuring);
 
@@ -53,7 +55,8 @@ CG.Demo1.DemoData = function () {
             stars: 'Aaron Taylor-Johnson, Bryan Cranston, Sally Hawkins'
         },
         currentPhase: 'Production',
-        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls'
+        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        phases: null
     }
     warnerBrothers.catalog.push(godzilla);
 
@@ -68,7 +71,8 @@ CG.Demo1.DemoData = function () {
             stars: 'Leonardo DiCaprio, Joel Edgerton, Tobey Maguire'
         },
         currentPhase: 'Distribution',
-        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls'
+        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        phases: null
     }
     warnerBrothers.catalog.push(greatGatsby);
 
@@ -83,7 +87,8 @@ CG.Demo1.DemoData = function () {
             stars: 'Bradley Cooper, Zach Galifianakis, John Goodman'
         },
         currentPhase: 'Distribution',
-        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls'
+        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        phases: null
     }
     warnerBrothers.catalog.push(hangover3);
 
@@ -98,7 +103,8 @@ CG.Demo1.DemoData = function () {
             stars: 'Richard Armitage, Martin Freeman, Elijah Wood'
         },
         currentPhase: 'Post-Production',
-        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls'
+        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        phases: null
     }
     warnerBrothers.catalog.push(hobbitDesolation);
 
@@ -1365,7 +1371,8 @@ CG.Demo1.DemoData = function () {
             stars: 'Henry Cavill, Michael Shannon, Amy Adams'
         },
         currentPhase: 'Distribtution',
-        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls'
+        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        phases: null
     }
     warnerBrothers.catalog.push(manOfSteel);
 
@@ -1380,7 +1387,8 @@ CG.Demo1.DemoData = function () {
             stars: 'Charlie Hunnam, Idris Elba, Charlie Day'
         },
         currentPhase: 'Distribtution',
-        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls'
+        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        phases: null
     }
     warnerBrothers.catalog.push(pacificRim);
 
@@ -1395,7 +1403,8 @@ CG.Demo1.DemoData = function () {
             stars: 'Morgan Freeman, Elizabeth Banks, Chris Pratt'
         },
         currentPhase: 'Production',
-        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls'
+        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        phases: null
     }
     warnerBrothers.catalog.push(legoMovie);
 
@@ -1410,7 +1419,8 @@ CG.Demo1.DemoData = function () {
             stars: 'Julianne Moore, Jeff Bridges, Ben Barnes'
         },
         currentPhase: 'Post-Production',
-        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls'
+        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        phases: null
     }
     warnerBrothers.catalog.push(seventhSon);
 
@@ -1425,7 +1435,8 @@ CG.Demo1.DemoData = function () {
             stars: 'Eva Green, Rodrigo Santoro, Sullivan Stapleton'
         },
         currentPhase: 'Production',
-        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls'
+        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        phases: null
     }
     warnerBrothers.catalog.push(threeHundred2);
 

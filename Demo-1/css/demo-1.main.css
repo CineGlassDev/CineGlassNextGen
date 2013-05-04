@@ -59,50 +59,104 @@ button
         background-color: rgba(255,255,255,0.95);
     }
 
+
+/********************************
+ *** GENERAL MAIN AREA LAYOUT ***
+ ********************************/
+
+#viewport 
+{
+    background-image: url("../img/warner-brothers-pictures.jpg") !important;
+    background-position: center;
+    background-repeat:no-repeat;
+    background-size: contain;
+    width:100%;
+    height:100%;
+}
+
+#backNav
+{
+    display: none;
+    position: absolute;
+    z-index: 10;
+    left: 20px;
+    top: 100px;
+    height: 30px;
+    width: auto;
+    padding: 0 10px 0 6px;
+    background-size: 30px 30px;
+    border-radius: 5px;
+    border-bottom: 1px solid rgba(255,255,255,0.4);
+    box-shadow: 0 -1px 1px rgba(0,0,0,0.2)inset, 0 1px 2px rgba(0,0,0,0.8)inset;
+    color: #fff;
+    text-shadow: 0px -1px 0px rgba(0,0,0,0.8);
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+    #backNav:before
+    {
+        position: absolute;
+        content: ' ';
+        left: -8px;
+        top: 4px;
+        height: 23px;
+        width: 24px;
+        z-index: 15;
+        -moz-transform: rotateZ(-45deg) skewY(-10deg) skewX(-10deg);
+        -o-transform: rotateZ(-45deg) skewY(-10deg) skewX(-10deg);
+        -webkit-transform: rotateZ(-45deg) skewY(-10deg) skewX(-10deg);
+        transform: rotateZ(-45deg) skewY(-10deg) skewX(-10deg);
+        border-top-right-radius: 11px;
+        border-top-left-radius: 0px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 10px;
+        border-left: 1px solid rgba(255,255,255,0.4);
+        box-shadow: 0px 1px 1px rgba(0,0,0,0.7) inset, 2px -2px 2px -3px rgba(0,0,0,0.5) inset;
+    }
+
+    #backNav:after
+    {
+        font-family: HelveticaNeue,Helvetica, Arial;
+        font-weight: 400;
+        font-size: 1.0em;
+        line-height: 30px;
+        text-align: center;
+        content: attr(title)"";
+        z-index: 20;
+        left: -2px;
+        padding-left: 3px;
+        position: relative;
+        height: 30px;
+        line-height: 30px;
+        display: block;
+        background-repeat: repeat-x;
+        background-size: 30px 30px;
+        background-position: -1px -0.5px;
+        box-shadow: 0 -3px 1px -2px rgba(0,0,0,0.3)inset, 0 4px 2px -3px rgba(0,0,0,0.8)inset;
+    }
+
+    #backNav,
+    #backNav:after,
+    #backNav:before
+    {
+        background-color: rgba(74,108,155,1); /*originalcolor*/
+    }
+
+        #backNav:hover,
+        #backNav:hover:after,
+        #backNav:hover:before
+        {
+            background-color: rgba(54,88,135,1); /*hovercolor*/
+        }
+
 /*****************************
  *** START OF WORLD STYLES ***
  *****************************/
 
-#viewport
-{
-}
-
-#viewer
-{
-    position: absolute;
-    border: 4px solid rgba(0,0,0,1);
-    background-color: rgba(0,0,0,1);
-    left: 0px;
-    top: 0px;
-    width: 2px;
-    height: 2px;
-    display: none;
-    z-index: 10000;
-}
-
-#slider
-{
-    overflow: hidden;
-    margin: 10px 10px 0px 10px;
-}
-
-#slider-items
-{
-    width: 9999px;
-    overflow: hidden;
-}
-
-.slider-item
-{
-    float: left;
-}
-
-.slider-content
-{
-    background-color: rgba(255,255,255,0.75);
-    color: #000;
-    font-size: 16px;
-}
 
 .movie-tile
 {
@@ -136,28 +190,28 @@ button
         border:none;
     }
 
-        .movie-tile .phase-swatch development
+        .movie-tile .phase-swatch .development, .department-tile .phase-swatch development
         {
             background-color: rgba(127,255,255,0.5);
         }
 
-        .movie-tile .phase-swatch pre-production
+        .movie-tile .phase-swatch .pre-production, .department-tile .phase-swatch .pre-production
         {
             background-color: rgba(55,96,212,0.5);
         }
 
 
-        .movie-tile .phase-swatch production
+        .movie-tile .phase-swatch .production, .department-tile .phase-swatch .production
         {
             background-color: rgba(173,55,212,0.5);
         }
 
-        .movie-tile .phase-swatch post-production
+        .movie-tile .phase-swatch .post-production, .department-tile .phase-swatch .post-production
         {
             background-color: rgba(212,136,55,0.5);
         }
 
-        .movie-tile .phase-swatch distribution
+        .movie-tile .phase-swatch .distribution, .department-tile .phase-swatch .distribution
         {
             background-color: rgba(88,212,55,0.5);
         }
@@ -175,7 +229,7 @@ button
         font-weight:bold;
         background-color:transparent;
         border:none;            
-        color:rgba(255,255,255, 0.35);                        
+        color:rgba(255,255,255, 0.85);                        
 	    text-shadow: 0px 1px 2px rgba(0,0,0,1);
     }
 
@@ -188,9 +242,90 @@ button
         top: 39px;
         left: 15px;        
         background-size: cover;
-        opacity:0.75;
+        opacity:0.95;
         border: 1px solid rgba(0,0,0, 0.5);
     }
+
+    .department-tile {
+            position: absolute;
+            border: 1px solid rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.5);
+            text-shadow: 0px -1px 0px rgba(0,0,0,0.5);
+            color: rgba(255,255,255, 0.5);
+            line-height: 30px;
+            text-align: center;
+            font-size: 18px;
+            -webkit-transform: translate3d(0,0,0);
+            -o-transform: translate3d(0,0,0);
+            -ms-transform: translate3d(0,0,0);
+            -moz-transform: translate3d(0,0,0);
+            transform: translate3d(0,0,0);
+            cursor: pointer;
+            /* aspect ratio: .5625 , 1.78 */
+            width: 400px;
+            height: 264px;
+            left: 600px;
+            top: 300px;
+        }
+
+            .department-tile .phase-swatch {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 5px;
+                background-color: rgba(127,255,255,0.5);
+                border: none;
+            }
+
+            .department-tile .name {
+                position: absolute;
+                width: 100%;
+                top: 7px;
+                left: 0px;
+                height: 24px;
+                line-height: 24px;
+                text-align: center;
+                font-size: 20px;
+                font-weight: bold;
+                background-color: transparent;
+                border: none;
+                color: rgba(255,255,255, 0.85);
+                text-shadow: 0px 1px 2px rgba(0,0,0,1);
+            }
+
+            .department-tile .logo {
+                /* aspect ratio: .5626 , 1.78 */
+                position: absolute;
+                width: 370px;
+                height: 208px;
+                top: 39px;
+                left: 15px;
+                background-size: contain;
+                background-repeat:no-repeat;
+                background-position:center;
+                opacity: 0.95;
+                background-color:transparent;
+                border: 1px solid rgba(0,0,0, 0.5);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -438,81 +573,4 @@ button
  *** START OF UI CONTROL STYLES ***
  **********************************/
 
-#backNav
-{
-    display: none;
-    position: absolute;
-    z-index: 10;
-    left: 20px;
-    top: 100px;
-    height: 30px;
-    width: auto;
-    padding: 0 10px 0 6px;
-    background-size: 30px 30px;
-    border-radius: 5px;
-    border-bottom: 1px solid rgba(255,255,255,0.4);
-    box-shadow: 0 -1px 1px rgba(0,0,0,0.2)inset, 0 1px 2px rgba(0,0,0,0.8)inset;
-    color: #fff;
-    text-shadow: 0px -1px 0px rgba(0,0,0,0.8);
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    user-select: none;
-}
 
-    #backNav:before
-    {
-        position: absolute;
-        content: ' ';
-        left: -8px;
-        top: 4px;
-        height: 23px;
-        width: 24px;
-        z-index: 15;
-        -moz-transform: rotateZ(-45deg) skewY(-10deg) skewX(-10deg);
-        -o-transform: rotateZ(-45deg) skewY(-10deg) skewX(-10deg);
-        -webkit-transform: rotateZ(-45deg) skewY(-10deg) skewX(-10deg);
-        transform: rotateZ(-45deg) skewY(-10deg) skewX(-10deg);
-        border-top-right-radius: 11px;
-        border-top-left-radius: 0px;
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 10px;
-        border-left: 1px solid rgba(255,255,255,0.4);
-        box-shadow: 0px 1px 1px rgba(0,0,0,0.7) inset, 2px -2px 2px -3px rgba(0,0,0,0.5) inset;
-    }
-
-    #backNav:after
-    {
-        font-family: HelveticaNeue,Helvetica, Arial;
-        font-weight: 400;
-        font-size: 1.0em;
-        line-height: 30px;
-        text-align: center;
-        content: attr(title)"";
-        z-index: 20;
-        left: -2px;
-        padding-left: 3px;
-        position: relative;
-        height: 30px;
-        line-height: 30px;
-        display: block;
-        background-repeat: repeat-x;
-        background-size: 30px 30px;
-        background-position: -1px -0.5px;
-        box-shadow: 0 -3px 1px -2px rgba(0,0,0,0.3)inset, 0 4px 2px -3px rgba(0,0,0,0.8)inset;
-    }
-
-    #backNav,
-    #backNav:after,
-    #backNav:before
-    {
-        background-color: rgba(74,108,155,1); /*originalcolor*/
-    }
-
-        #backNav:hover,
-        #backNav:hover:after,
-        #backNav:hover:before
-        {
-            background-color: rgba(54,88,135,1); /*hovercolor*/
-        }

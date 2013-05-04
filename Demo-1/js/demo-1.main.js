@@ -24,24 +24,18 @@ CG.Demo1.StartApp = function () {
     var _worldScene;
     
     var _worldElements = {
-        catalog: {
-            studio: 'Warner Brothers',
-            logo: null,
-            budgetUri: null,
-            movies: []
-        },
-        departments: [],
-        assets: [],
-        subAssets: []
+        catalog: { studio: '', logo: '', budgetUri: '', movies: [] },
+        departments: [], // {  movie: 'Jupiter Ascending', phase: 'Pre-Production', department: [CACHE DATA] }
+        assets: [], // { movie: 'Jupiter Ascending', phase: 'Pre-Production', department: 'VFX', assets: [CACHE DATA] }
+        subAssets: [] // { movie: 'Jupiter Ascending', phase: 'Pre-Production', department: 'VFX', category: 'Sound Report', assets: [CACHE DATA] }
     };
 
     var _worldVectors = {
-        catalog: { studio: 'Warner Brothers', movies2D: [], movies3D: [] },
-        departments: [],
-        assets: [],
-        subAssets: []
+        catalogs: [], // { studio: 'Warner Brothers', movies2D: [], movies3D: [] }
+        departments: [], // { movie: 'Jupiter Ascending', phase: 'Pre-Production', departments2D: [], departments3D: [] }
+        assets: [], // { movie: 'Jupiter Ascending', phase: 'Pre-Production', department: 'VFX', assets2D: [], assets3D: [] }
+        subAssets: [] // { movie: 'Jupiter Ascending', phase: 'Pre-Production', department: 'VFX', category: 'Sound Report', assets2D: [], assets3D: [] }
     };
-
 
 
     //
@@ -49,6 +43,7 @@ CG.Demo1.StartApp = function () {
     //
 
     $vieport = $('#viewport');
+    $backNav = $('#backNav');
 
 
 
@@ -85,82 +80,335 @@ CG.Demo1.StartApp = function () {
 
         // initialize the world CSS elements
         initializeWorldElements();
-
-
-
+        
+        // TODO: initialize vectors
     }
 
     function initializeWorldElements() {
 
-        var data = CG.Demo1.DemoData();
-        
+        var studioData = CG.Demo1.DemoData();
+        initializeCatalogTiles(studioData);
+        initializeDepartmentTiles(studioData);
+        initializeAssetTiles(studioData);
+        initializeSubAssetTiles(studioData);
+
+    }
+
+    function initializeCatalogTiles(studioData) {
+
         //
         // cache catalog studio info
         //
-        _worldElements.catalog.studio = data.name;
-        _worldElements.catalog.budgetUri = data.budgetUri;
-        _worldElements.catalog.logo = data.logo;
+        _worldElements.catalog.studio = studioData.name;
+        _worldElements.catalog.budgetUri = studioData.budgetUri;
+        _worldElements.catalog.logo = studioData.logo;
 
+        // change page background to use studio's logo
+        $(document).css('background-image', 'url("' + studioData.logo + '")');
 
-        var movieCount = data.catalog.movies.length;
+        var movieCount = studioData.catalog.length;
 
         for (var index = 0; index < movieCount; index++) {
 
-            var movie = data.catalog.movies[index];
+            var movie = studioData.catalog[index];
 
+            //
+            // create a tile for the movie
+            //
             var tile = document.createElement('div');
             tile.className = 'movie-tile';
-            tile.title = move.name;
-            tile.data = movie;
+            tile.title = movie.name;
+            tile.movie = movie;
 
+            //
+            // create phase swatch element
+            //
             var swatch = document.createElement('div');
-            swatch.className = 'movie-tile phase-swatch ' + movie.currentPhase.toLowerString();
+            swatch.className = 'movie-tile phase-swatch ' + movie.currentPhase.toLowerCase();
             tile.appendChild(swatch);
 
+            //
+            // create release date element
+            //
             var releaseDate = document.createElement('div');
             releaseDate.className = 'movie-tile release-date';
             releaseDate.textContent = movie.releaseDate;
             tile.appendChild(releaseDate);
 
+            //
+            // create one sheet element
+            //
             var oneSheet = document.createElement('div');
             oneSheet.className = 'movie-tile one-sheet';
             oneSheet.style.backgroundImage = "url('" + movie.oneSheet + "')";
             tile.appendChild(oneSheet);
 
-
+            //
+            // wire-up tap event handler for movie tile
+            //
             $(tile).hammer().on('tap', function (event) {
 
-                // TODO:
-                // - Movie
-                // ---- one-sheet as main area background
-                // ---- catalog as back button (black color scheme)
-                // ---- movie info at top of page
-                // ---- budget button at top of page for movie
-                // ---- department tiles in main area   
+                if (this.movie.phases != null) {
 
+                    // change page background to one-sheet
+                    $(document).css('background-image', 'url("' + this.movie.oneSheet + '")');
 
+                    // set back nav
+                    setBackNav(CG.Views.Catalog, 'Catalog');
+
+                    // TODO:
+                    // ---- movie info at top of page
+                    // ---- budget button at top of page for movie
+                    // ---- transform to department tiles in main area 
+
+                } else {
+
+                    // TODO: Let the user know that there's no phase/department info for this movie
+
+                }
 
                 return false;
 
             });
 
+            //
+            // create a CSS3D object for this movie tile
+            // and initialize with a random vector
+            //
+            var css3dObject = new THREE.CSS3DObject(tile);
+            css3dObject.position.x = Math.random() * 4000 - 2000;
+            css3dObject.position.y = Math.random() * 4000 - 2000;
+            css3dObject.position.z = Math.random() * 4000 - 2000;
+            _worldScene.add(css3dObject);
 
-
-
-
-
-
-
+            // add CSS3D object to array
+            _worldElements.catalog.movies.push(css3dObject);
+            
+            // cache CSS3D object on movie tile
+            tile.parentObject = css3dObject;
 
         }
+
+    }
+
+    function initializeDepartmentTiles(studioData) {
+
+        var movieCount = studioData.catalog.length;
+
+        for (var index = 0; index < movieCount; index++) {
+
+            var movie = studioData.catalog[index];
+
+            console.log(movie);
+
+            console.log('has phases? ' + (movie.phases != null ? true : false));
+
+            // TODO: Debug and figure out why below goes into endless loop
+
+            continue;
+
+            if (movie.phases != null) {
+
+                //
+                // Development Phase
+                //
+
+                var departmentsLength = movie.phases.development.departments.length;
+
+                for (var index = 0; index < departmentsLength; index++) {
+
+                    var dept = movie.phases.development.departments[index];
+
+                    cacheDepartmentElement(
+                        dept,
+                        movie.name,
+                        'Development',
+                        movie.phases.development.iconUri,
+                        movie.phases.development.budgetUri);
+
+                }
+
+                //
+                // Pre-Production Phase
+                //
+
+                departmentsLength = movie.phases.preProduction.departments.length;
+
+                for (var index = 0; index < departmentsLength; index++) {
+
+                    var dept = movie.phases.preProduction.departments[index];
+
+                    cacheDepartmentElement(
+                        dept,
+                        movie.name,
+                        'Pre-Production',
+                        movie.phases.preProduction.iconUri,
+                        movie.phases.preProduction.budgetUri);
+
+                }
+
+                //
+                // Production Phase
+                //
+
+                departmentsLength = movie.phases.production.departments.length;
+
+                for (var index = 0; index < departmentsLength; index++) {
+
+                    var dept = movie.phases.production.departments[index];
+
+                    cacheDepartmentElement(
+                        dept,
+                        movie.name,
+                        'Production',
+                        movie.phases.production.iconUri,
+                        movie.phases.production.budgetUri);
+
+                }
+
+                //
+                // Post-Production Phase
+                //
+
+                departmentsLength = movie.phases.postProduction.departments.length;
+
+                for (var index = 0; index < departmentsLength; index++) {
+
+                    var dept = movie.phases.postProduction.departments[index];
+
+                    cacheDepartmentElement(
+                        dept,
+                        movie.name,
+                        'Post-Production',
+                        movie.phases.postProduction.iconUri,
+                        movie.phases.postProduction.budgetUri);
+
+                }
+
+                //
+                // Distribution Phase
+                //
+
+                departmentsLength = movie.phases.distribution.departments.length;
+
+                for (var index = 0; index < departmentsLength; index++) {
+
+                    var dept = movie.phases.distribution.departments[index];
+
+                    cacheDepartmentElement(
+                        dept,
+                        movie.name,
+                        'Distribution',
+                        movie.phases.distribution.iconUri,
+                        movie.phases.distribution.budgetUri);
+
+                }
+   
+            }
+
+        }
+
+    }
+
+    function cacheDepartmentElement(deptData, movieName, phase, deptIconUri, budgetUri) {
+
+        //
+        // create a tile for the department
+        //
+        var tile = document.createElement('div');
+        tile.className = 'department-tile';
+        tile.title = deptData.name;
+        tile.assets = deptData.assets;
+
+        //
+        // create phase swatch element
+        //
+        var swatch = document.createElement('div');
+        swatch.className = 'department-tile phase-swatch ' + phase;
+        tile.appendChild(swatch);
+
+        //
+        // create department name element
+        //
+        var departmentName = document.createElement('div');
+        departmentName.className = 'department-tile name';
+        departmentName.textContent = deptData.name;
+        tile.appendChild(departmentName);
+
+        //
+        // create logo element
+        //
+        var logo = document.createElement('div');
+        logo.className = 'department-tile logo';
+        logo.style.backgroundImage = "url('" + deptIconUri + "')";
+        tile.appendChild(logo);
+
+        //
+        // wire-up tap event handler for department tile
+        //
+        $(tile).hammer().on('tap', function (event) {
+
+            // set back nav
+            setBackNav(CG.Views.Departments, movieName);
+
+            // TODO:
+            // ---- phase, department name, logo at top of page
+            // ---- budget button at top of page for respective phase (if applicable)...incorporate swatch line at top of button
+            // ---- transform to asset tiles in main area
+
+            return false;
+
+        });
+
+        //
+        // create a CSS3D object for this movie tile
+        // and initialize with a random vector
+        //
+        var css3dObject = new THREE.CSS3DObject(tile);
+        css3dObject.position.x = Math.random() * 4000 - 2000;
+        css3dObject.position.y = Math.random() * 4000 - 2000;
+        css3dObject.position.z = Math.random() * 4000 - 2000;
+        _worldScene.add(css3dObject);
+
+        var departmentElement = {
+            movie: movieName,
+            phase: phase,
+            department: css3dObject
+        };
+
+        // add department element to array
+        _worldElements.departments.push(departmentElement);
+
+        // cache department element on department tile
+        tile.parentObject = departmentElement;
+
+    }
+
+    function initializeAssetTiles(studioData) {
+
+        // TODO: Implement
         
     }
 
+    function initializeSubAssetTiles(studioData) {
 
+        // TODO: Implement
 
+    }
 
+    function setBackNav(view, caption) {
 
+        _navBackTo = view;
 
+        $backNav.attr('title', caption);
+
+        if (view == CG.Demo1.Views.None) {
+            $backNav.css('display', 'none');
+        } else {
+            $backNav.css('display', 'block');
+        }
+
+    }
 
     function navBack() {
 
@@ -184,30 +432,17 @@ CG.Demo1.StartApp = function () {
 
     }
 
-//    3D Vectors
-//===========
 
-//    catalog: { studio: 'Warner Bros', movies2D: [], movies3D: [] }
+    initialize();
 
-//    departments: [ { movie: 'Jupiter Ascending', phase: 'Pre-Production', departments2D: [], departments3D: [] }, {} ]
 
-//    assets: [ { movie: 'Jupiter Ascending', phase: 'Pre-Production', department: 'VFX', assets2D: [], assets3D: [] } ]
 
-//    sub-assets: [ { movie: 'Jupiter Ascending', phase: 'Pre-Production', department: 'VFX', category: 'Sound Report', assets2D: [], assets3D: [] } ]
+    
 
 
 
 
-//    CSS Elements
-//    ==============
 
-//    catalog: { studio: 'Warner Bros', movies: [CACHE DATA] }
-
-//    departments: [ { movie: 'Jupiter Ascending', phase: 'Pre-Production', department: [CACHE DATA] } ]
-
-//assets: [ { movie: 'Jupiter Ascending', phase: 'Pre-Production', department: 'VFX', assets: [CACHE DATA] } ]
-
-//sub-assets: [ { movie: 'Jupiter Ascending', phase: 'Pre-Production', department: 'VFX', category: 'Sound Report', assets: [CACHE DATA] } ]
 
 
 
