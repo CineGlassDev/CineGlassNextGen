@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<title>CineGlass</title>
-        <link href="css/demo-1.main.css" rel="stylesheet" />
+        <link href="css/main.css" rel="stylesheet" />
 	</head>
 
 	<body ontouchmove="disableEvent(event);" ondragstart="disableEvent(event);">
@@ -20,9 +20,7 @@
         <script src="js/jquery/jquery.touchSlider.min.js"></script>
         <script src="js/jquery/jquery.itemViewer.js"></script>
         
-
-        <script src="js/demo-1.data.js"></script>
-        <script src="js/demo-1.main.js"></script>
+        <script src="js/data/demo-1.js"></script>
 
 
 
@@ -31,7 +29,7 @@
 
         <div id="modalscreen"></div>
 
-        <div id="backNav" title="" onclick="navBack()"></div>
+        <div id="backNav" title="Post-Production - VFX" onclick=""></div>
 
 		<div id='viewport'>
 
@@ -72,28 +70,21 @@
 
 		<script>
 
-		    //
-		    // UN-VALIDATED VARIABLES
-            //
-
 
 		    var DEFAULT_CAMERA_X = 0;
 		    var DEFAULT_CAMERA_Y = 0;
 			var DEFAULT_CAMERA_Z = 2100;			
 
-			var _worldCamera;
-			var _worldScene;
-			var _worldRenderer;
-			var _worldControls;
-			var _active3dObject = null;
-
-
-
+			var camera;
+			var scene;
+			var renderer;
+			var tileControls;
+			var touch;
+			var active3dObject = null;
 
 			var cssElements = [];
 			var views = { tiles3D: [], tiles2D: [] };
 			var fromClass = 'tile-3d'; // default
-            
 			
             //
 		    // CONFIGURABLES
@@ -130,8 +121,6 @@
 			$(document).ready(function() {
 				init();
 				animate();
-
-				// CG.Demo1.StartApp();
 			});
 			
 			//
@@ -143,21 +132,21 @@
 			
 			function init() {
 
-				_worldScene = new THREE.Scene();				
+				scene = new THREE.Scene();				
 
-				_worldCamera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, -5000, 5000);
-				_worldCamera.position.x = DEFAULT_CAMERA_X;
-				_worldCamera.position.y = DEFAULT_CAMERA_Y;
-				_worldCamera.position.z = DEFAULT_CAMERA_Z;
+				camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, -5000, 5000);
+				camera.position.x = DEFAULT_CAMERA_X;
+				camera.position.y = DEFAULT_CAMERA_Y;
+				camera.position.z = DEFAULT_CAMERA_Z;
                 
 				
 				//
-				// initialize the CSS3 _worldRenderer
+				// initialize the CSS3 renderer
 				//
-				_worldRenderer = new THREE.CSS3DRenderer();
-				_worldRenderer.setSize(window.innerWidth, window.innerHeight);
-				_worldRenderer.domElement.style.position = 'absolute';								
-				$('#viewport').append(_worldRenderer.domElement);
+				renderer = new THREE.CSS3DRenderer();
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				renderer.domElement.style.position = 'absolute';								
+				$('#viewport').append(renderer.domElement);
 		
 		
 				//
@@ -177,13 +166,13 @@
 
 				$(document).hammer().on('tap', function (event) {
 				    
-				    if (_worldControls.disabled === true) {
+				    if (tileControls.disabled === true) {
 				        return;
 				    }
 
 				    //
 				    // if user taps outside tiles, etc. then
-				    // reset the _worldCamera to its default settings
+				    // reset the camera to its default settings
 				    //				    
 
 				    resetCamera();
@@ -194,21 +183,21 @@
 
 				    event.gesture.preventDefault();
 
-				    if (_worldControls.disabled === true) {
+				    if (tileControls.disabled === true) {
 				        return;
 				    }
 
-				    _worldControls.disabled = true;
+				    tileControls.disabled = true;
 
 				    // destroy previous tile controls
-				    _worldControls.destroy();
+				    tileControls.destroy();
 
 				    //
 				    // configure/create new tile controls
                     //
 				    tileControlsOptions.tileSelectorClass = 'tile-3d';
 				    tileControlsOptions.is3D = true;
-				    _worldControls = new CG.TileControls(tileControlsOptions);
+				    tileControls = new CG.TileControls(tileControlsOptions);
 
                     // start transformation
 					transform(views.tiles3D, 2000, 'tile-3d');	
@@ -219,21 +208,21 @@
 
 				    event.gesture.preventDefault();
 
-				    if (_worldControls.disabled === true) {
+				    if (tileControls.disabled === true) {
 				        return;
 				    }
 
-				    _worldControls.disabled = true;
+				    tileControls.disabled = true;
 
 				    // destroy previous tile controls
-				    _worldControls.destroy();
+				    tileControls.destroy();
 
 				    //
 				    // configure/create new tile controls
 				    //
 				    tileControlsOptions.tileSelectorClass = 'tile-2d';
 				    tileControlsOptions.is3D = false;
-				    _worldControls = new CG.TileControls(tileControlsOptions);
+				    tileControls = new CG.TileControls(tileControlsOptions);
 
 				    // start transformation
 				    transform(views.tiles2D, 1500, 'tile-2d');
@@ -246,7 +235,7 @@
 			    // initialize default tile controls options
 			    //
 				tileControlsOptions = {
-				    camera: _worldCamera,
+				    camera: camera,
 				    renderFunction: render,
 				    swipeAreaContainer: $('#viewport'),
 				    moveDuration: 1000,
@@ -261,7 +250,7 @@
 			    //
 			    // initialize tile controls
 			    //			
-				_worldControls = new CG.TileControls(tileControlsOptions);
+				tileControls = new CG.TileControls(tileControlsOptions);
 				
 				// kick off the 3D tiles by default
 				transform(views.tiles3D, 2000);
@@ -272,23 +261,23 @@
 
 			function resetCamera() {		    
 
-			    if (_worldCamera.position.x != DEFAULT_CAMERA_X ||
-                        _worldCamera.position.y != DEFAULT_CAMERA_Y ||
-                        _worldCamera.position.z != DEFAULT_CAMERA_Z) {
+			    if (camera.position.x != DEFAULT_CAMERA_X ||
+                        camera.position.y != DEFAULT_CAMERA_Y ||
+                        camera.position.z != DEFAULT_CAMERA_Z) {
                          
 			        $('#modalscreen').css('visibility', 'hidden');
 
-			        _worldControls.disabled = true;
+			        tileControls.disabled = true;
 
-			        _active3dObject = null;
+			        active3dObject = null;
 			        $viewport.itemViewer('hide');
 
-			        new TWEEN.Tween(_worldCamera.position)
+			        new TWEEN.Tween(camera.position)
                         .to({ x: DEFAULT_CAMERA_X, y: DEFAULT_CAMERA_Y, z: DEFAULT_CAMERA_Z }, 1500)
                         .easing(TWEEN.Easing.Exponential.Out)
                         .onUpdate(render)
                         .onComplete(function() {
-                            _worldControls.disabled = false;
+                            tileControls.disabled = false;
                         })
                         .start();
 
@@ -448,7 +437,7 @@
 					css3dObject.position.x = Math.random() * 4000 - 2000;
 					css3dObject.position.y = Math.random() * 4000 - 2000;
 					css3dObject.position.z = Math.random() * 4000 - 2000;	
-					_worldScene.add(css3dObject);
+					scene.add(css3dObject);
 					
 				    // add three.js object to cached array
 					cssElements.push(css3dObject);
@@ -600,7 +589,7 @@
 
 				    startDate = getRandomDate(minDate, maxDate);
 				    endDate = getRandomDate(startDate, maxDate);
-				    var _worldCamera = {
+				    var camera = {
 				        "ItemName": 'Camera',
 				        "StartDate": startDate,
 				        "EndDate": endDate,
@@ -613,7 +602,7 @@
 				        "ScheduleContent": "",
 				        "BudgetContent": ""
 				    };
-				    data.push(_worldCamera);
+				    data.push(camera);
 
 				    startDate = getRandomDate(minDate, maxDate);
 				    endDate = getRandomDate(startDate, maxDate);
@@ -837,7 +826,7 @@
 			        return;
 			    }
 
-			    _worldControls.disabled = true;
+			    tileControls.disabled = true;
 				
 				var toggleClass = (typeof toClass != 'undefined' && fromClass != null && toClass != fromClass);
 
@@ -875,36 +864,36 @@
 
 					        fromClass = toClass;
 
-					        if (_worldCamera.position.z != DEFAULT_CAMERA_Z || _worldCamera.position.y != DEFAULT_CAMERA_Y) {
+					        if (camera.position.z != DEFAULT_CAMERA_Z || camera.position.y != DEFAULT_CAMERA_Y) {
 
                                 //
-					            // re-adjust the _worldCamera to default position
+					            // re-adjust the camera to default position
 					            //
 
-					            new TWEEN.Tween(_worldCamera.position)
+					            new TWEEN.Tween(camera.position)
                                     .to({ x: DEFAULT_CAMERA_X, y: DEFAULT_CAMERA_Y, z: DEFAULT_CAMERA_Z }, duration / 2)
                                     .easing(TWEEN.Easing.Quadratic.Out)
                                     .onUpdate(render)
                                     .onComplete(function () {
                                         if (toggleClass) {
-                                            _worldControls.destroy();
-                                            _worldControls = new CG.TileControls(tileControlsOptions);
+                                            tileControls.destroy();
+                                            tileControls = new CG.TileControls(tileControlsOptions);
                                         } else {
-                                            _worldControls.disabled = false;
+                                            tileControls.disabled = false;
                                         }
                                     })
                                     .start();
 
 					        } else {
 
-					            _worldControls.destroy();
-					            _worldControls = new CG.TileControls(tileControlsOptions);
+					            tileControls.destroy();
+					            tileControls = new CG.TileControls(tileControlsOptions);
 
 					        }
 
 					    } else {
 
-					        _worldControls.disabled = false;
+					        tileControls.disabled = false;
 
 					    }
 				
@@ -923,7 +912,7 @@
 
 				TWEEN.removeAll();
 
-				new TWEEN.Tween(_worldCamera.position)
+				new TWEEN.Tween(camera.position)
 						.to( { z: newZ, y: newY }, Math.random() * duration + duration )
 						.easing( TWEEN.Easing.Cubic.InOut )
 						.start();
@@ -963,7 +952,7 @@
 
 
 
-			    if (_active3dObject != null) {
+			    if (active3dObject != null) {
 			        repositionItemViewer();
 			    }
 
@@ -971,11 +960,11 @@
 			        width: window.innerWidth + 'px', height: window.innerHeight + 'px'
 			    });
 
-				_worldCamera.aspect = window.innerWidth / window.innerHeight;
+				camera.aspect = window.innerWidth / window.innerHeight;
 				
-				_worldCamera.updateProjectionMatrix();
+				camera.updateProjectionMatrix();
 
-				_worldRenderer.setSize(window.innerWidth, window.innerHeight);
+				renderer.setSize(window.innerWidth, window.innerHeight);
 			
 				render();
 			}
@@ -988,7 +977,7 @@
 
 			function render() {
 				
-				_worldRenderer.render( _worldScene, _worldCamera );		
+				renderer.render( scene, camera );		
 				
 			}
 
@@ -1000,26 +989,26 @@
 
 			function zoomOnItem(tile, yAdjustment, zAdjustment, cb) {
 
-			    if (_worldControls.disabled === true) {
+			    if (tileControls.disabled === true) {
 			        return;
 			    }
 
-			    _worldControls.disabled = true;
+			    tileControls.disabled = true;
 
 			    var duration;
 
-			    if (_active3dObject == null) {
+			    if (active3dObject == null) {
 			        duration = 500;
 			    } else {
 			        duration = 200;
 			    }
 
-			    _active3dObject = null;
+			    active3dObject = null;
 			    $viewport.itemViewer('hide');
 
 			    var tileObject = tile.parentElement.parent3dObject;
 
-			    new TWEEN.Tween(_worldCamera.position)
+			    new TWEEN.Tween(camera.position)
                     .to({ x: tileObject.position.x + $(tile).width() / 2, y: tileObject.position.y + $(tile).height() / 2 - yAdjustment, z: tileObject.position.z + zAdjustment }, duration)
                     .easing(TWEEN.Easing.Quadratic.InOut)
                     .onUpdate(render)
@@ -1033,7 +1022,7 @@
 
                     })
                     .onComplete(function () {
-                        _active3dObject = tileObject;
+                        active3dObject = tileObject;
 
                         //if (typeof cb == 'function') {
                         //    cb.call(this);
@@ -1053,7 +1042,7 @@
 			        }, duration / 2);
 
 			        $viewport.itemViewer('show', duration, function () {
-			            _worldControls.disabled = false;
+			            tileControls.disabled = false;
 			        });
 
 			    });
@@ -1098,13 +1087,13 @@
 			    //
 			    var projector = new THREE.Projector();
 			    var vector2D = new THREE.Vector3((itemViewerDims.left / window.innerWidth) * 2 - 1, -(itemViewerDims.top / window.innerHeight) * 2 + 1, 1);
-			    projector.unprojectVector(vector2D, _worldCamera);
+			    projector.unprojectVector(vector2D, camera);
 
-			    var dir = vector2D.sub(_worldCamera.position).normalize();
-			    var ray = new THREE.Raycaster(_worldCamera.position, dir);
-			    var distance = -_worldCamera.position.z / dir.z;
+			    var dir = vector2D.sub(camera.position).normalize();
+			    var ray = new THREE.Raycaster(camera.position, dir);
+			    var distance = -camera.position.z / dir.z;
 
-			    var vector3D = _worldCamera.position.clone().add(dir.multiplyScalar(distance));
+			    var vector3D = camera.position.clone().add(dir.multiplyScalar(distance));
 
 			    return vector3D;
 			}
@@ -1116,8 +1105,6 @@
 			        return 3;
 			    }
 			}
-
-			
 
 		</script>
 		

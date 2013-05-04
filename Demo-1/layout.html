@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>CineGlass Layout</title>
+
+    <style>
+
+html, body
+{
+    height: 100%;
+}
+
+body
+{
+    background-color: #000000;
+    background-image: url("../img/cg-bg-2.jpg") !important;
+    margin: 0;
+    font-family: 'Segoe UI', 'Trebuchet MS', Verdana;
+    overflow: hidden;
+
+    background-image: url("../img/warner-brothers-pictures.jpg") !important;
+    background-image: url("../assets/one-sheets/conjuring.jpg") !important;
+    background-position: center;
+    background-repeat:no-repeat;
+    background-size: contain;
+}
+
+a
+{
+    color: #ffffff;
+}
+
+.movie-tile
+{
+    position:absolute;
+    border: 1px solid rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.5);
+    text-shadow: 0px -1px 0px rgba(0,0,0,0.5);
+    color: rgba(255,255,255, 0.5);
+    line-height: 30px;
+    text-align: center;
+    font-size: 18px;
+    -webkit-transform: translate3d(0,0,0);
+    -o-transform: translate3d(0,0,0);
+    -ms-transform: translate3d(0,0,0);
+    -moz-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+    cursor:pointer;
+
+    /* aspect ratio: .675 , 1.48 */
+    width: 202px;
+    height: 312px;
+
+    left:200px;
+    top:300px;
+}
+
+        .movie-tile .phase-swatch
+        {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 5px;
+            background-color: rgba(30,178,191, 0.5);
+            border:none;
+        }
+
+        .movie-tile .release-date
+        {
+            position:absolute;
+            width: 100%;
+            top:7px;
+            left:0px;
+            height: 24px;
+            line-height:24px;
+            text-align:center;
+            font-size: 20px;
+            font-weight:bold;
+            background-color:transparent;
+            border:none;            
+            color:rgba(255,255,255, 0.35);                        
+	        text-shadow: 0px 1px 2px rgba(0,0,0,1);
+        }
+
+        .movie-tile .one-sheet
+        {
+            /* aspect ratio: .675 , 1.48 */
+            position:absolute;
+            width: 172px;
+            height: 254px;
+            top: 39px;
+            left: 15px;
+            background-image: url('assets/one-sheets/pacific_rim.jpg');
+            background-size: cover;
+            opacity:0.75;
+            border: 1px solid rgba(0,0,0, 0.5);
+        }
+
+        
+
+
+
+    </style>
+</head>
+<body>
+
+    <div id="viewport">
+
+        <div class="movie-tile" title="The Great Gatsby">
+            <div class="movie-tile phase-swatch"></div>
+            <div class="movie-tile release-date">7/19/2013</div>
+            <div class="movie-tile one-sheet"></div>            
+        </div>
+
+    </div>
+
+</body>
+</html>
