@@ -122,6 +122,7 @@ CG.Demo1.DemoData = function () {
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
         phases: {
             development: {
+                name: 'Development',
                 budgetUri: '',
                 iconUri: 'img/icons/dev.png',
                 departments: [
@@ -141,6 +142,7 @@ CG.Demo1.DemoData = function () {
                 ]
             },
             preProduction: {
+                name: 'Pre-Production',
                 budgetUri: '',
                 iconUri: 'img/icons/pre-prod.png',
                 departments: [
@@ -233,6 +235,7 @@ CG.Demo1.DemoData = function () {
                 ]
             },
             production: {
+                name: 'Production',
                 budgetUri: 'assets/budget/Prod-4K_Budget.xls',
                 iconUri: 'img/icons/prod.jpg',
                 departments: [
@@ -923,6 +926,7 @@ CG.Demo1.DemoData = function () {
                 ]
             },
             postProduction: {
+                name: 'Post-Production',
                 budgetUri: 'assets/budget/Post Prod-4K_Budget.xls',
                 iconUri: 'img/icons/post.jpg',
                 departments: [
@@ -959,399 +963,395 @@ CG.Demo1.DemoData = function () {
                         name: 'VFX',
                         assets: [
                             {
-                                name: 'VFX',
-                                assets: [
-                                    {
-                                        name: 'A0070.ALE',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/avid-ale/A0070.ALE',
-                                        category: 'AVID ALE'
-                                    },
-                                    {
-                                        name: 'A0071.ALE',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/avid-ale/A0071.ALE',
-                                        category: 'AVID ALE'
-                                    },
-                                    {
-                                        name: 'A0072.ALE',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/avid-ale/A0072.ALE',
-                                        category: 'AVID ALE'
-                                    },
-                                    {
-                                        name: 'A0073.ALE',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/avid-ale/A0073.ALE',
-                                        category: 'AVID ALE'
-                                    },
-                                    {
-                                        name: 'A0074.ALE',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/avid-ale/A0074.ALE',
-                                        category: 'AVID ALE'
-                                    },
-                                    {
-                                        name: 'B0033.ALE',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/avid-ale/B0033.ALE',
-                                        category: 'AVID ALE'
-                                    },
-                                    {
-                                        name: 'B0034.ALE',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/avid-ale/B0034.ALE',
-                                        category: 'AVID ALE'
-                                    },
-                                    {
-                                        name: 'B0035.ALE',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/avid-ale/B0035.ALE',
-                                        category: 'AVID ALE'
-                                    },
-                                    {
-                                        name: 'B0036.ALE',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/avid-ale/B0036.ALE',
-                                        category: 'AVID ALE'
-                                    },
-                                    {
-                                        name: 'B0037.ALE',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/avid-ale/B0037.ALE',
-                                        category: 'AVID ALE'
-                                    },
-                                    {
-                                        name: 'C0017.ALE',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/avid-ale/C0017.ALE',
-                                        category: 'AVID ALE'
-                                    },
-                                    {
-                                        name: 'G0015.ALE',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/avid-ale/G0015.ALE',
-                                        category: 'AVID ALE'
-                                    },
-                                    {
-                                        name: 'A0070.ale',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/DIT/A0070.ale',
-                                        category: 'CODEX ALE - DIT'
-                                    },
-                                    {
-                                        name: 'A0071.ale',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/DIT/A0071.ale',
-                                        category: 'CODEX ALE - DIT'
-                                    },
-                                    {
-                                        name: 'A0072.ale',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/DIT/A0072.ale',
-                                        category: 'CODEX ALE - DIT'
-                                    },
-                                    {
-                                        name: 'A0073.ale',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/DIT/A0073.ale',
-                                        category: 'CODEX ALE - DIT'
-                                    },
-                                    {
-                                        name: 'A0074.ale',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/DIT/A0074.ale',
-                                        category: 'CODEX ALE - DIT'
-                                    },
-                                    {
-                                        name: 'B0033.ale',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/DIT/B0033.ale',
-                                        category: 'CODEX ALE - DIT'
-                                    },
-                                    {
-                                        name: 'B0034.ale',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/DIT/B0034.ale',
-                                        category: 'CODEX ALE - DIT'
-                                    },
-                                    {
-                                        name: 'B0035.ale',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/DIT/B0035.ale',
-                                        category: 'CODEX ALE - DIT'
-                                    },
-                                    {
-                                        name: 'B0036.ale',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/DIT/B0036.ale',
-                                        category: 'CODEX ALE - DIT'
-                                    },
-                                    {
-                                        name: 'B0037.ale',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/DIT/B0037.ale',
-                                        category: 'CODEX ALE - DIT'
-                                    },
-                                    {
-                                        name: 'C0017.ale',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/DIT/C0017.ale',
-                                        category: 'CODEX ALE - DIT'
-                                    },
-                                    {
-                                        name: 'A0070',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/Tech/A0070',
-                                        category: 'CODEX ALE - TECH'
-                                    },
-                                    {
-                                        name: 'A0071',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/Tech/A0071',
-                                        category: 'CODEX ALE - TECH'
-                                    },
-                                    {
-                                        name: 'A0072',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/Tech/A0072',
-                                        category: 'CODEX ALE - TECH'
-                                    },
-                                    {
-                                        name: 'A0073',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/Tech/A0073',
-                                        category: 'CODEX ALE - TECH'
-                                    },
-                                    {
-                                        name: 'A0074',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/Tech/A0074',
-                                        category: 'CODEX ALE - TECH'
-                                    },
-                                    {
-                                        name: 'B0033',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/Tech/B0033',
-                                        category: 'CODEX ALE - TECH'
-                                    },
-                                    {
-                                        name: 'B0034',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/Tech/B0034',
-                                        category: 'CODEX ALE - TECH'
-                                    },
-                                    {
-                                        name: 'B0035',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/Tech/B0035',
-                                        category: 'CODEX ALE - TECH'
-                                    },
-                                    {
-                                        name: 'B0036',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/Tech/B0036',
-                                        category: 'CODEX ALE - TECH'
-                                    },
-                                    {
-                                        name: 'B0037',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/Tech/B0037',
-                                        category: 'CODEX ALE - TECH'
-                                    },
-                                    {
-                                        name: 'C0017',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/Tech/C0017',
-                                        category: 'CODEX ALE - TECH'
-                                    },
-                                    {
-                                        name: 'G0015',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'TXT',
-                                        assetUri: 'assets/post/vfx/codex-ale/Tech/G0015',
-                                        category: 'CODEX ALE - TECH'
-                                    },
-                                    {
-                                        name: '0089_003_A0070.1271972_look.jpg',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'IMG',
-                                        assetUri: 'assets/post/vfx/thumbnails/0089_003_A0070.1271972_look.jpg',
-                                        category: ''
-                                    },
-                                    {
-                                        name: '0089_003_B0033.1272329_look.jpg',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'IMG',
-                                        assetUri: 'assets/post/vfx/thumbnails/0089_003_B0033.1272329_look.jpg',
-                                        category: ''
-                                    },
-                                    {
-                                        name: '089A_004_A0071.1340789_look.jpg',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'IMG',
-                                        assetUri: 'assets/post/vfx/thumbnails/089A_004_A0071.1340789_look.jpg',
-                                        category: ''
-                                    },
-                                    {
-                                        name: '089A_004_B0034.1340508_look.jpg',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'IMG',
-                                        assetUri: 'assets/post/vfx/thumbnails/089A_004_B0034.1340508_look.jpg',
-                                        category: ''
-                                    },
-                                    {
-                                        name: '089B_006_A0072.1512114_look.jpg',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'IMG',
-                                        assetUri: 'assets/post/vfx/thumbnails/089B_006_A0072.1512114_look.jpg',
-                                        category: ''
-                                    },
-                                    {
-                                        name: '089B_006_B0035.1511170_look.jpg',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'IMG',
-                                        assetUri: 'assets/post/vfx/thumbnails/089B_006_B0035.1511170_look.jpg',
-                                        category: ''
-                                    },
-                                    {
-                                        name: '089C_005_A0073.1643595_look.jpg',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'IMG',
-                                        assetUri: 'assets/post/vfx/thumbnails/089C_005_A0073.1643595_look.jpg',
-                                        category: ''
-                                    },
-                                    {
-                                        name: '089C_005_B0036.1644545_look.jpg',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'IMG',
-                                        assetUri: 'assets/post/vfx/thumbnails/089C_005_B0036.1644545_look.jpg',
-                                        category: ''
-                                    },
-                                    {
-                                        name: '089D_001_B0037.1739030_look.jpg',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'IMG',
-                                        assetUri: 'assets/post/vfx/thumbnails/089D_001_B0037.1739030_look.jpg',
-                                        category: ''
-                                    },
-                                    {
-                                        name: '089D_001_C0017.1739163_look.jpg',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'IMG',
-                                        assetUri: 'assets/post/vfx/thumbnails/089D_001_C0017.1739163_look.jpg',
-                                        category: ''
-                                    },
-                                    {
-                                        name: '089D_002_A0074.1749004_look.jpg',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'IMG',
-                                        assetUri: 'assets/post/vfx/thumbnails/089D_002_A0074.1749004_look.jpg',
-                                        category: ''
-                                    },
-                                    {
-                                        name: '089E_002_A0074.1780371_look.jpg',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'IMG',
-                                        assetUri: 'assets/post/vfx/thumbnails/089E_002_A0074.1780371_look.jpg',
-                                        category: ''
-                                    },
-                                    {
-                                        name: 'short.mp4',
-                                        version: '1',
-                                        versionDate: new Date('5/3/2013'),
-                                        type: 'MOV',
-                                        assetUri: 'assets/post/short.mp4',
-                                        category: ''
-                                    }
-                                ]
+                                name: 'A0070.ALE',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/avid-ale/A0070.ALE',
+                                category: 'AVID ALE'
+                            },
+                            {
+                                name: 'A0071.ALE',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/avid-ale/A0071.ALE',
+                                category: 'AVID ALE'
+                            },
+                            {
+                                name: 'A0072.ALE',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/avid-ale/A0072.ALE',
+                                category: 'AVID ALE'
+                            },
+                            {
+                                name: 'A0073.ALE',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/avid-ale/A0073.ALE',
+                                category: 'AVID ALE'
+                            },
+                            {
+                                name: 'A0074.ALE',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/avid-ale/A0074.ALE',
+                                category: 'AVID ALE'
+                            },
+                            {
+                                name: 'B0033.ALE',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/avid-ale/B0033.ALE',
+                                category: 'AVID ALE'
+                            },
+                            {
+                                name: 'B0034.ALE',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/avid-ale/B0034.ALE',
+                                category: 'AVID ALE'
+                            },
+                            {
+                                name: 'B0035.ALE',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/avid-ale/B0035.ALE',
+                                category: 'AVID ALE'
+                            },
+                            {
+                                name: 'B0036.ALE',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/avid-ale/B0036.ALE',
+                                category: 'AVID ALE'
+                            },
+                            {
+                                name: 'B0037.ALE',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/avid-ale/B0037.ALE',
+                                category: 'AVID ALE'
+                            },
+                            {
+                                name: 'C0017.ALE',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/avid-ale/C0017.ALE',
+                                category: 'AVID ALE'
+                            },
+                            {
+                                name: 'G0015.ALE',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/avid-ale/G0015.ALE',
+                                category: 'AVID ALE'
+                            },
+                            {
+                                name: 'A0070.ale',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/DIT/A0070.ale',
+                                category: 'CODEX ALE - DIT'
+                            },
+                            {
+                                name: 'A0071.ale',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/DIT/A0071.ale',
+                                category: 'CODEX ALE - DIT'
+                            },
+                            {
+                                name: 'A0072.ale',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/DIT/A0072.ale',
+                                category: 'CODEX ALE - DIT'
+                            },
+                            {
+                                name: 'A0073.ale',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/DIT/A0073.ale',
+                                category: 'CODEX ALE - DIT'
+                            },
+                            {
+                                name: 'A0074.ale',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/DIT/A0074.ale',
+                                category: 'CODEX ALE - DIT'
+                            },
+                            {
+                                name: 'B0033.ale',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/DIT/B0033.ale',
+                                category: 'CODEX ALE - DIT'
+                            },
+                            {
+                                name: 'B0034.ale',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/DIT/B0034.ale',
+                                category: 'CODEX ALE - DIT'
+                            },
+                            {
+                                name: 'B0035.ale',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/DIT/B0035.ale',
+                                category: 'CODEX ALE - DIT'
+                            },
+                            {
+                                name: 'B0036.ale',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/DIT/B0036.ale',
+                                category: 'CODEX ALE - DIT'
+                            },
+                            {
+                                name: 'B0037.ale',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/DIT/B0037.ale',
+                                category: 'CODEX ALE - DIT'
+                            },
+                            {
+                                name: 'C0017.ale',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/DIT/C0017.ale',
+                                category: 'CODEX ALE - DIT'
+                            },
+                            {
+                                name: 'A0070',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/A0070',
+                                category: 'CODEX ALE - TECH'
+                            },
+                            {
+                                name: 'A0071',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/A0071',
+                                category: 'CODEX ALE - TECH'
+                            },
+                            {
+                                name: 'A0072',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/A0072',
+                                category: 'CODEX ALE - TECH'
+                            },
+                            {
+                                name: 'A0073',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/A0073',
+                                category: 'CODEX ALE - TECH'
+                            },
+                            {
+                                name: 'A0074',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/A0074',
+                                category: 'CODEX ALE - TECH'
+                            },
+                            {
+                                name: 'B0033',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/B0033',
+                                category: 'CODEX ALE - TECH'
+                            },
+                            {
+                                name: 'B0034',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/B0034',
+                                category: 'CODEX ALE - TECH'
+                            },
+                            {
+                                name: 'B0035',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/B0035',
+                                category: 'CODEX ALE - TECH'
+                            },
+                            {
+                                name: 'B0036',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/B0036',
+                                category: 'CODEX ALE - TECH'
+                            },
+                            {
+                                name: 'B0037',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/B0037',
+                                category: 'CODEX ALE - TECH'
+                            },
+                            {
+                                name: 'C0017',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/C0017',
+                                category: 'CODEX ALE - TECH'
+                            },
+                            {
+                                name: 'G0015',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'TXT',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/G0015',
+                                category: 'CODEX ALE - TECH'
+                            },
+                            {
+                                name: '0089_003_A0070.1271972_look.jpg',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'IMG',
+                                assetUri: 'assets/post/vfx/thumbnails/0089_003_A0070.1271972_look.jpg',
+                                category: ''
+                            },
+                            {
+                                name: '0089_003_B0033.1272329_look.jpg',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'IMG',
+                                assetUri: 'assets/post/vfx/thumbnails/0089_003_B0033.1272329_look.jpg',
+                                category: ''
+                            },
+                            {
+                                name: '089A_004_A0071.1340789_look.jpg',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'IMG',
+                                assetUri: 'assets/post/vfx/thumbnails/089A_004_A0071.1340789_look.jpg',
+                                category: ''
+                            },
+                            {
+                                name: '089A_004_B0034.1340508_look.jpg',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'IMG',
+                                assetUri: 'assets/post/vfx/thumbnails/089A_004_B0034.1340508_look.jpg',
+                                category: ''
+                            },
+                            {
+                                name: '089B_006_A0072.1512114_look.jpg',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'IMG',
+                                assetUri: 'assets/post/vfx/thumbnails/089B_006_A0072.1512114_look.jpg',
+                                category: ''
+                            },
+                            {
+                                name: '089B_006_B0035.1511170_look.jpg',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'IMG',
+                                assetUri: 'assets/post/vfx/thumbnails/089B_006_B0035.1511170_look.jpg',
+                                category: ''
+                            },
+                            {
+                                name: '089C_005_A0073.1643595_look.jpg',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'IMG',
+                                assetUri: 'assets/post/vfx/thumbnails/089C_005_A0073.1643595_look.jpg',
+                                category: ''
+                            },
+                            {
+                                name: '089C_005_B0036.1644545_look.jpg',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'IMG',
+                                assetUri: 'assets/post/vfx/thumbnails/089C_005_B0036.1644545_look.jpg',
+                                category: ''
+                            },
+                            {
+                                name: '089D_001_B0037.1739030_look.jpg',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'IMG',
+                                assetUri: 'assets/post/vfx/thumbnails/089D_001_B0037.1739030_look.jpg',
+                                category: ''
+                            },
+                            {
+                                name: '089D_001_C0017.1739163_look.jpg',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'IMG',
+                                assetUri: 'assets/post/vfx/thumbnails/089D_001_C0017.1739163_look.jpg',
+                                category: ''
+                            },
+                            {
+                                name: '089D_002_A0074.1749004_look.jpg',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'IMG',
+                                assetUri: 'assets/post/vfx/thumbnails/089D_002_A0074.1749004_look.jpg',
+                                category: ''
+                            },
+                            {
+                                name: '089E_002_A0074.1780371_look.jpg',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'IMG',
+                                assetUri: 'assets/post/vfx/thumbnails/089E_002_A0074.1780371_look.jpg',
+                                category: ''
+                            },
+                            {
+                                name: 'short.mp4',
+                                version: '1',
+                                versionDate: new Date('5/3/2013'),
+                                type: 'MOV',
+                                assetUri: 'assets/post/short.mp4',
+                                category: ''
                             }
                         ]
                     }
                 ]
             },
             distribution: {
+                name: 'Distribution',
                 budgetUri: '',
                 iconUri: 'img/icons/dist.png',
                 departments: []
