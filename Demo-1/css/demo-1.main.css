@@ -67,6 +67,28 @@ button
  *** GENERAL MAIN AREA LAYOUT ***
  ********************************/
 
+#product-logo
+{
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:130px;
+    height:60px;
+    background-image: url('/img/cg-logo.png');
+    z-index:100;
+}
+
+#company-logo
+{
+    position:absolute;
+    right:5px;
+    bottom:5px;
+    z-index:100;
+    background-image: url('/img/technicolor-for-footer.png');
+    width:124px;
+    height:26px;
+}
+
 #viewport 
 {
     background-position: center;
@@ -166,11 +188,7 @@ button
     position:absolute;
     border: 1px solid rgba(0,0,0,0.5);
     background: rgba(0,0,0,0.5);
-    text-shadow: 0px -1px 0px rgba(0,0,0,0.5);
-    color: rgba(255,255,255, 0.5);
-    line-height: 30px;
-    text-align: center;
-    font-size: 18px;
+
     -webkit-transform: translate3d(0,0,0);
     -o-transform: translate3d(0,0,0);
     -ms-transform: translate3d(0,0,0);
@@ -180,24 +198,17 @@ button
 
     /* aspect ratio: .675 , 1.48 */
     width: 270px;
-    height: 400px;
+    height: 419px;
 }
-
-    .phase-swatch
+    .movie-tile .phase-swatch
     {
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        width: 100%;
-        height: 5px;
-        border:none;
     }
-
+   
     .movie-tile .release-date
     {
         position:absolute;
         width: 100%;
-        top:3px;
+        top:22px;
         left:0px;
         height: 34px;
         line-height:34px;
@@ -216,7 +227,7 @@ button
         position:absolute;
         width: 234px;
         height: 346px;
-        top: 39px;
+        top: 58px;
         left: 18px;        
         background-size: cover;
         opacity:0.95;
@@ -227,11 +238,7 @@ button
             position: absolute;
             border: 1px solid rgba(0,0,0,0.5);
             background: rgba(0,0,0,0.5);
-            text-shadow: 0px -1px 0px rgba(0,0,0,0.5);
-            color: rgba(255,255,255, 0.5);
-            line-height: 30px;
-            text-align: center;
-            font-size: 18px;
+            
             -webkit-transform: translate3d(0,0,0);
             -o-transform: translate3d(0,0,0);
             -ms-transform: translate3d(0,0,0);
@@ -240,23 +247,17 @@ button
             cursor: pointer;
             /* aspect ratio: .5625 , 1.78 */
             width: 484px;
-            height: 319px;
+            height: 338px;
         }
 
             .department-tile .phase-swatch {
-                position: absolute;
-                top: 0px;
-                left: 0px;
-                width: 100%;
-                height: 5px;
-                background-color: rgba(127,255,255,0.5);
-                border: none;
+                
             }
 
             .department-tile .name {
                 position: absolute;
                 width: 100%;
-                top: 7px;
+                top: 26px;
                 left: 0px;
                 height: 34px;
                 line-height: 34px;
@@ -274,7 +275,7 @@ button
                 position: absolute;
                 width: 454px;
                 height: 255px;
-                top: 49px;
+                top: 68px;
                 left: 15px;
                 background-size: contain;
                 background-repeat:no-repeat;
@@ -289,11 +290,7 @@ button
             position: absolute;
             border: 1px solid rgba(0,0,0,0.5);
             background: rgba(0,0,0,0.5);
-            text-shadow: 0px -1px 0px rgba(0,0,0,0.5);
-            color: rgba(255,255,255, 0.5);
-            line-height: 30px;
-            text-align: center;
-            font-size: 18px;
+            
             -webkit-transform: translate3d(0,0,0);
             -o-transform: translate3d(0,0,0);
             -ms-transform: translate3d(0,0,0);
@@ -302,23 +299,17 @@ button
             cursor: pointer;
             /* aspect ratio: .5625 , 1.78 */
             width: 400px;
-            height: 332px;
+            height: 351px;
         }
 
             .asset-tile .phase-swatch {
-                position: absolute;
-                top: 0px;
-                left: 0px;
-                width: 100%;
-                height: 5px;
-                background-color: rgba(127,255,255,0.5);
-                border: none;
+                
             }
 
             .asset-tile .name {
                 position: absolute;
                 width: 100%;
-                top: 7px;
+                top: 26px;
                 left: 0px;
                 height: 66px;
                 line-height: 30px;
@@ -339,7 +330,7 @@ button
                 position: absolute;
                 width: 370px;
                 height: 208px;
-                top: 79px;
+                top: 98px;
                 left: 15px;
                 background-size: contain;
                 background-repeat:no-repeat;
@@ -349,6 +340,25 @@ button
                 border: none;
             }
 
+.phase-swatch
+    {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;        
+        border:none;
+        text-align:center;
+
+        height: 25px;
+        line-height: 25px;
+        font-size: 18px;
+
+        color: rgba(0,0,0, 1);
+    line-height: 25px;
+    text-align: center;
+    font-size: 18px;
+    font-weight:bold;
+    }
 
 .phase-swatch.development
         {

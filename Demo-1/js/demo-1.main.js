@@ -70,8 +70,8 @@ CG.Demo1.StartApp = function () {
         rise3d: 225,
 
         initial3dCameraX: 0,
-        initial3dCameraY: 0,
-        initial3dCameraZ: 2500,
+        initial3dCameraY: -196,
+        initial3dCameraZ: 2278,
         initial2dCameraX: 0,
         initial2dCameraY: 40,
         initial2dCameraZ: 3300,        
@@ -198,6 +198,7 @@ CG.Demo1.StartApp = function () {
             //
             var swatch = document.createElement('div');
             swatch.className = 'phase-swatch ' + movieData.currentPhase.toLowerCase();
+            swatch.textContent = movieData.currentPhase;
             tile.appendChild(swatch);
 
             //
@@ -365,6 +366,7 @@ CG.Demo1.StartApp = function () {
         //
         var swatch = document.createElement('div');
         swatch.className = 'phase-swatch ' + phase.name.toLowerCase();
+        swatch.textContent = phase.name;
         tile.appendChild(swatch);
 
         //
@@ -468,6 +470,7 @@ CG.Demo1.StartApp = function () {
                     //
                     var swatch = document.createElement('div');
                     swatch.className = 'phase-swatch ' + phase.name.toLowerCase();
+                    swatch.textContent = phase.name;
                     categoryTile.appendChild(swatch);
 
                     //
@@ -491,8 +494,6 @@ CG.Demo1.StartApp = function () {
                         if (tileControls.disabled === true) {
                             return;
                         }
-
-                        console.log('folder clicked!');
 
                         showSubAssets(this);
 
@@ -544,6 +545,7 @@ CG.Demo1.StartApp = function () {
                 //
                 var swatch = document.createElement('div');
                 swatch.className = 'phase-swatch ' + phase.name.toLowerCase();
+                swatch.textContent = phase.name;
                 tile.appendChild(swatch);
 
                 //
@@ -614,6 +616,7 @@ CG.Demo1.StartApp = function () {
                 //
                 var swatch = document.createElement('div');
                 swatch.className = 'phase-swatch ' + phase.name.toLowerCase();
+                swatch.textContent = phase.name;
                 tile.appendChild(swatch);
 
                 //
@@ -698,7 +701,6 @@ CG.Demo1.StartApp = function () {
         var vectorCounter = 0;
 
         var firstLeft;
-        console.log('vector count: ' + vectorCount);
 
         if (vectorCount === 1) {
 
@@ -892,7 +894,6 @@ CG.Demo1.StartApp = function () {
         if (asset === null) {
             return ("url('img/icons/folder.png')");
         } else if (asset.type.toLowerCase() === 'img') {
-            console.log("url('" + getFileDirectory(asset.assetUri) + '/small/' + getFileName(asset.assetUri) + "')");
             return "url('" + getFileDirectory(asset.assetUri) + '/small/' + getFileName(asset.assetUri) + "')";
         } else {
             return ("url('img/icons/" + asset.type.toLowerCase() + ".png')");
@@ -1015,7 +1016,6 @@ CG.Demo1.StartApp = function () {
             // tween the current tileObjects to a vanishing vector
             //
             var fromLength = _currentTileObjects.length;
-            console.log('fromLength: ' + fromLength);
 
             for (var index = 0; index < fromLength; index++) {
 
