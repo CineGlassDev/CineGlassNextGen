@@ -148,6 +148,7 @@ CG.Demo1.DemoData = function () {
                 departments: [
                     {
                         name: 'Art',
+                        iconUri: 'img/icons/art.jpg',
                         assets: [
                             {
                                 name: 'storyboard-1.jpg',
@@ -241,6 +242,7 @@ CG.Demo1.DemoData = function () {
                 departments: [
                     {
                         name: 'Production',
+                        iconUri: 'img/icons/prod.png',
                         assets: [
                             {
                                 name: 'EDIT_DeliveryReport20130423.pdf',
@@ -270,6 +272,7 @@ CG.Demo1.DemoData = function () {
                     },
                     {
                         name: 'Dailies',
+                        iconUri: 'img/icons/dailies.jpg',
                         assets: [
                             {
                                 name: 'A0070.ale',
@@ -586,7 +589,8 @@ CG.Demo1.DemoData = function () {
                         ]
                     },
                     {
-                        name: 'VFX',
+                        name: 'Prod VFX',
+                        iconUri: 'img/icons/prod-vfx.jpg',
                         assets: [
                             {
                                 name: '0089_003_A0070.1271972_look.jpg',
@@ -856,6 +860,7 @@ CG.Demo1.DemoData = function () {
                     },
                     {
                         name: 'Script Notes',
+                        iconUri: 'img/icons/script-notes.png',
                         assets: [
                             {
                                 name: 'JA SCENE STATUS BLUE.xlsx',
@@ -932,6 +937,7 @@ CG.Demo1.DemoData = function () {
                 departments: [
                     {
                         name: 'Distribution Planning',
+                        iconUri: 'img/icons/dist-planning.png',
                         assets: [
                             {
                                 name: 'IM3_CG_Reel_By_Reel_Plan_20130326.pdf',
@@ -960,7 +966,8 @@ CG.Demo1.DemoData = function () {
                         ]
                     },
                     {
-                        name: 'VFX',
+                        name: 'Post VFX',
+                        iconUri: 'img/icons/post-vfx.jpg',
                         assets: [
                             {
                                 name: 'A0070.ALE',
@@ -1151,7 +1158,7 @@ CG.Demo1.DemoData = function () {
                                 version: '1',
                                 versionDate: new Date('5/3/2013'),
                                 type: 'TXT',
-                                assetUri: 'assets/post/vfx/codex-ale/Tech/A0070',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/A0070.ale',
                                 category: 'CODEX ALE - TECH'
                             },
                             {
@@ -1159,7 +1166,7 @@ CG.Demo1.DemoData = function () {
                                 version: '1',
                                 versionDate: new Date('5/3/2013'),
                                 type: 'TXT',
-                                assetUri: 'assets/post/vfx/codex-ale/Tech/A0071',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/A0071.ale',
                                 category: 'CODEX ALE - TECH'
                             },
                             {
@@ -1167,7 +1174,7 @@ CG.Demo1.DemoData = function () {
                                 version: '1',
                                 versionDate: new Date('5/3/2013'),
                                 type: 'TXT',
-                                assetUri: 'assets/post/vfx/codex-ale/Tech/A0072',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/A0072.ale',
                                 category: 'CODEX ALE - TECH'
                             },
                             {
@@ -1175,7 +1182,7 @@ CG.Demo1.DemoData = function () {
                                 version: '1',
                                 versionDate: new Date('5/3/2013'),
                                 type: 'TXT',
-                                assetUri: 'assets/post/vfx/codex-ale/Tech/A0073',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/A0073.ale',
                                 category: 'CODEX ALE - TECH'
                             },
                             {
@@ -1183,7 +1190,7 @@ CG.Demo1.DemoData = function () {
                                 version: '1',
                                 versionDate: new Date('5/3/2013'),
                                 type: 'TXT',
-                                assetUri: 'assets/post/vfx/codex-ale/Tech/A0074',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/A0074.ale',
                                 category: 'CODEX ALE - TECH'
                             },
                             {
@@ -1191,7 +1198,7 @@ CG.Demo1.DemoData = function () {
                                 version: '1',
                                 versionDate: new Date('5/3/2013'),
                                 type: 'TXT',
-                                assetUri: 'assets/post/vfx/codex-ale/Tech/B0033',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/B0033.ale',
                                 category: 'CODEX ALE - TECH'
                             },
                             {
@@ -1199,7 +1206,7 @@ CG.Demo1.DemoData = function () {
                                 version: '1',
                                 versionDate: new Date('5/3/2013'),
                                 type: 'TXT',
-                                assetUri: 'assets/post/vfx/codex-ale/Tech/B0034',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/B0034.ale',
                                 category: 'CODEX ALE - TECH'
                             },
                             {
@@ -1207,7 +1214,7 @@ CG.Demo1.DemoData = function () {
                                 version: '1',
                                 versionDate: new Date('5/3/2013'),
                                 type: 'TXT',
-                                assetUri: 'assets/post/vfx/codex-ale/Tech/B0035',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/B0035.ale',
                                 category: 'CODEX ALE - TECH'
                             },
                             {
@@ -1215,7 +1222,7 @@ CG.Demo1.DemoData = function () {
                                 version: '1',
                                 versionDate: new Date('5/3/2013'),
                                 type: 'TXT',
-                                assetUri: 'assets/post/vfx/codex-ale/Tech/B0036',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/B0036.ale',
                                 category: 'CODEX ALE - TECH'
                             },
                             {
@@ -1223,7 +1230,7 @@ CG.Demo1.DemoData = function () {
                                 version: '1',
                                 versionDate: new Date('5/3/2013'),
                                 type: 'TXT',
-                                assetUri: 'assets/post/vfx/codex-ale/Tech/B0037',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/B0037.ale',
                                 category: 'CODEX ALE - TECH'
                             },
                             {
@@ -1231,7 +1238,7 @@ CG.Demo1.DemoData = function () {
                                 version: '1',
                                 versionDate: new Date('5/3/2013'),
                                 type: 'TXT',
-                                assetUri: 'assets/post/vfx/codex-ale/Tech/C0017',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/C0017.ale',
                                 category: 'CODEX ALE - TECH'
                             },
                             {
@@ -1239,7 +1246,7 @@ CG.Demo1.DemoData = function () {
                                 version: '1',
                                 versionDate: new Date('5/3/2013'),
                                 type: 'TXT',
-                                assetUri: 'assets/post/vfx/codex-ale/Tech/G0015',
+                                assetUri: 'assets/post/vfx/codex-ale/Tech/G0015.ale',
                                 category: 'CODEX ALE - TECH'
                             },
                             {

@@ -1,14 +1,17 @@
 /** @namespace */
 var CG = CG || {};
 
-
-CG.TileControls = function (options) {
+CG.TileControls = function (options, camera, renderFunction, swipeAreaContainer, moveDuration) {
 
     var _this = this;
 
     var _options = options;
-    var _originalY = options.camera.position.y;
-    var _originalZ = options.camera.position.z;
+    var _originalY = camera.position.y;
+    var _originalZ = camera.position.z;
+    var _camera = camera;
+    var _renderFunction = renderFunction;
+    var _swipeAreaContainer = swipeAreaContainer;
+    var _moveDuration = moveDuration;
     
     this.disabled = false;
     this.is3D = options.is3D;
@@ -37,16 +40,18 @@ CG.TileControls = function (options) {
         //
         // bind swipe events
         //
-        $(_options.swipeAreaContainer).hammer().on('swipeup', onSwipeUp);
-        $(_options.swipeAreaContainer).hammer().on('swipedown', onSwipeDown);
+        $(_swipeAreaContainer).hammer().on('swipeup', onSwipeUp);
+        $(_swipeAreaContainer).hammer().on('swipedown', onSwipeDown);
 
     }
 
     function handleSwipe(isUp, distance, velocity) {
         
-        if (_this.disabled) {
+        if (_this.disabled === true) {
             return;
         }
+
+        _this.disabled = true;
 
         var adjustmentZ;
         var adjustmentY;
@@ -55,43 +60,46 @@ CG.TileControls = function (options) {
 
         if (isUp === true) {                        
             
-            adjustmentZ = _options.deltaZ * velocity;
-            adjustmentY = _options.deltaY * -1 * velocity;
+            adjustmentZ = _options.offsetZ * velocity;
+            adjustmentY = _options.rise3d * -1 * velocity;
 
         } else {            
 
-            adjustmentZ = _options.deltaZ * -1 * velocity;
-            adjustmentY = _options.deltaY * velocity;
+            adjustmentZ = _options.offsetZ * -1 * velocity;
+            adjustmentY = _options.rise3d * velocity;
 
         }
 
-        newY = _options.camera.position.y + adjustmentY;
+        newY = _camera.position.y + adjustmentY;
 
         if (_this.is3D === true) {
 
-            newZ = _options.camera.position.z + adjustmentZ;
+            newZ = _camera.position.z + adjustmentZ;
 
         } else {
 
-            newZ = _options.camera.position.z;
+            newZ = _camera.position.z;
 
         }
 
-        //console.log({ 'newY': newY, 'newZ': newZ });
+        console.log({ 'newY': newY, 'newZ': newZ });
  
-        if ((_this.is3D === true && newZ != _options.camera.position.z) ||
-            (_this.is3D === false && newY != _options.camera.position.y)) {
+        if ((_this.is3D === true && newZ != _camera.position.z) ||
+            (_this.is3D === false && newY != _camera.position.y)) {
             
             TWEEN.removeAll();
 
-            new TWEEN.Tween(_options.camera.position)
-                    .to({ z: newZ, y: newY }, _options.moveDuration)
+            new TWEEN.Tween(_camera.position)
+                    .to({ z: newZ, y: newY }, _moveDuration)
                     .easing(TWEEN.Easing.Quadratic.Out)
                     .start();
 
             new TWEEN.Tween(this)
-                .to({}, _options.moveDuration)
-                .onUpdate(_options.renderFunction)
+                .to({}, _moveDuration)
+                .onUpdate(_renderFunction)
+                .onComplete(function() {
+                    _this.disabled = false;
+                })
                 .start();
 
         }
@@ -109,8 +117,8 @@ CG.TileControls = function (options) {
         //
         // unbind swipe events
         //
-        $(_options.swipeAreaContainer).hammer().off('swipeup', onSwipeUp);
-        $(_options.swipeAreaContainer).hammer().off('swipedown', onSwipeDown);
+        $(_swipeAreaContainer).hammer().off('swipeup', onSwipeUp);
+        $(_swipeAreaContainer).hammer().off('swipedown', onSwipeDown);
 
     }
 
