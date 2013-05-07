@@ -11,6 +11,7 @@ CG.TileControls = function (options) {
     var _originalZ = options.camera.position.z;
     
     this.disabled = false;
+    this.is3D = options.is3D;
 
 
     //
@@ -66,7 +67,7 @@ CG.TileControls = function (options) {
 
         newY = _options.camera.position.y + adjustmentY;
 
-        if (_options.is3D === true) {
+        if (_this.is3D === true) {
 
             newZ = _options.camera.position.z + adjustmentZ;
 
@@ -75,9 +76,11 @@ CG.TileControls = function (options) {
             newZ = _options.camera.position.z;
 
         }
+
+        //console.log({ 'newY': newY, 'newZ': newZ });
  
-        if ((_options.is3D === true && newZ != _options.camera.position.z) ||
-            (_options.is3D === false && newY != _options.camera.position.y)) {
+        if ((_this.is3D === true && newZ != _options.camera.position.z) ||
+            (_this.is3D === false && newY != _options.camera.position.y)) {
             
             TWEEN.removeAll();
 

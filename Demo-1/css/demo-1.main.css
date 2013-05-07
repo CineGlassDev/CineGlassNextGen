@@ -69,7 +69,6 @@ button
 
 #viewport 
 {
-    background-image: url("../img/warner-brothers-pictures.jpg") !important;
     background-position: center;
     background-repeat:no-repeat;
     background-size: contain;
@@ -179,45 +178,19 @@ button
     cursor:pointer;
 
     /* aspect ratio: .675 , 1.48 */
-    width: 202px;
-    height: 312px;
+    width: 599px;
+    height: 888px;
 }
 
-    .movie-tile .phase-swatch
+    .phase-swatch
     {
         position: absolute;
         top: 0px;
         left: 0px;
         width: 100%;
-        height: 5px;
+        height: 10px;
         border:none;
     }
-
-        .movie-tile .phase-swatch .development, .department-tile .phase-swatch development
-        {
-            background-color: rgba(127,255,255,0.5);
-        }
-
-        .movie-tile .phase-swatch .pre-production, .department-tile .phase-swatch .pre-production
-        {
-            background-color: rgba(55,96,212,0.5);
-        }
-
-
-        .movie-tile .phase-swatch .production, .department-tile .phase-swatch .production
-        {
-            background-color: rgba(173,55,212,0.5);
-        }
-
-        .movie-tile .phase-swatch .post-production, .department-tile .phase-swatch .post-production
-        {
-            background-color: rgba(212,136,55,0.5);
-        }
-
-        .movie-tile .phase-swatch .distribution, .department-tile .phase-swatch .distribution
-        {
-            background-color: rgba(88,212,55,0.5);
-        }
 
     .movie-tile .release-date
     {
@@ -225,28 +198,29 @@ button
         width: 100%;
         top:7px;
         left:0px;
-        height: 24px;
-        line-height:24px;
+        height: 54px;
+        line-height:54px;
         text-align:center;
-        font-size: 20px;
+        font-size: 50px;
         font-weight:bold;
         background-color:transparent;
         border:none;            
-        color:rgba(255,255,255, 0.85);                        
-	    text-shadow: 0px 1px 2px rgba(0,0,0,1);
+        color:rgba(255,255,255, 0.75);                        
+	    text-shadow: 0px 1px 2px rgba(0,0,0,0.75);
     }
 
     .movie-tile .one-sheet
     {
         /* aspect ratio: .675 , 1.48 */
         position:absolute;
-        width: 172px;
-        height: 254px;
-        top: 39px;
-        left: 15px;        
+        width: 543px;
+        height: 804px;
+        top: 69px;
+        left: 28px;        
         background-size: cover;
         opacity:0.95;
         border: none;
+        z-index:100000;
     }
 
     .department-tile {
@@ -267,6 +241,7 @@ button
             /* aspect ratio: .5625 , 1.78 */
             width: 400px;
             height: 264px;
+            display:none;
         }
 
             .department-tile .phase-swatch {
@@ -329,6 +304,7 @@ button
             /* aspect ratio: .5625 , 1.78 */
             width: 400px;
             height: 264px;
+            display:none;
         }
 
             .asset-tile .phase-swatch {
@@ -373,7 +349,31 @@ button
             }
 
 
+.phase-swatch.development
+        {
+            background-color: rgba(127,255,255,0.85);
+        }
 
+        .phase-swatch.pre-production
+        {
+            background-color: rgba(55,96,212,0.85);
+        }
+
+
+        .phase-swatch.production
+        {
+            background-color: rgba(173,55,212,0.85);
+        }
+
+        .phase-swatch.post-production
+        {
+            background-color: rgba(212,136,55,0.85);
+        }
+
+        .phase-swatch.distribution
+        {
+            background-color: rgba(88,212,55,0.85);
+        }
 
 
 

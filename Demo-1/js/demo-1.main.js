@@ -18,10 +18,10 @@ CG.Demo1.StartApp = function () {
 
     var _active3dObject = null;
     var _navBackTo = CG.Demo1.Views.none;
-    var _worldCamera;
-    var _worldControls;
-    var _worldRenderer;
-    var _worldScene;
+    var camera;
+    var tileControls;
+    var renderer;
+    var scene;
 
     var _tileObjects = {
         studio: '',
@@ -35,8 +35,14 @@ CG.Demo1.StartApp = function () {
     var _optionsForMovieVectors = {
         offsetX: 15,
         offsetY: 15,
-        offsetZ: 300,
-        rise3d: 150
+        offsetZ: 1125,
+        rise3d: 425,
+        initial3dCameraX: 0,
+        initial3dCameraY: -117,
+        initial3dCameraZ: 5128,
+        initial2dCameraX: 0,
+        initial2dCameraY: 400,
+        initial2dCameraZ: 6500
     };
 
     var _optionsForDepartmentVectors = {
@@ -53,7 +59,7 @@ CG.Demo1.StartApp = function () {
         rise3d: 150
     };
 
-    var _controlsOptions;
+    var _transformOptions;
     var _isCurrentView3D = true;
     var _currentVectorKey = null;
     var _currentTileObjects = null;
@@ -63,7 +69,7 @@ CG.Demo1.StartApp = function () {
     // jQuery cache variables
     //
 
-    $vieport = $('#viewport');
+    $viewport = $('#viewport');
     $backNav = $('#backNav');
 
 
@@ -78,56 +84,54 @@ CG.Demo1.StartApp = function () {
     function initialize() {
 
         // initialize scene
-        _worldScene = new THREE.Scene();
+        scene = new THREE.Scene();
 
         //
         // intialize camera
         //
-        _worldCamera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, -5000, 5000);
-        _worldCamera.position.x = DEFAULT_CAMERA_X;
-        _worldCamera.position.y = DEFAULT_CAMERA_Y;
-        _worldCamera.position.z = DEFAULT_CAMERA_Z;
+        camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, -5000, 5000);
+        camera.position.x = 0;
+        camera.position.y = 0;
+        camera.position.z = 0;
+        
 
         //
         // initialize the CSS3 renderer
         //
-        _worldRenderer = new THREE.CSS3DRenderer();
-        _worldRenderer.setSize(window.innerWidth, window.innerHeight);
-        _worldRenderer.domElement.style.position = 'absolute';
-        $vieport.append(_worldRenderer.domElement);
+        renderer = new THREE.CSS3DRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.domElement.style.position = 'absolute';
+        $viewport.append(renderer.domElement);
 
         // initialize all objects required for 3D rendering
         initializeTilesAndVectors();
 
         //
-        // initialize default tile controls options
-        //
-        _controlsOptions = {
-        	camera: _worldCamera,
-        	renderFunction: render,
-        	swipeAreaContainer: $('#viewport'),
-        	moveDuration: 1000,
-        	deltaY: 200,
-        	deltaZ: 900, 
-        	is3D: true
-        };
-
-        //
-        // initialize tile controls
-        //			
-        _worldControls = new CG.TileControls(_controlsOptions);
-
         // kick off the 3D movies by default
-        transform(_tileObjects.movieObjects, 'catalog', 2000);
-
-        console.log(_tileObjects);
-        console.log(_tileVectors);
+        //        
+        var controlsOptions = getControlsOptions('catalog', true);
+        tileControls = new CG.TileControls(controlsOptions);
+        setTransformOptions('catalog');
+        transform(_tileObjects.movieObjects, 'catalog', 1500);
 
     }
 
     function initializeTilesAndVectors() {
 
         var studioData = CG.Demo1.DemoData();
+
+        //
+        // sort movies by release dates
+        //
+        studioData.catalog.sort(function (movie1, movie2) {
+            if (movie1.releaseDate < movie2.releaseDate) {
+                return -1;
+            } else if (movie1.releaseDate > movie2.releaseDate) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
 
         //
         // cache catalog studio info
@@ -137,7 +141,7 @@ CG.Demo1.StartApp = function () {
         _tileObjects.logo = studioData.logo;
 
         // change page background to use studio's logo
-        $(document).css('background-image', 'url("' + studioData.logo + '")');
+        $viewport.css('background-image', 'url("' + studioData.logo + '")');
 
         var catalog = studioData.catalog;
         var movieCount = catalog.length;
@@ -149,12 +153,14 @@ CG.Demo1.StartApp = function () {
 
             var movieData = catalog[index];
 
+            var movieName = movieData.name;
+
             //
             // create a tile for the movie
             //
             var tile = document.createElement('div');
             tile.className = 'movie-tile';
-            tile.title = movieData.name;
+            tile.title = movieName;
             tile.movieData = movieData;
 
 
@@ -162,7 +168,7 @@ CG.Demo1.StartApp = function () {
             // create phase swatch element
             //
             var swatch = document.createElement('div');
-            swatch.className = 'movie-tile phase-swatch ' + movieData.currentPhase.toLowerCase();
+            swatch.className = 'phase-swatch ' + movieData.currentPhase.toLowerCase();
             tile.appendChild(swatch);
 
             //
@@ -170,7 +176,7 @@ CG.Demo1.StartApp = function () {
             //
             var releaseDate = document.createElement('div');
             releaseDate.className = 'movie-tile release-date';
-            releaseDate.textContent = movieData.releaseDate;
+            releaseDate.textContent = formatDate(movieData.releaseDate);
             tile.appendChild(releaseDate);
 
             //
@@ -218,10 +224,10 @@ CG.Demo1.StartApp = function () {
             css3dObject.position.y = Math.random() * 4000 - 2000;
             css3dObject.position.z = Math.random() * 4000 - 2000;
             css3dObject.departmentObjects = [];
-            _worldScene.add(css3dObject);
+            scene.add(css3dObject);
 
             // initialize phase department tiles (this will initialize all downstream tiles as well)
-            initializeDepartmentTiles(css3dObject.departmentObjects, movieData.phases);
+            initializeDepartmentTiles(movieName, css3dObject.departmentObjects, movieData.phases);
 
             // cache CSS3D object on movie tile
             tile.parentObject = css3dObject;
@@ -233,12 +239,12 @@ CG.Demo1.StartApp = function () {
 
         // initialize movie vectors
         var vectorCache = _tileVectors['catalog'] = { twoD: [], threeD: [] };
-        var movieDims = getDimsFromCss('.movie-tile');
+        var movieDims = getDimsFromCss('movie-tile');
         initializeVectors(movieCount, vectorCache, _optionsForMovieVectors, movieDims);
 
     }
 
-    function initializeDepartmentTiles(departmentObjects, phases) {
+    function initializeDepartmentTiles(movieName, departmentObjects, phases) {
 
         if (phases != null) {
 
@@ -257,6 +263,18 @@ CG.Demo1.StartApp = function () {
             // Distribution Phase
             initializePhaseDepartmentTiles(departmentObjects, phases.distribution);
 
+            //
+            // initialize department vectors
+            //
+            var vectorLength = (phases.development.departments.length +
+                                phases.preProduction.departments.length +
+                                phases.production.departments.length +
+                                phases.postProduction.departments.length +
+                                phases.distribution.departments.length);            
+            var vectorCache = _tileVectors[movieName] = { twoD: [], threeD: [] };
+            var deptDims = getDimsFromCss('department-tile');
+            initializeVectors(vectorLength, vectorCache, _optionsForDepartmentVectors, deptDims);
+
         }
 
     }
@@ -274,12 +292,7 @@ CG.Demo1.StartApp = function () {
                 departmentObjects,
                 phase,
                 dept);
-        }
-
-        // initialize department vectors
-        var vectorCache = _tileVectors[phase.name] = { twoD: [], threeD: [] };
-        var deptDims = getDimsFromCss('.department-tile');
-        initializeVectors(length, vectorCache, _optionsForDepartmentVectors, deptDims);
+        }    
 
     }
 
@@ -342,7 +355,7 @@ CG.Demo1.StartApp = function () {
         css3dObject.position.y = 0;
         css3dObject.position.z = Math.random() * 4000 - 2000;
         css3dObject.assetObjects = [];
-        _worldScene.add(css3dObject);
+        scene.add(css3dObject);
 
         // initialize tiles for this phase department's assets
         initializeAssetTiles(css3dObject.assetObjects, phase, dept);
@@ -423,7 +436,7 @@ CG.Demo1.StartApp = function () {
                     css3dObject.position.y = 0;
                     css3dObject.position.z = Math.random() * 4000 - 2000;
                     css3dObject.subAssetObjects = [];
-                    _worldScene.add(css3dObject);
+                    scene.add(css3dObject);
 
                     // add category object to array
                     assetObjects.push(css3dObject);
@@ -492,7 +505,7 @@ CG.Demo1.StartApp = function () {
                 css3dObject.position.x = 0;
                 css3dObject.position.y = 0;
                 css3dObject.position.z = Math.random() * 4000 - 2000;
-                _worldScene.add(css3dObject);
+                scene.add(css3dObject);
 
                 // add sub-asset object to array
                 categories[asset.category].subAssetObjects.push(tile);
@@ -555,7 +568,7 @@ CG.Demo1.StartApp = function () {
                 css3dObject.position.x = 0;
                 css3dObject.position.y = 0;
                 css3dObject.position.z = Math.random() * 4000 - 2000;
-                _worldScene.add(css3dObject);
+                scene.add(css3dObject);
 
                 // add asset object to array
                 assetObjects.push(css3dObject);
@@ -568,7 +581,7 @@ CG.Demo1.StartApp = function () {
 
             // initialize asset vectors
             var assetVectorCache = _tileVectors[phase.name + '|' + deptName] = { twoD: [], threeD: [] };
-            var assetDims = getDimsFromCss('.asset-tile');
+            var assetDims = getDimsFromCss('asset-tile');
             initializeVectors(assetVectorCount, assetVectorCache, _optionsForAssetVectors, assetDims);
 
             //
@@ -630,19 +643,30 @@ CG.Demo1.StartApp = function () {
     function initializeVectors(vectorCount, vectorCache, vectorOptions, objectDims) {
 
         var vectorsPerRow = calculateVectorsPerRow(vectorCount);
+        var tileOffsetWidth = (objectDims.width + vectorOptions.offsetX);
         var rowCount = Math.ceil(vectorCount / vectorsPerRow);
+        var finalRowCount = vectorCount % vectorsPerRow;
+        var vectorCounter = 0;
 
-        var objectCounter = 0;
+        var firstLeft;
+
+        if (vectorsPerRow % 2 === 0) {
+
+            firstLeft = (Math.floor(vectorsPerRow / 2) * tileOffsetWidth - (tileOffsetWidth / 2)) * -1;
+
+        } else {
+
+            firstLeft = Math.floor(vectorsPerRow / 2) * tileOffsetWidth * -1;
+
+        }
 
         for (var rowIndex = 0; rowIndex < rowCount; rowIndex++) {
-
-            if (vectorCount == objectCounter) {
-                break;
-            }
 
             var y3d = ((rowIndex % rowCount) * (vectorOptions.offsetY + vectorOptions.rise3d)) - ((vectorOptions.offsetY + vectorOptions.rise3d) * 2);
             var z3d = (vectorOptions.offsetZ * rowIndex) * -1;
             var y2d = ((objectDims.height + vectorOptions.offsetY) * Math.floor(rowCount / 2)) - ((rowIndex % rowCount) * (objectDims.height + vectorOptions.offsetY));
+
+            var x = firstLeft;
 
             for (var objectIndex = 0; objectIndex < vectorsPerRow; objectIndex++) {
 
@@ -650,7 +674,7 @@ CG.Demo1.StartApp = function () {
                 // 3D vectors
                 //
                 var vector3D = new THREE.Object3D();
-                vector3D.position.x = ((objectIndex % vectorsPerRow) * (objectDims.width + vectorOptions.offsetX)) - ((objectDims.width + vectorOptions.offsetX) * (vectorsPerRow / 2));
+                vector3D.position.x = x;
                 vector3D.position.y = y3d;
                 vector3D.position.z = z3d;
                 vectorCache.threeD.push(vector3D);
@@ -660,33 +684,32 @@ CG.Demo1.StartApp = function () {
                 // 2D vectors
                 //
                 var vector2D = new THREE.Object3D();
-                vector2D.position.x = ((objectIndex % vectorsPerRow) * (vectorOptions.width + vectorOptions.offsetX)) - ((vectorOptions.width + vectorOptions.offsetX) * (vectorsPerRow / 2));
+                vector2D.position.x = x;
                 vector2D.position.y = y2d;
                 vector2D.position.z = 0;
                 vectorCache.twoD.push(vector2D);
 
-                objectCounter++;
+                x += tileOffsetWidth;
+
+                vectorCounter++;
             }
         }
     }
     
     function toggle2D3D(isTo3D, duration) {
 
-        if (isTo3D && _isCurrentView3D) {
+        if (tileControls.disabled === true) {
+            return;
+        }
+
+        if (isTo3D && _isCurrentView3D ||
+            !isTo3D && !_isCurrentView3D) {
             // erroneous request
             return;
         }
 
-        if (TWEEN.getAll().length > 0) {
-            // another transform is in-progress, so try again later...
-            setTimeout(function () {
-                toggle2D3D(areTogglingTo3D);
-            }, 200);
-
-            return;
-        }
-
-        _worldControls.disabled = true;
+        tileControls.is3D = isTo3D;
+        tileControls.disabled = true;
 
         TWEEN.removeAll();
 
@@ -702,6 +725,26 @@ CG.Demo1.StartApp = function () {
 
         }
 
+        var maxDuration = 0;
+        var initialPosition = getInitialCameraPosition(isTo3D);
+
+        if (camera.position.x != initialPosition.x ||
+            camera.position.y != initialPosition.y ||
+            camera.position.z != initialPosition.z) {
+
+            //
+            // tween camera to it's original position
+            //
+
+            var cameraDuration = Math.random() * duration + duration;
+            maxDuration = Math.max(maxDuration, cameraDuration);
+
+            new TWEEN.Tween(camera.position)
+                .to({ x: initialPosition.x, y: initialPosition.y, z: initialPosition.z }, cameraDuration)
+                .easing(TWEEN.Easing.Exponential.Out)
+                .start();
+        }
+
         //
         // tween all of the current tiles to
         // their other dimensions, accordingly
@@ -710,22 +753,25 @@ CG.Demo1.StartApp = function () {
         var vectorLength = toVectors.length;
         for (var index = 0; index < vectorLength; index++) {
 
+            var tileDuration = Math.random() * duration + duration;
+            maxDuration = Math.max(maxDuration, tileDuration);
+
             var fromObject = _currentTileObjects[index];
             var toVector = toVectors[index];
             
             new TWEEN.Tween(fromObject.position)
-                .to({ x: toVector.position.x, y: toVector.position.y, z: toVector.position.z }, duration)
+                .to({ x: toVector.position.x, y: toVector.position.y, z: toVector.position.z }, tileDuration)
                 .easing(TWEEN.Easing.Exponential.Out)
                 .start();
         }
 
         new TWEEN.Tween(this)
-			.to({}, duration)
+			.to({}, maxDuration)
 			.onUpdate(render)
 			.onComplete(function () {
 
 			    _isCurrentView3D = isTo3D;
-			    _worldControls.disabled = false;			    
+			    tileControls.disabled = false;			    
 
 			})
             .start();
@@ -733,41 +779,59 @@ CG.Demo1.StartApp = function () {
     }
 
     function transform(toTileObjects, toVectorKey, duration) {
-        
-        if (TWEEN.getAll().length > 0) {
-            // another transform is in-progress, so try again later...
-            setTimeout(function () {
-                transform(toTileObjects, toVectorKey, duration);
-            }, 200);
 
+        if (tileControls.disabled === true) {
             return;
         }
 
-        _worldControls.disabled = true;
+        tileControls.disabled = true;
 
         TWEEN.removeAll();
 
         if (_currentTileObjects != null) {
 
             //
-            // tween the current tileObjects to vector 0,0,DEFAULT_CAMERA_Z * 2
+            // tween the current tileObjects to a vanishing vector
             //
             var fromLength = _currentTileObjects.length;
             for (var index = 0; index < fromLength; index++) {
 
                 var fromObject = _currentTileObjects[index];
 
+                new TWEEN.FadeOut(fromObject.element, duration / 2);
+
                 new TWEEN.Tween(fromObject.position)
-                    .to({ x: 0, y: 0, z: DEFAULT_CAMERA_Z * 2 }, duration)
+                    .to({ x: 0, y: 0, z: 10000 }, duration)
                     .easing(TWEEN.Easing.Exponential.Out)
                     .start();
+                 
             }
 
         }
 
+        var maxDuration = 0;
+        var initialPosition = getInitialCameraPosition(_isCurrentView3D);
+
+        if (camera.position.x != initialPosition.x ||
+            camera.position.y != initialPosition.y ||
+            camera.position.z != initialPosition.z) {
+
+            //
+            // tween camera to it's original position
+            //
+
+            var cameraDuration = Math.random() * duration + duration;
+            maxDuration = Math.max(maxDuration, cameraDuration);
+
+            new TWEEN.Tween(camera.position)
+                .to({ x: initialPosition.x, y: initialPosition.y, z: initialPosition.z }, cameraDuration)
+                .easing(TWEEN.Easing.Exponential.Out)
+                .start();
+        }
+
         //
         // tween the TO tileObjects to their last known vectors
-        //
+        //        
         var toLength = toTileObjects.length;
         for (var index = 0; index < toLength; index++) {
 
@@ -780,20 +844,29 @@ CG.Demo1.StartApp = function () {
                 toVector = _tileVectors[toVectorKey].twoD[index];
             }
 
+            var tileDuration = Math.random() * duration + duration;
+            var fadeDuration = tileDuration * 1.5;
+            maxDuration = Math.max(maxDuration, fadeDuration);
+
+            new TWEEN.FadeIn(toObject.element, fadeDuration);
+
             new TWEEN.Tween(toObject.position)
-                .to({ x: toVector.position.x, y: toVector.position.y, z: toVector.position.z }, duration)
+                .to({ x: toVector.position.x, y: toVector.position.y, z: toVector.position.z }, tileDuration)
                 .easing(TWEEN.Easing.Exponential.Out)
                 .start();
-        }
 
-        new TWEEN.Tween(this)
-			.to({}, duration)
+        }        
+
+        new TWEEN.Tween(document.body)
+			.to({}, maxDuration)
 			.onUpdate(render)
 			.onComplete(function () {
 
 			    _currentVectorKey = toVectorKey;
 			    _currentTileObjects = toTileObjects;
-			    _worldControls.disabled = false;
+			    tileControls.disabled = false;
+
+			    resetCamera();
 
 			})
             .start();
@@ -802,34 +875,37 @@ CG.Demo1.StartApp = function () {
 
     function animate() {
 
-        TWEEN.update();
         requestAnimationFrame(animate);
+        TWEEN.update();        
+
     }
 
     function render() {
 
-        _worldRenderer.render(_worldScene, _worldCamera);
+        renderer.render(scene, camera);
 
     }
 
     function resetCamera() {
 
-        if (_worldCamera.position.x != DEFAULT_CAMERA_X ||
-            _worldCamera.position.y != DEFAULT_CAMERA_Y ||
-            _worldCamera.position.z != DEFAULT_CAMERA_Z) {
+        var initialPosition = getInitialCameraPosition(_isCurrentView3D);
+
+        if (camera.position.x != initialPosition.x ||
+            camera.position.y != initialPosition.y ||
+            camera.position.z != initialPosition.z) {
 
             $('#modalscreen').css('visibility', 'hidden');
 
-            _worldControls.disabled = true;
+            tileControls.disabled = true;
 
             $viewport.itemViewer('hide');
 
-            new TWEEN.Tween(_worldCamera.position)
-                .to({ x: DEFAULT_CAMERA_X, y: DEFAULT_CAMERA_Y, z: DEFAULT_CAMERA_Z }, 1500)
+            new TWEEN.Tween(camera.position)
+                .to({ x: initialPosition.x, y: initialPosition.y, z: initialPosition.z }, 1500)
                 .easing(TWEEN.Easing.Exponential.Out)
                 .onUpdate(render)
                 .onComplete(function () {
-                    _worldControls.disabled = false;
+                    tileControls.disabled = false;
                 })
                 .start();
 
@@ -845,19 +921,90 @@ CG.Demo1.StartApp = function () {
       
     function calculateVectorsPerRow(vectorCount) {
         if (vectorCount > 15) {
-            return 5;
+            return 6;
         } else {
             return 3;
         }
     }
 
-    function getDimsFromCss(cssSelector) {
+    function getDimsFromCss(cssClass) {
 
-        var width = parseInt($(cssSelector).css('width'), 10);
-        var height = parseInt($(cssSelector).css('height'), 10);
+        var $temp = $("<div class='" + cssClass + "'></div>").hide().appendTo("body");
+
+        var width = parseInt($temp.css('width'), 10);
+        var height = parseInt($temp.css('height'), 10);
+
+        $temp.remove();
+
         var dims = { 'width': width, 'height': height };
+
         return dims;
 
+    }
+
+    function setTransformOptions(view) {
+        switch (view.toLowerCase()) {
+            case 'catalog':
+                _transformOptions = _optionsForMovieVectors;
+                break;
+            case 'department':
+                _transformOptions = _optionsForDepartmentVectors;
+                break;
+            case 'asset':
+                _transformOptions = _optionsForAssetVectors;
+                break;
+        }
+    }
+
+    function getInitialCameraPosition(is3D) {
+
+        var position = {};
+        
+        if (is3D) {
+            position.x = _transformOptions.initial3dCameraX;
+            position.y = _transformOptions.initial3dCameraY;
+            position.z = _transformOptions.initial3dCameraZ;
+        } else {
+            position.x = _transformOptions.initial2dCameraX;
+            position.y = _transformOptions.initial2dCameraY;
+            position.z = _transformOptions.initial2dCameraZ;
+        }
+
+        return position;
+    }
+
+    function getControlsOptions(view, is3D) {
+
+        var controlsOptions = {
+            camera: camera,
+            renderFunction: render,
+            swipeAreaContainer: $('#viewport'),
+            moveDuration: 1000,
+            deltaY: 200,
+            deltaZ: 900,
+            is3D: is3D
+        };
+
+        switch (view.toLowerCase()) {
+            case 'catalog':
+                controlsOptions.deltaY = 300;
+                controlsOptions.detlaZ = 1200;
+                break;
+            case 'department':
+                controlsOptions.deltaY = 200;
+                controlsOptions.detlaZ = 900;
+                break;
+            case 'asset':
+                controlsOptions.deltaY = 200;
+                controlsOptions.detlaZ = 900;
+                break;
+        }
+
+        return controlsOptions;
+    }
+
+    function formatDate(date) {
+        return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
     }
 
     function onWindowResize() {
@@ -866,11 +1013,11 @@ CG.Demo1.StartApp = function () {
             width: window.innerWidth + 'px', height: window.innerHeight + 'px'
         });
 
-    	_worldCamera.aspect = window.innerWidth / window.innerHeight;
+    	camera.aspect = window.innerWidth / window.innerHeight;
 
-    	_worldCamera.updateProjectionMatrix();
+    	camera.updateProjectionMatrix();
 
-    	_worldRenderer.setSize(window.innerWidth, window.innerHeight);
+    	renderer.setSize(window.innerWidth, window.innerHeight);
 
     	render();
     }
@@ -888,26 +1035,45 @@ CG.Demo1.StartApp = function () {
 
     $(document).hammer().on('tap', function (event) {
 
-        if (_worldControls.disabled === true) {
+        render();
+
+
+        if (tileControls.disabled === true) {
             return;
         }
 
         //
         // if user taps outside tiles, etc. then
-        // reset the _worldCamera to its default settings
+        // reset the camera to its default settings
         //				    
 
-        resetCamera();
+        //resetCamera();
 
     });
 
+    $('#tiles3d').hammer().on('tap', function (event) {
 
+        event.gesture.preventDefault();
+        toggle2D3D(true, 800);
+
+    });
+
+    $('#tiles2d').hammer().on('tap', function (event) {
+
+        event.gesture.preventDefault();
+        toggle2D3D(false, 800);        
+
+    });
+    
     initialize();
+    animate();
 
 }
 
 $(document).ready(function () {
+
     CG.Demo1.StartApp();
+
 });
 
 

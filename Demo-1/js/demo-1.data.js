@@ -1370,7 +1370,7 @@ CG.Demo1.DemoData = function () {
             writers: 'David S. Goyer',
             stars: 'Henry Cavill, Michael Shannon, Amy Adams'
         },
-        currentPhase: 'Distribtution',
+        currentPhase: 'Distribution',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
         phases: null
     }
@@ -1386,7 +1386,7 @@ CG.Demo1.DemoData = function () {
             writers: 'Travis Beacham, Guillermo del Toro',
             stars: 'Charlie Hunnam, Idris Elba, Charlie Day'
         },
-        currentPhase: 'Distribtution',
+        currentPhase: 'Distribution',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
         phases: null
     }
