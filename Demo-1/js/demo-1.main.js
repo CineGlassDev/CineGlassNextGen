@@ -66,8 +66,8 @@ CG.Demo1.StartApp = function () {
     var _optionsForAssetVectors = {
         offsetX: 15,
         offsetY: 15,
-        offsetZ: 400,
-        rise3d: 150,
+        offsetZ: 550,
+        rise3d: 225,
 
         initial3dCameraX: 0,
         initial3dCameraY: 0,
@@ -85,6 +85,7 @@ CG.Demo1.StartApp = function () {
 
     var _lastMovieTile;
     var _lastDepartmentTile;
+    var _lastAssetTile;
 
 
     //
@@ -380,6 +381,7 @@ CG.Demo1.StartApp = function () {
         var logo = document.createElement('div');
         logo.className = 'department-tile logo';
         logo.style.backgroundImage = "url('" + (typeof dept.iconUri == 'undefined' ? phase.iconUri : dept.iconUri) + "')";
+
         tile.appendChild(logo);
 
         //
@@ -456,13 +458,16 @@ CG.Demo1.StartApp = function () {
                     //
                     var categoryTile = document.createElement('div');
                     categoryTile.className = 'asset-tile';
+                    categoryTile.phaseName = phase.name;
+                    categoryTile.departmentName = dept.name;
+                    categoryTile.categoryName = asset.category;
                     categoryTile.title = asset.category;
 
                     //
                     // create phase swatch element
                     //
                     var swatch = document.createElement('div');
-                    swatch.className = 'phase-swatch ' + phase.name;
+                    swatch.className = 'phase-swatch ' + phase.name.toLowerCase();
                     categoryTile.appendChild(swatch);
 
                     //
@@ -475,7 +480,7 @@ CG.Demo1.StartApp = function () {
 
                     var logo = document.createElement('div');
                     logo.className = 'asset-tile logo';
-                    logo.style.backgroundImage = getAssetIconUrl('folder');
+                    logo.style.backgroundImage = getAssetIconUrl(null);
                     categoryTile.appendChild(logo);
 
                     //
@@ -487,8 +492,10 @@ CG.Demo1.StartApp = function () {
                             return;
                         }
 
-                        // set back nav
-                        setBackNav(CG.Views.Assets, phase.name + ' - ' + dept.name + ' - ' + this.title);
+                        console.log('folder clicked!');
+
+                        showSubAssets(this);
+
 
                         // TODO:
                         // ---- transform to sub-asset tiles in main area        
@@ -536,7 +543,7 @@ CG.Demo1.StartApp = function () {
                 // create phase swatch element
                 //
                 var swatch = document.createElement('div');
-                swatch.className = 'phase-swatch ' + phase.name;
+                swatch.className = 'phase-swatch ' + phase.name.toLowerCase();
                 tile.appendChild(swatch);
 
                 //
@@ -549,7 +556,8 @@ CG.Demo1.StartApp = function () {
 
                 var logo = document.createElement('div');
                 logo.className = 'asset-tile logo';
-                logo.style.backgroundImage = getAssetIconUrl(asset.type);
+                logo.style.backgroundImage = getAssetIconUrl(asset);
+
                 tile.appendChild(logo);
 
                 //
@@ -584,7 +592,7 @@ CG.Demo1.StartApp = function () {
                 scene.add(css3dObject);
 
                 // add sub-asset object to array
-                categories[asset.category].subAssetObjects.push(tile);
+                categories[asset.category].subAssetObjects.push(css3dObject);
 
                 // cache asset object on asset tile
                 tile.parentObject = css3dObject;
@@ -605,7 +613,7 @@ CG.Demo1.StartApp = function () {
                 // create phase swatch element
                 //
                 var swatch = document.createElement('div');
-                swatch.className = 'phase-swatch ' + phase.name;
+                swatch.className = 'phase-swatch ' + phase.name.toLowerCase();
                 tile.appendChild(swatch);
 
                 //
@@ -618,7 +626,7 @@ CG.Demo1.StartApp = function () {
 
                 var logo = document.createElement('div');
                 logo.className = 'asset-tile logo';
-                logo.style.backgroundImage = getAssetIconUrl(asset.type);
+                logo.style.backgroundImage = getAssetIconUrl(asset);
                 tile.appendChild(logo);
 
                 //
@@ -630,13 +638,7 @@ CG.Demo1.StartApp = function () {
                         return;
                     }
 
-                    // set back nav
-                    setBackNav(CG.Views.Assets, phase.name + ' - ' + dept.name);
-
-                    // TODO:
-                    // ---- display dialog with asset name and asset preview
-                    // create logo element
-                    //                    
+                    // TODO: Show viewer
 
                     return false;
 
@@ -684,6 +686,75 @@ CG.Demo1.StartApp = function () {
 
             });
 
+        }
+    }
+    
+    function initializeVectors(vectorCount, vectorCache, vectorOptions, objectDims) {
+
+        var vectorsPerRow = calculateVectorsPerRow(vectorCount);
+        var tileOffsetWidth = (objectDims.width + vectorOptions.offsetX);
+        var rowCount = Math.ceil(vectorCount / vectorsPerRow);
+        var finalRowCount = vectorCount % vectorsPerRow;
+        var vectorCounter = 0;
+
+        var firstLeft;
+        console.log('vector count: ' + vectorCount);
+
+        if (vectorCount === 1) {
+
+            firstLeft = 0;
+
+        } else if (vectorCount === 2) {
+
+            firstLeft = tileOffsetWidth / 2 * -1;
+
+        } else if (vectorsPerRow % 2 === 0) {
+
+            firstLeft = (Math.floor(vectorsPerRow / 2) * tileOffsetWidth - (tileOffsetWidth / 2)) * -1;
+
+        } else {
+
+            firstLeft = Math.floor(vectorsPerRow / 2) * tileOffsetWidth * -1;
+
+        }
+
+        for (var rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+
+            var y3d = ((rowIndex % rowCount) * (vectorOptions.offsetY + vectorOptions.rise3d)) - ((vectorOptions.offsetY + vectorOptions.rise3d) * 2);
+            var z3d = (vectorOptions.offsetZ * rowIndex) * -1;
+            var y2d = ((objectDims.height + vectorOptions.offsetY) * Math.floor(rowCount / 2)) - ((rowIndex % rowCount) * (objectDims.height + vectorOptions.offsetY));
+
+            var x = firstLeft;
+
+            for (var objectIndex = 0; objectIndex < vectorsPerRow; objectIndex++) {
+
+                if (vectorCounter == vectorCount) {
+                    break;
+                }
+
+                //
+                // 3D vectors
+                //
+                var vector3D = new THREE.Object3D();
+                vector3D.position.x = x;
+                vector3D.position.y = y3d;
+                vector3D.position.z = z3d;
+                vectorCache.threeD.push(vector3D);
+
+
+                //
+                // 2D vectors
+                //
+                var vector2D = new THREE.Object3D();
+                vector2D.position.x = x;
+                vector2D.position.y = y2d;
+                vector2D.position.z = 0;
+                vectorCache.twoD.push(vector2D);
+
+                x += tileOffsetWidth;
+
+                vectorCounter++;
+            }
         }
     }
 
@@ -751,6 +822,26 @@ CG.Demo1.StartApp = function () {
 
     }
 
+    function showSubAssets(assetTile) {
+
+        _lastAssetTile = assetTile;
+
+        // set options for rendering
+        setTransformOptions('asset', _isCurrentView3D);
+        var options = getTransformOptions();
+
+        // initialize the controls
+        tileControls.destroy();
+        tileControls = new CG.TileControls(options, camera, render, $('#viewport'), 800);
+
+        // start transformation rendering
+        transform(assetTile.parentObject.subAssetObjects, assetTile.phaseName + '|' + assetTile.departmentName + '|' + assetTile.categoryName, 1000);
+
+        // set back nav button
+        setBackNav(CG.Demo1.Views.Assets, assetTile.phaseName + ' - ' + assetTile.departmentName);
+
+    }
+
     function setBackNav(view, caption) {
 
         _navBackTo = view;
@@ -791,76 +882,41 @@ CG.Demo1.StartApp = function () {
                 showAssets(_lastDepartmentTile);
                 break;
             case CG.Demo1.Views.SubAssets:
-
+                showSubAssets(_lastAssetTile);
                 break;
         }
 
     }
 
-    function getAssetIconUrl(assetType) {
-        return ("url('img/icons/" + assetType.toLowerCase() + ".png')");
-    }
-        
-    function initializeVectors(vectorCount, vectorCache, vectorOptions, objectDims) {
-
-        var vectorsPerRow = calculateVectorsPerRow(vectorCount);
-        var tileOffsetWidth = (objectDims.width + vectorOptions.offsetX);
-        var rowCount = Math.ceil(vectorCount / vectorsPerRow);
-        var finalRowCount = vectorCount % vectorsPerRow;
-        var vectorCounter = 0;
-
-        var firstLeft;
-
-        if (vectorsPerRow % 2 === 0) {
-
-            firstLeft = (Math.floor(vectorsPerRow / 2) * tileOffsetWidth - (tileOffsetWidth / 2)) * -1;
-
+    function getAssetIconUrl(asset) {
+        if (asset === null) {
+            return ("url('img/icons/folder.png')");
+        } else if (asset.type.toLowerCase() === 'img') {
+            console.log("url('" + getFileDirectory(asset.assetUri) + '/small/' + getFileName(asset.assetUri) + "')");
+            return "url('" + getFileDirectory(asset.assetUri) + '/small/' + getFileName(asset.assetUri) + "')";
         } else {
-
-            firstLeft = Math.floor(vectorsPerRow / 2) * tileOffsetWidth * -1;
-
-        }
-
-        for (var rowIndex = 0; rowIndex < rowCount; rowIndex++) {
-
-            var y3d = ((rowIndex % rowCount) * (vectorOptions.offsetY + vectorOptions.rise3d)) - ((vectorOptions.offsetY + vectorOptions.rise3d) * 2);
-            var z3d = (vectorOptions.offsetZ * rowIndex) * -1;
-            var y2d = ((objectDims.height + vectorOptions.offsetY) * Math.floor(rowCount / 2)) - ((rowIndex % rowCount) * (objectDims.height + vectorOptions.offsetY));
-
-            var x = firstLeft;
-
-            for (var objectIndex = 0; objectIndex < vectorsPerRow; objectIndex++) {
-
-                if (vectorCounter == vectorCount) {
-                    break;
-                }
-
-                //
-                // 3D vectors
-                //
-                var vector3D = new THREE.Object3D();
-                vector3D.position.x = x;
-                vector3D.position.y = y3d;
-                vector3D.position.z = z3d;
-                vectorCache.threeD.push(vector3D);
-
-
-                //
-                // 2D vectors
-                //
-                var vector2D = new THREE.Object3D();
-                vector2D.position.x = x;
-                vector2D.position.y = y2d;
-                vector2D.position.z = 0;
-                vectorCache.twoD.push(vector2D);
-
-                x += tileOffsetWidth;
-
-                vectorCounter++;
-            }
+            return ("url('img/icons/" + asset.type.toLowerCase() + ".png')");
         }
     }
-    
+
+    function getFileDirectory(filePath) {
+        if (filePath.indexOf("/") == -1) { // windows
+            return filePath.substring(0, filePath.lastIndexOf('\\'));
+        }
+        else { // unix
+            return filePath.substring(0, filePath.lastIndexOf('/'));
+        }
+    }
+
+    function getFileName(filePath) {
+        if (filePath.indexOf("/") == -1) { // windows
+            return filePath.substring(filePath.lastIndexOf('\\') + 1);
+        }
+        else { // unix
+            return filePath.substring(filePath.lastIndexOf('/') + 1);
+        }
+    }    
+   
     function toggle2D3D(isTo3D, duration) {
 
         if (tileControls.disabled === true) {

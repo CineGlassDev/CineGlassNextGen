@@ -241,7 +241,7 @@ CG.Demo1.DemoData = function () {
                 iconUri: 'img/icons/prod.jpg',
                 departments: [
                     {
-                        name: 'Production',
+                        name: 'Shoot',
                         iconUri: 'img/icons/prod.png',
                         assets: [
                             {
@@ -589,7 +589,7 @@ CG.Demo1.DemoData = function () {
                         ]
                     },
                     {
-                        name: 'Prod VFX',
+                        name: 'VFX',
                         iconUri: 'img/icons/prod-vfx.jpg',
                         assets: [
                             {
@@ -936,7 +936,7 @@ CG.Demo1.DemoData = function () {
                 iconUri: 'img/icons/post.jpg',
                 departments: [
                     {
-                        name: 'Distribution Planning',
+                        name: 'Deliverable Planning',
                         iconUri: 'img/icons/dist-planning.png',
                         assets: [
                             {
@@ -966,7 +966,7 @@ CG.Demo1.DemoData = function () {
                         ]
                     },
                     {
-                        name: 'Post VFX',
+                        name: 'VFX Delivery',
                         iconUri: 'img/icons/post-vfx.jpg',
                         assets: [
                             {
