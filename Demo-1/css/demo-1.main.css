@@ -71,10 +71,11 @@ button
 {
     position:absolute;
     left:0px;
-    top:0px;
-    width:130px;
-    height:60px;
-    background-image: url('/img/cg-logo.png');
+    top:5px;
+    width:173px;
+    height:71px;
+    background-image: url('/img/cineglass.png');
+    background-repeat:no-repeat;
     z-index:100;
 }
 
@@ -87,6 +88,7 @@ button
     background-image: url('/img/technicolor-for-footer.png');
     width:124px;
     height:26px;
+    background-repeat:no-repeat;
 }
 
 #viewport 
@@ -104,7 +106,7 @@ button
     position: absolute;
     z-index: 10;
     left: 20px;
-    top: 50px;
+    top: 65px;
     height: 30px;
     width: auto;
     min-width:100px;
@@ -177,6 +179,133 @@ button
         {
             background-color: rgba(54,88,135,1); /*hovercolor*/
         }
+
+
+/*******************************
+ *** START OF DETAILS STYLES ***
+ *******************************/
+
+#details-container {
+            position:absolute;
+            margin: 5px auto;
+            top:10px;            
+            left: 50%;
+            margin-left: -200px;
+            width:400px;
+            padding: 5px 0px 10px 0px;
+            background-color:rgba(0,0,0,0.5);
+            z-index:500;
+            border:1px solid rgba(255,255,255,0.5);
+
+            -webkit-box-shadow: 7px 7px 5px rgba(50, 50, 50, 0.75);
+            -moz-box-shadow:    7px 7px 5px rgba(50, 50, 50, 0.75);
+            box-shadow:         7px 7px 5px rgba(50, 50, 50, 0.75);
+        }
+
+        #details-caption {
+            position:relative;
+            font-size:24px;
+            font-weight:bold;
+            color:rgba(255,255,255, 0.85);
+            text-align:center;
+            line-height:26px;
+        }
+
+        .details-item-phase {
+            position:relative;
+            font-size: 20px;
+            font-style:italic;
+            font-weight:bold;
+            color:rgba(255,255,255, 0.75);
+            color:rgba(127,255,255,0.5);
+            text-align:center;
+            line-height:24px;
+        }
+
+        .details-item-info {
+            position:relative;
+            font-size: 14px;
+            color:rgba(255,255,255, 0.75);
+            text-align: center;   
+            line-height: 24px;        
+        }
+
+        #details-budget {
+            position:absolute;
+            right:5px;
+            top:0px;
+            width: 35px;
+            height: 35px;
+            background-image: url('../img/icons/budget4.png');
+            background-position:center;
+            background-size:contain;
+            background-repeat:no-repeat;
+            cursor:pointer;
+            opacity:0.75;
+        }
+
+            #details-budget:hover {
+                opacity:1.0;
+            }
+
+        #budget-container {
+            position:relative;
+            width:250px;
+            margin:2px auto;
+            height: 44px;            
+        }
+
+        .budget-item {
+            float:left;
+            margin:0px 10px;          
+        }
+
+        .budget-item .label {
+            font-size:10px;
+            color:rgba(255,255,255,0.5);
+        }
+
+        .budget-item .icon {
+            position:relative;
+            left:12px;
+            width: 35px;
+            height: 35px;
+            background-image: url('../img/icons/budget4.png');
+            background-position:center;
+            background-size:contain;
+            background-repeat:no-repeat;
+            opacity:0.75;
+            cursor:pointer;
+        }
+
+            .budget-item .icon:hover {
+                opacity:1.0;
+            }
+
+        .studio-budget-icon {
+            width: 35px;
+            height: 35px;
+            background-image: url('../img/icons/budget4.png');
+            background-position:center;
+            background-size:contain;
+            background-repeat:no-repeat;
+            opacity:0.75;
+            text-align:center;
+            margin:2px auto;
+            cursor:pointer;
+        }
+
+            .studio-budget-icon:hover {
+                opacity:1.0;
+            }
+
+        .studio-budget-label {
+            text-align:center;
+            font-size:10px;
+            color:rgba(255,255,255,0.5);
+        }
+
+
 
 /*****************************
  *** START OF WORLD STYLES ***
@@ -360,31 +489,48 @@ button
     font-weight:bold;
     }
 
-.phase-swatch.development
+        .phase-swatch.development
         {
             background-color: rgba(127,255,255,0.85);
         }
+
+.details-item-phase.development {
+    color: rgba(127,255,255,0.85);
+}
 
         .phase-swatch.pre-production
         {
             background-color: rgba(55,96,212,0.85);
         }
 
+.details-item-phase.pre-production {
+    color: rgba(55,96,212,0.85);
+}
 
         .phase-swatch.production
         {
             background-color: rgba(173,55,212,0.85);
         }
 
+.details-item-phase.production {
+    color: rgba(173,55,212,0.85);
+}
         .phase-swatch.post-production
         {
             background-color: rgba(212,136,55,0.85);
         }
 
+.details-item-phase.post-production {
+    color: rgba(212,136,55,0.85);
+}
         .phase-swatch.distribution
         {
             background-color: rgba(88,212,55,0.85);
         }
+
+.details-item-phase.distribution {
+    color: rgba(88,212,55,0.85);
+}
 
 
 

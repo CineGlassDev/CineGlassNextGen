@@ -184,8 +184,8 @@
             /* aspect ratio: .5625 , 1.78 */
             width: 400px;
             height: 264px;
-            left: 800px;
-            top: 100px;
+            left: 400px;
+            top: 700px;
         }
 
             .asset-tile .phase-swatch {
@@ -228,8 +228,156 @@
                 opacity: 0.95;
                 background-color:transparent;
                 border: none;
+
             }
 
+
+        #details-container {
+            position:relative;
+            top:10px;
+            width:400px;
+            margin: 5px auto;
+            padding: 5px 0px 10px 0px;
+            background-color:rgba(0,0,0,0.5);
+            z-index:500;
+            border:1px solid rgba(255,255,255,0.5);
+
+            -webkit-box-shadow: 7px 7px 5px rgba(50, 50, 50, 0.75);
+            -moz-box-shadow:    7px 7px 5px rgba(50, 50, 50, 0.75);
+            box-shadow:         7px 7px 5px rgba(50, 50, 50, 0.75);
+        }
+
+        #details-caption {
+            position:relative;
+            font-size:24px;
+            font-weight:bold;
+            color:rgba(255,255,255, 0.85);
+            text-align:center;
+            line-height:26px;
+        }
+
+        .details-item-phase {
+            position:relative;
+            font-size: 20px;
+            font-style:italic;
+            font-weight:bold;
+            color:rgba(255,255,255, 0.75);
+            color:rgba(127,255,255,0.5);
+            text-align:center;
+            line-height:24px;
+
+
+
+            color:#fff;
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #48cdcd, 0 0 70px #48cdcd, 0 0 80px #48cdcd, 0 0 100px #48cdcd, 0 0 150px #48cdcd;
+        }
+
+        .details-item-info {
+            position:relative;
+            font-size: 14px;
+            color:rgba(255,255,255, 0.75);
+            text-align: center;   
+            line-height: 24px;        
+        }
+
+        #details-budget {
+            position:absolute;
+            right:5px;
+            top:0px;
+            width: 35px;
+            height: 35px;
+            background-image: url('img/icons/budget4.png');
+            background-position:center;
+            background-size:contain;
+            background-repeat:no-repeat;
+            cursor:pointer;
+            opacity:0.75;
+        }
+
+            #details-budget:hover {
+                opacity:1.0;
+            }
+
+        #budget-container {
+            position:relative;
+            width:250px;
+            margin:2px auto;
+            height: 44px;
+            cursor:pointer;
+        }
+
+        .budget-item {
+            float:left;
+            margin:0px 10px;          
+        }
+
+        .budget-item .label {
+            font-size:10px;
+            color:rgba(255,255,255,0.5);
+        }
+
+        .budget-item .icon {
+            position:relative;
+            left:12px;
+            width: 35px;
+            height: 35px;
+            background-image: url('img/icons/budget4.png');
+            background-position:center;
+            background-size:contain;
+            background-repeat:no-repeat;
+            opacity:0.75;
+        }
+
+            .budget-item .icon:hover {
+                opacity:1.0;
+            }
+
+        .studio-budget-icon {
+            width: 35px;
+            height: 35px;
+            background-image: url('img/icons/budget4.png');
+            background-position:center;
+            background-size:contain;
+            background-repeat:no-repeat;
+            opacity:0.75;
+            text-align:center;
+            margin:2px auto;
+        }
+
+        .studio-budget-label {
+            text-align:center;
+            font-size:10px;
+            color:rgba(255,255,255,0.5);
+        }
+
+        
+
+
+
+
+        /*.details-item-cast {
+            position:relative;
+            font-size: 12px;
+            color:rgba(255,255,255, 0.75);
+            width:250px;
+            margin:auto;
+        }
+
+        .details-item-cast .label {
+            font-size: 10px;
+            font-weight:bold;
+            text-align:left;
+            color:rgba(255,255,255, 0.75);
+        }
+
+        .details-item-cast .value {
+            margin-left:5px;
+            font-size: 12px;
+            color:rgba(255,255,255, 0.75);
+            text-align: left;
+        }*/
+
+    
 
     </style>
 </head>
@@ -254,6 +402,85 @@
             <div class="asset-tile department">storyboard-1.jpg</div>
             <div class="asset-tile logo"></div>
         </div>
+
+
+   
+
+        <!-- MOVIE VIEW -->
+        <!--<div id="details-container">
+            <div id="details-caption">
+                Jupiter Ascending
+            </div>
+            <div class="details-item-phase">
+                In Production                
+            </div>
+            <div class="details-item-info">                
+                Action | Sci-Fi&nbsp;&nbsp;-&nbsp;&nbsp;7/25/2014 (USA)
+            </div>
+            <div id="budget-container">
+                <div class="budget-item">
+                    <div class="icon"></div>
+                    <div class="label">Movie Budget</div>
+                </div>
+                <div class="budget-item">
+                    <div class="icon"></div>
+                    <div class="label">Prod Budget</div>
+                </div>
+                <div class="budget-item">
+                    <div class="icon"></div>
+                    <div class="label">Post Budget</div>
+                </div>
+            </div>
+        </div>-->
+
+        <!-- DEPARTMENT VIEW -->
+        <div id="details-container">
+            <div id="details-caption">
+                Dailies
+            </div> 
+            <div class="details-item-phase">
+                In Production                
+            </div>      
+        </div>
+
+        <!-- STUDIO VIEW --->
+       <!-- <div id="details-container">
+            <div id="details-caption">
+                Warner Bros. Pictures
+            </div>   
+             <div class="details-item-info">                
+                Pipeline Catalog
+            </div>   
+            <div id="budget-container">
+                <div class="studio-budget-icon"></div>
+                <div class="studio-budget-label">Studio Budget</div>            
+            </div>      
+        </div>-->
+
+
+       
+
+
+
+
+
+
+
+
+
+        <!--<div class="details-item-cast">
+                <span class="label">Directors:</span>
+                <span class="value">Andy Wachowski, Lana Wachowski</span>
+                                
+            </div>
+            <div class="details-item-cast">
+                <span class="label">Writers:</span>
+                <span class="value">Andy Wachowski, Lana Wachowski</span>             
+            </div>
+            <div class="details-item-cast">
+                <span class="label">Stars:</span>
+                <span class="value">Channing Tatum, Mila Kunis, Sean Bean</span>         
+            </div>-->
 
     </div>
 

@@ -6,7 +6,7 @@ CG.Demo1 = CG.Demo1 || {};
 CG.Demo1.DemoData = function () {
 
     var warnerBrothers = { 
-        name: 'Warner Bros', 
+        name: 'Warner Bros. Pictures',
         logo: 'img/warner-brothers-pictures.jpg',
         budgetUri: 'assets/budget/Studio YTD Budget Analysis.pdf',
         catalog: []
@@ -15,8 +15,9 @@ CG.Demo1.DemoData = function () {
     var allYouNeedIsSkill = {
         name: 'All You Need Is Kill',
         oneSheet: 'assets/one-sheets/allyouneediskill.jpg',
-        genre: 'Action, Sci-Fi',
+        genre: 'Action | Sci-Fi',
         releaseDate: new Date('3/7/2014'),
+        releaseCountry: 'USA',
         topCredits: {
             directors: 'Doug Liman',
             writers: 'Hiroshi Sakurazaka, Dante Harper',
@@ -31,8 +32,9 @@ CG.Demo1.DemoData = function () {
     var conjuring = {
         name: 'The Conjuring',
         oneSheet: 'assets/one-sheets/conjuring.jpg',
-        genre: 'Horror, Thriller',
+        genre: 'Horror | Thriller',
         releaseDate: new Date('7/19/2013'),
+        releaseCountry: 'USA',
         topCredits: {
             directors: 'James Wan',
             writers: 'Chad Hayes, Carey Hayes',
@@ -47,8 +49,9 @@ CG.Demo1.DemoData = function () {
     var godzilla = {
         name: 'Godzilla',
         oneSheet: 'assets/one-sheets/Godzillia2014.jpeg',
-        genre: 'Action, Sci-Fi, Thriller',
+        genre: 'Action | Sci-Fi | Thriller',
         releaseDate: new Date('5/16/2014'),
+        releaseCountry: 'USA',
         topCredits: {
             directors: 'Gareth Edwards',
             writers: 'Max Borenstein, Dave Callaham',
@@ -63,8 +66,9 @@ CG.Demo1.DemoData = function () {
     var greatGatsby = {
         name: 'The Great Gatsby',
         oneSheet: 'assets/one-sheets/great_gatsby.jpg',
-        genre: 'Drama, Romance',
+        genre: 'Drama | Romance',
         releaseDate: new Date('5/10/2013'),
+        releaseCountry: 'USA',
         topCredits: {
             directors: 'Baz Luhrmann',
             writers: 'Baz Luhrmann, Craig Pearce',
@@ -81,6 +85,7 @@ CG.Demo1.DemoData = function () {
         oneSheet: 'assets/one-sheets/hangover_part_3.jpg',
         genre: 'Comedy',
         releaseDate: new Date('5/24/2013'),
+        releaseCountry: 'USA',
         topCredits: {
             directors: 'Todd Phillips',
             writers: 'Todd Phillips, Craig Mazin',
@@ -95,8 +100,9 @@ CG.Demo1.DemoData = function () {
     var hobbitDesolation = {
         name: 'The Hobbit: The Desolation of Smaug',
         oneSheet: 'assets/one-sheets/Hobbit-desolation.jpg',
-        genre: 'Adventure, Fantasy',
+        genre: 'Adventure | Fantasy',
         releaseDate: new Date('12/13/2013'),
+        releaseCountry: 'USA',
         topCredits: {
             directors: 'Peter Jackson',
             writers: 'Fran Walsh, Philippa Boyens',
@@ -111,8 +117,9 @@ CG.Demo1.DemoData = function () {
     var jupiterAscending = {
         name: 'Jupiter Ascending',
         oneSheet: 'assets/one-sheets/Jupiter Ascending.jpg',
-        genre: 'Action, Sci-Fi',
+        genre: 'Action | Sci-Fi',
         releaseDate: new Date('7/25/2014'),
+        releaseCountry: 'USA',
         topCredits: {
             directors: 'Andy Wachowski, Lana Wachowski',
             writers: 'Andy Wachowski, Lana Wachowski',
@@ -1370,8 +1377,9 @@ CG.Demo1.DemoData = function () {
     var manOfSteel = {
         name: 'Man of Steel',
         oneSheet: 'assets/one-sheets/man_of_steel.jpg',
-        genre: 'Action, Adventure, Fantasy',
+        genre: 'Action | Adventure | Fantasy',
         releaseDate: new Date('6/14/2013'),
+        releaseCountry: 'USA',
         topCredits: {
             directors: 'Zack Snyder',
             writers: 'David S. Goyer',
@@ -1386,8 +1394,9 @@ CG.Demo1.DemoData = function () {
     var pacificRim = {
         name: 'Pacific Rim',
         oneSheet: 'assets/one-sheets/pacific_rim.jpg',
-        genre: 'Action, Adventure, Sci-Fi',
+        genre: 'Action | Adventure | Sci-Fi',
         releaseDate: new Date('7/12/2013'),
+        releaseCountry: 'USA',
         topCredits: {
             directors: 'Guillermo del Toro',
             writers: 'Travis Beacham, Guillermo del Toro',
@@ -1402,8 +1411,9 @@ CG.Demo1.DemoData = function () {
     var legoMovie = {
         name: 'The Lego Movie',
         oneSheet: 'assets/one-sheets/thelegomovie.jpg',
-        genre: 'Animation, Action, Comedy',
+        genre: 'Animation | Action | Comedy',
         releaseDate: new Date('2/7/2014'),
+        releaseCountry: 'USA',
         topCredits: {
             directors: 'Phil Lord, Chris Miller',
             writers: 'Dan Hageman, Kevin Hageman',
@@ -1418,8 +1428,9 @@ CG.Demo1.DemoData = function () {
     var seventhSon = {
         name: 'The Seventh Son',
         oneSheet: 'assets/one-sheets/theseventhson.jpg',
-        genre: 'Adventure, Family, Fantasy',
+        genre: 'Adventure | Family | Fantasy',
         releaseDate: new Date('10/18/2013'),
+        releaseCountry: 'USA',
         topCredits: {
             directors: 'Sergey Bodrov',
             writers: 'Max Borenstein, Charles Leavitt',
@@ -1434,8 +1445,9 @@ CG.Demo1.DemoData = function () {
     var threeHundred2 = {
         name: '300: Rise of an Empire',
         oneSheet: 'assets/one-sheets/three_hundred_rise_of_an_empire.jpg',
-        genre: 'Action, Drama',
+        genre: 'Action | Drama',
         releaseDate: new Date('8/2/2013'),
+        releaseCountry: 'USA',
         topCredits: {
             directors: 'Noam Murro',
             writers: 'Zack Snyder, Kurt Johnstad',

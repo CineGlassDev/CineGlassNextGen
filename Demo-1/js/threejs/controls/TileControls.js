@@ -91,7 +91,7 @@ CG.TileControls = function (options, camera, renderFunction, swipeAreaContainer,
 
             new TWEEN.Tween(_camera.position)
                     .to({ z: newZ, y: newY }, _moveDuration)
-                    .easing(TWEEN.Easing.Quadratic.Out)
+                    .easing(TWEEN.Easing.Cubic.Out)
                     .start();
 
             new TWEEN.Tween(this)

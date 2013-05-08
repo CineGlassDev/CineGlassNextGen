@@ -86,7 +86,7 @@ CG.Demo1.StartApp = function () {
     var _lastMovieTile;
     var _lastDepartmentTile;
     var _lastAssetTile;
-
+    var _studioData;
 
     //
     // jQuery cache variables
@@ -94,7 +94,7 @@ CG.Demo1.StartApp = function () {
 
     $viewport = $('#viewport');
     $backNav = $('#backNav');
-
+    $details = $('#details-container');
 
 
     //////////////////////////////////
@@ -140,17 +140,12 @@ CG.Demo1.StartApp = function () {
         // kick off the 3D movies by default
         //     
         showMovieTiles();
-
-        //setTransformOptions('catalog', true);
-        //var options = getTransformOptions();
-        //tileControls = new CG.TileControls(options, camera, render, $('#viewport'), 1000);
-        //transform(_tileObjects.movieObjects, 'catalog', 1000);
               
     }
 
     function initializeTilesAndVectors() {
 
-        var studioData = CG.Demo1.DemoData();
+        var studioData = _studioData = CG.Demo1.DemoData();
 
         //
         // sort movies by release dates
@@ -192,7 +187,6 @@ CG.Demo1.StartApp = function () {
             tile.title = movieName;
             tile.movieData = movieData;
 
-
             //
             // create phase swatch element
             //
@@ -223,46 +217,11 @@ CG.Demo1.StartApp = function () {
             $(tile).hammer().on('tap', function (event) {
                 var _this = this;
 
-                if (this.movieData.phases != null) {
-
-                    if (tileControls.disabled === true) {
-                        return;
-                    }
-
-                    showDepartments(this);
-
-                    // TODO:
-                    // ---- movie info at top of page
-                    // ---- budget button at top of page for movie
-                    // ---- transform to department tiles in main area
-
-
-
-
-
-                    //// change page background to one-sheet
-                    //$viewport.css('background-image', 'url("' + this.movieData.oneSheet + '")');
-                     
-
-
-                    ////
-                    //// kick off the 3D movies by default
-                    ////        
-                    //setTransformOptions('department', _isCurrentView3D);
-                    //var options = getTransformOptions();
-                    //tileControls = new CG.TileControls(options, camera, render, $('#viewport'), 800);
-                    //transform(this.parentObject.departmentObjects, this.movieData.name, 1000);
-
-
-                    //// set back nav
-                    //setBackNav(CG.Demo1.Views.Catalog, 'Catalog');
-                    
-
-                } else {
-
-                    // TODO: Let the user know that there's no phase/department info for this movie
-
+                if (tileControls.disabled === true) {
+                    return;
                 }
+
+                showDepartments(this);                
 
                 return false;
 
@@ -571,9 +530,6 @@ CG.Demo1.StartApp = function () {
                         return;
                     }
 
-                    // set back nav
-                    setBackNav(CG.Views.Assets, phase.name + ' - ' + dept.name);
-
                     // TODO:
                     // ---- display dialog with asset name and asset preview
                     // create logo element
@@ -764,6 +720,37 @@ CG.Demo1.StartApp = function () {
         // change page background to use studio's logo
         $viewport.css('background-image', 'url("' + _tileObjects.logo + '")');
 
+        $details.empty();
+
+        var caption = document.createElement('div');
+        caption.id = 'details-caption';
+        caption.textContent = _studioData.name;
+        $details.append(caption);
+
+        var context = document.createElement('div');
+        context.className = 'details-item-info';
+        context.textContent = 'Pipeline Catalog';
+        $details.append(context);
+
+        var budgetContainer = document.createElement('div');
+        budgetContainer.id = 'budget-container';
+        $details.append(budgetContainer);
+
+        var budgetIcon = document.createElement('div');
+        budgetIcon.className = 'studio-budget-icon';
+        budgetContainer.appendChild(budgetIcon);
+
+        $(budgetIcon).hammer().on('tap', function (event) {
+
+            // TODO: Open studio budget PDF
+
+        });
+
+        var budgetLabel = document.createElement('div');
+        budgetLabel.className = 'studio-budget-label';
+        budgetLabel.textContent = 'Studio Budget';
+        budgetContainer.appendChild(budgetLabel);
+
         // set options for rendering
         setTransformOptions('catalog', _isCurrentView3D);
         var options = getTransformOptions();
@@ -788,33 +775,127 @@ CG.Demo1.StartApp = function () {
         // change page background to one-sheet
         $viewport.css('background-image', 'url("' + movieTile.movieData.oneSheet + '")');
 
+       
+        $details.empty();
+
+        var caption = document.createElement('div');
+        caption.id = 'details-caption';
+        caption.textContent = movieTile.movieData.name;
+        $details.append(caption);
+
+        var phaseCaption = document.createElement('div');
+        phaseCaption.className = 'details-item-phase ' + movieTile.movieData.currentPhase.toLowerCase();
+        phaseCaption.textContent = 'In ' + movieTile.movieData.currentPhase;
+        $details.append(phaseCaption);
+
+        var context = document.createElement('div');
+        context.className = 'details-item-info';
+        context.textContent = movieTile.movieData.genre + '  -  ' + formatDate(movieTile.movieData.releaseDate) + ' (' + movieTile.movieData.releaseCountry + ')';
+        $details.append(context);
+
+        var budgetContainer = document.createElement('div');
+        budgetContainer.id = 'budget-container';
+        $details.append(budgetContainer);
+
+        var movieBudgetItem = document.createElement('div');
+        movieBudgetItem.className = 'budget-item';
+        budgetContainer.appendChild(movieBudgetItem);
+
+        var movieBudgetIcon = document.createElement('div');
+        movieBudgetIcon.className = 'icon';
+        movieBudgetItem.appendChild(movieBudgetIcon);
+
+        $(movieBudgetIcon).hammer().on('tap', function (event) {
+
+            // TODO: Open movie budget PDF
+
+        });
+
+        var movieBudgetLabel = document.createElement('div');
+        movieBudgetLabel.className = 'label';
+        movieBudgetLabel.textContent = 'Movie Budget';
+        movieBudgetItem.appendChild(movieBudgetLabel);
+
+        var prodBudgetItem = document.createElement('div');
+        prodBudgetItem.className = 'budget-item';
+        budgetContainer.appendChild(prodBudgetItem);
+
+        var prodBudgetIcon = document.createElement('div');
+        prodBudgetIcon.className = 'icon';
+        prodBudgetItem.appendChild(prodBudgetIcon);
+
+        $(prodBudgetIcon).hammer().on('tap', function (event) {
+
+            // TODO: Open prod budget PDF
+
+        });
+
+        var prodBudgetLabel = document.createElement('div');
+        prodBudgetLabel.className = 'label';
+        prodBudgetLabel.textContent = 'Prod Budget';
+        prodBudgetItem.appendChild(prodBudgetLabel);
+        
+
+        var postBudgetItem = document.createElement('div');
+        postBudgetItem.className = 'budget-item';
+        budgetContainer.appendChild(postBudgetItem);
+
+        var postBudgetIcon = document.createElement('div');
+        postBudgetIcon.className = 'icon';
+        postBudgetItem.appendChild(postBudgetIcon);
+
+        $(postBudgetIcon).hammer().on('tap', function (event) {
+
+            // TODO: Open post budget PDF
+
+        });
+
+        var postBudgetLabel = document.createElement('div');
+        postBudgetLabel.className = 'label';
+        postBudgetLabel.textContent = 'Post Budget';
+        postBudgetItem.appendChild(postBudgetLabel);
+
         // set options for rendering
         setTransformOptions('department', _isCurrentView3D);
         var options = getTransformOptions();
 
         // initialize the controls
         tileControls.destroy();
-        tileControls = new CG.TileControls(options, camera, render, $('#viewport'), 800);
+        tileControls = new CG.TileControls(options, camera, render, $('#viewport'), 1000);
 
         // start transformation rendering
         transform(movieTile.parentObject.departmentObjects, movieTile.movieData.name, 1000);
 
         // set back nav button
-        setBackNav(CG.Demo1.Views.Catalog, 'Catalog');
+        setBackNav(CG.Demo1.Views.Catalog, 'Pipeline Catalog');
 
     }
 
     function showAssets(departmentTile) {
 
         _lastDepartmentTile = departmentTile;
+        
 
+        $details.empty();
+
+        var phaseCaption = document.createElement('div');
+        phaseCaption.className = 'details-item-phase ' + departmentTile.phaseName.toLowerCase();
+        phaseCaption.textContent = departmentTile.phaseName;
+        $details.append(phaseCaption);
+
+        var caption = document.createElement('div');
+        caption.id = 'details-caption';
+        caption.textContent = departmentTile.departmentName;
+        $details.append(caption);
+
+     
         // set options for rendering
         setTransformOptions('asset', _isCurrentView3D);
         var options = getTransformOptions();
 
         // initialize the controls
         tileControls.destroy();
-        tileControls = new CG.TileControls(options, camera, render, $('#viewport'), 800);
+        tileControls = new CG.TileControls(options, camera, render, $('#viewport'), 1000);
 
         // start transformation rendering
         transform(departmentTile.parentObject.assetObjects, departmentTile.phaseName + '|' + departmentTile.departmentName, 1000);
@@ -834,7 +915,7 @@ CG.Demo1.StartApp = function () {
 
         // initialize the controls
         tileControls.destroy();
-        tileControls = new CG.TileControls(options, camera, render, $('#viewport'), 800);
+        tileControls = new CG.TileControls(options, camera, render, $('#viewport'), 1000);
 
         // start transformation rendering
         transform(assetTile.parentObject.subAssetObjects, assetTile.phaseName + '|' + assetTile.departmentName + '|' + assetTile.categoryName, 1000);
@@ -919,6 +1000,10 @@ CG.Demo1.StartApp = function () {
     }    
    
     function toggle2D3D(isTo3D, duration) {
+
+        if (!_tileVectors[_currentVectorKey]) {
+            return;
+        }
 
         if (tileControls.disabled === true) {
             return;
