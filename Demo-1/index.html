@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <title>CineGlass</title>
     <link href="css/demo-1.main.css" rel="stylesheet" />
+    <link rel="prefetch" href="/" />
 </head>
 
 <body ontouchmove="disableEvent(event);" ondragstart="disableEvent(event);">
@@ -16,6 +17,7 @@
     <script src="js/threejs/controls/TileControls.js"></script>
 
     <script src="js/jquery/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery/jquery.queryloader2.js"></script>
     <script src="js/jquery/jquery.hammer.min.js"></script>
     <script src="js/jquery/jquery.touchSlider.min.js"></script>
 
@@ -29,29 +31,32 @@
 
 
     <!--- START OF LAYOUT --->
-
    
     <div id="product-logo"></div>
     <div id="company-logo"></div>
 
     <div id="details-container"></div>
 
-    <div id="modalscreen"></div>
-
     <div id="backNav" title=""></div>
 
-    <div id='viewport'>
-
-
-
-        <!--<embed src="assets/prod/dailies/avid-ale/A0071.ALE" width="800" height="500" type="text/plain">-->
-
-
-    </div>
+    <div id='viewport'></div>
 
     <div id='menu'>
-        <button id='tiles3d'>3D Tiles</button>
-        <button id='tiles2d'>2D Tiles</button>
+        <button id='tiles3d'></button>
+        <button id='tiles2d'></button>
+    </div>
+
+    <div id="item-viewer-dialog">
+        <a id="item-viewer-close" href="#" class="close">
+            <img src="img/icons/close-button.png" title="Close Viewer" alt="Close" />
+        </a>
+        <div id="item-viewer-header"></div>
+        <div id="item-viewer-content">
+            <embed>
+            <div id="imageContainer">
+                <img />
+            </div>
+        </div>
     </div>
 
      
@@ -62,6 +67,22 @@
             event.preventDefault();
 
         }
+
+        $(document).ready(function () {
+            $('body').queryLoader2({
+                barColor: 'rgba(0,0,0,0.75)',
+                percentageColor: 'rgba(255,255,255,0.75)',
+                backgroundColor: 'rbga(0,0,0,0.25)',
+                percentage: true,
+                barHeight: 30,
+                completeAnimation: 'grow',
+                onComplete: function () {
+                    CG.Demo1.StartApp();
+                    $('#product-logo').show();
+                    $('#details-container').show();
+                }
+            });
+        });
 
 		</script>
 

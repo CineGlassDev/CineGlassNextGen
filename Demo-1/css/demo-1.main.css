@@ -37,30 +37,8 @@ a
 {
     position: absolute;
     bottom: 5px;
-    width: 100%;
     text-align: left;
 }
-
-button
-{
-    color: rgba(255,255,255,0.75);
-    background: transparent;
-    outline: 1px solid rgba(255,255,255,0.75);
-    border: 0px;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-
-    button:hover
-    {
-        background-color: rgba(255,255,255,0.5);
-    }
-
-    button:active
-    {
-        color: #000000;
-        background-color: rgba(255,255,255,0.95);
-    }
 
 
 /********************************
@@ -70,25 +48,30 @@ button
 #product-logo
 {
     position:absolute;
-    left:0px;
+    left:5px;
     top:5px;
     width:173px;
     height:71px;
     background-image: url('/img/cineglass.png');
     background-repeat:no-repeat;
-    z-index:100;
+    border:1px solid rgba(255,255,255,0.15);
+    display:none;
+    border-radius: 10px;
 }
 
 #company-logo
 {
     position:absolute;
-    right:5px;
-    bottom:5px;
+    right:3px;
+    bottom:3px;
     z-index:100;
     background-image: url('/img/technicolor-for-footer.png');
     width:124px;
     height:26px;
     background-repeat:no-repeat;
+    background-color:rgba(0,0,0,0.85);
+    border:3px solid rgba(0,0,0,0.5);
+    opacity:0.75;
 }
 
 #viewport 
@@ -101,12 +84,11 @@ button
 }
 
 #backNav
-{
-    display: none;
+{    
     position: absolute;
     z-index: 10;
     left: 20px;
-    top: 65px;
+    top: 85px;
     height: 30px;
     width: auto;
     min-width:100px;
@@ -122,6 +104,8 @@ button
     -moz-user-select: none;
     -o-user-select: none;
     user-select: none;
+
+    display: none;
 }
 
     #backNav:before
@@ -180,6 +164,44 @@ button
             background-color: rgba(54,88,135,1); /*hovercolor*/
         }
 
+button
+{
+    background: transparent;
+    border: 0px;
+    cursor: pointer;
+    opacity:0.5;
+
+    background-position:center;
+    background-size:contain;
+    background-repeat:no-repeat;
+
+    margin:5px 0px 0px 5px;
+}
+
+    button:hover
+    {
+        opacity:0.75;
+    }
+
+    button:active
+    {
+        opacity:1.0;
+    }
+
+#tiles3d
+{
+    background-image: url('../img/icons/titles-3d.png');
+    height:29px;   
+    width:48px;       
+}
+
+#tiles2d
+{
+    background-image: url('../img/icons/titles-2d.png');
+    height:29px;
+    width:31px;
+}
+
 
 /*******************************
  *** START OF DETAILS STYLES ***
@@ -193,13 +215,10 @@ button
             margin-left: -200px;
             width:400px;
             padding: 5px 0px 10px 0px;
-            background-color:rgba(0,0,0,0.5);
+            background-color:rgba(0,0,0,0.75);
             z-index:500;
             border:1px solid rgba(255,255,255,0.5);
-
-            -webkit-box-shadow: 7px 7px 5px rgba(50, 50, 50, 0.75);
-            -moz-box-shadow:    7px 7px 5px rgba(50, 50, 50, 0.75);
-            box-shadow:         7px 7px 5px rgba(50, 50, 50, 0.75);
+            display:none;
         }
 
         #details-caption {
@@ -220,6 +239,12 @@ button
             color:rgba(127,255,255,0.5);
             text-align:center;
             line-height:24px;
+
+            text-shadow: 0 -1px rgba(0,0,0,0.5),
+                1px 0 rgba(0,0,0,0.5),
+                0 1px rgba(0,0,0,0.5),
+                -1px 0 rgba(0,0,0,0.5);
+            
         }
 
         .details-item-info {
@@ -236,17 +261,17 @@ button
             top:0px;
             width: 35px;
             height: 35px;
-            background-image: url('../img/icons/budget4.png');
+            /*background-image: url('../img/icons/budget.png');
             background-position:center;
             background-size:contain;
             background-repeat:no-repeat;
             cursor:pointer;
-            opacity:0.75;
+            opacity:0.75;*/
         }
 
-            #details-budget:hover {
+            /*#details-budget:hover {
                 opacity:1.0;
-            }
+            }*/
 
         #budget-container {
             position:relative;
@@ -262,7 +287,7 @@ button
 
         .budget-item .label {
             font-size:10px;
-            color:rgba(255,255,255,0.5);
+            color:rgba(255,255,255,0.75);
         }
 
         .budget-item .icon {
@@ -270,7 +295,7 @@ button
             left:12px;
             width: 35px;
             height: 35px;
-            background-image: url('../img/icons/budget4.png');
+            background-image: url('../img/icons/budget.png');
             background-position:center;
             background-size:contain;
             background-repeat:no-repeat;
@@ -282,10 +307,15 @@ button
                 opacity:1.0;
             }
 
+            .icon-disabled
+            {
+                background-image: url('../img/icons/budget-disabled.png') !important;
+            }
+
         .studio-budget-icon {
             width: 35px;
             height: 35px;
-            background-image: url('../img/icons/budget4.png');
+            background-image: url('../img/icons/budget.png');
             background-position:center;
             background-size:contain;
             background-repeat:no-repeat;
@@ -302,8 +332,97 @@ button
         .studio-budget-label {
             text-align:center;
             font-size:10px;
-            color:rgba(255,255,255,0.5);
+            color:rgba(255,255,255,0.75);
         }
+
+#item-viewer-dialog
+{
+    display: none;
+    background: #333;
+    background: rgba(0,0,0,0.85);
+    padding: 10px;
+    border: 2px solid #ddd;
+    float: left;
+    font-size: 1.2em;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 99999;
+    box-shadow: 0px 0px 20px #999;
+    -moz-box-shadow: 0px 0px 20px #999;
+    -webkit-box-shadow: 0px 0px 20px #999;
+    border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+#item-viewer-close img {
+	float: right;
+    margin: -26px -26px 0 0;
+    opacity: 0.85;
+}
+    #item-viewer-close img:hover
+    {
+        opacity:1;
+    }
+
+#item-viewer-content
+{
+    /*background-color: rgba(255,255,255,0.75);*/
+    border:1px solid rgba(255,255,255,0.5);
+    width:100%;
+}
+
+#imageContainer
+{
+    overflow: auto;
+    text-align:center;
+}
+    
+
+#item-viewer-mask {
+    display: none;
+    background: #000;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+    z-index: 999;
+}
+
+#item-viewer-header
+{
+    width:100%;
+    line-height:30px;
+    padding: 0px 0px 3px 0px;                           
+    color: #fff;
+    display: block;
+    overflow:hidden;
+    font-size: 16px;
+    font-weight: bold;            
+    text-align: center;                           
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #8a8a8a), color-stop(2%, #6a6a6a), color-stop(100%, #151515));
+    background: -moz-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #8a8a8a), color-stop(2%, #6a6a6a), color-stop(100%, #151515));
+    background: -o-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #8a8a8a), color-stop(2%, #6a6a6a), color-stop(100%, #151515));
+    border:1px solid rgba(255,255,255,0.5);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -487,50 +606,63 @@ button
     text-align: center;
     font-size: 18px;
     font-weight:bold;
+
+
+
+    text-shadow: 0 -1px rgba(0,0,0,0.25),
+                1px 0 rgba(0,0,0,0.25),
+                0 1px rgba(0,0,0,0.25),
+                -1px 0 rgba(0,0,0,0.25);
+
+
     }
 
         .phase-swatch.development
         {
-            background-color: rgba(127,255,255,0.85);
+            background-color: rgba(174,208,207,0.85);
         }
 
 .details-item-phase.development {
-    color: rgba(127,255,255,0.85);
+    color: rgba(174,208,207,0.85);
 }
 
         .phase-swatch.pre-production
         {
-            background-color: rgba(55,96,212,0.85);
+            background-color: rgba(104,154,196,0.85);
         }
 
 .details-item-phase.pre-production {
-    color: rgba(55,96,212,0.85);
+    color: rgba(104,154,196,0.85);
 }
 
         .phase-swatch.production
         {
-            background-color: rgba(173,55,212,0.85);
+            background-color: rgba(196,104,173,0.85);
         }
 
 .details-item-phase.production {
-    color: rgba(173,55,212,0.85);
+    color: rgba(196,104,173,0.85);
 }
         .phase-swatch.post-production
         {
-            background-color: rgba(212,136,55,0.85);
+            background-color: rgba(196,154,104,0.85);
         }
 
 .details-item-phase.post-production {
-    color: rgba(212,136,55,0.85);
+    color: rgba(196,154,104,0.85);
 }
         .phase-swatch.distribution
         {
-            background-color: rgba(88,212,55,0.85);
+            background-color: rgba(104,196,119,0.85);
         }
 
 .details-item-phase.distribution {
-    color: rgba(88,212,55,0.85);
+    color: rgba(104,196,119,0.85);
 }
+
+
+
+
 
 
 
@@ -627,170 +759,6 @@ button
 {
     background-color: rgba(88,212,55,0.5);
 }
-
-
-/***********************************
- *** START OF ITEM VIEWER STYLES ***
- ***********************************/
-
-#itemViewer-container
-{
-    border: 4px inset rgba(255,255,255,0.75);
-    background: rgba(0,0,0,1);
-    color: rgba(255,255,255,0.75);
-    z-index: 200;
-}
-
-#itemViewer-titlebar
-{
-    position: absolute;
-    width: 100%;
-    height: 26px;
-    top: 0px;
-    z-index: 2;
-    text-align: center;
-    border: 1px solid rgba(0,0,0,0.5);
-    background-image: url(../img/subtle-background-texture.png);
-    opacity: 0.95;
-}
-
-    #itemViewer-titlebar div
-    {
-        width: 100%;
-        height: 100%;
-        line-height: 26px;
-        font-size: 16px;
-        font-weight: bold;
-        color: rgba(0,0,0,0.75);
-        text-transform: uppercase;
-        text-shadow: 0px -1px 0px rgba(0,0,0,0.95);
-        opacity: 0.85;
-        float: left;
-    }
-
-#itemViewer-navbar
-{
-    position: absolute;
-    width: 100%;
-    height: 37px;
-    bottom: 0px;
-    z-index: 2;
-    text-align: center;
-    background: rgba(255,255,255,0.55);
-    border-top: 1px solid #353939;
-    border-bottom: 1px solid #2e3131;
-    -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
-    box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
-    background-image: url(../img/subtle-background-texture.png);
-    opacity: 0.35;
-}
-
-.itemViewer-button
-{
-    display: inline-block;
-    width: 70px;
-    margin: 6px 5px 0 0;
-    font-size: 11px;
-    font-weight: bold;
-    line-height: 17px;
-    text-align: center;
-    padding: 3px 5px;
-    cursor: pointer;
-    -webkit-transition: 0.4s ease-out;
-    -moz-transition: 0.4s ease-out;
-    -o-transition: 0.4s ease-out;
-    transition: 0.4s ease-out;
-    -webkit-transition-property: background-color, border-bottom, color;
-    -moz-transition-property: background-color, border-bottom, color;
-    -o-transition-property: background-color, border-bottom, color;
-    transition-property: background-color, border-bottom, color;
-    border-left: 1px solid #353939;
-    border-left: 1px solid rgba(0, 0, 0, 0.2);
-    border-right: 1px solid #4d5354;
-    border-right: 1px solid rgba(255, 255, 255, 0.06);
-    border-bottom: 1px solid #353939;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    border-top: 1px solid #4d5354;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-    text-decoration: none;
-    text-shadow: 0 -1px #2e3131;
-    border-left: 1px solid #4d5354;
-    border-left: 1px solid rgba(255, 255, 255, 0.06);
-    border-right: 1px solid #353939;
-    border-right: 1px solid rgba(0, 0, 0, 0.2);
-    color: rgba(0,0,0,0.75);
-    border-radius: 5px;
-    background: rgba(255,255,255,0.65);
-    /*background: rgba(255, 255, 255, 0.15);*/
-    /*background-image: -webkit-linear-gradient(top, #484e4f, #323637);
-                      background-image: -moz-linear-gradient(top, #484e4f, #323637);
-                      background-image: -o-linear-gradient(top, #484e4f, #323637);
-                      background-image: linear-gradient(to bottom, #484e4f, #323637);*/
-}
-
-    .itemViewer-button:hover
-    {
-        background: #4d5354;
-        background: rgba(255, 255, 255, 0.05);
-    }
-
-    .itemViewer-button:hover, .itemViewer-button:active, .itemViewer-button.active
-    {
-        color: rgba(255,255,255,0.5);
-        background-color: #323637;
-        border-bottom: 3px solid rgba(255,255,255,0.25);
-    }
-
-    .itemViewer-button.active
-    {
-        color: rgba(255,255,255,1);
-    }
-
-        .itemViewer-button.active.development, .itemViewer-button.active.development:hover, .itemViewer-button.active.development:active, .swatch.development
-        {
-            border-bottom: 3px solid rgba(127,255,255,0.5);
-        }
-
-        .itemViewer-button.active.pre-production, .itemViewer-button.active.pre-production:hover, .itemViewer-button.active.pre-production:active, .swatch.pre-production
-        {
-            border-bottom: 3px solid rgba(55,96,212,0.5);
-        }
-
-        .itemViewer-button.active.production, .itemViewer-button.active.production:hover, .itemViewer-button.active.production:active, .swatch.production
-        {
-            border-bottom: 3px solid rgba(173,55,212,0.5);
-        }
-
-        .itemViewer-button.active.post-production, .itemViewer-button.active.post-production:hover, .itemViewer-button.active.post-production:active, .swatch.post-production
-        {
-            border-bottom: 3px solid rgba(212,136,55,0.5);
-        }
-
-        .itemViewer-button.active.distribution, .itemViewer-button.active.distribution:hover, .itemViewer-button.active.distribution:active, .swatch.distribution
-        {
-            border-bottom: 3px solid rgba(88,212,55,0.5);
-        }
-
-
-
-
-#modalscreen
-{
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.65);
-    z-index: 100;
-    visibility: hidden;
-}
-
-
-
-
-
-
 
 
 

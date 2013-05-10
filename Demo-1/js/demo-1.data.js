@@ -9,6 +9,7 @@ CG.Demo1.DemoData = function () {
         name: 'Warner Bros. Pictures',
         logo: 'img/warner-brothers-pictures.jpg',
         budgetUri: 'assets/budget/Studio YTD Budget Analysis.pdf',
+        budgetType: 'pdf',
         catalog: []
     };
 
@@ -24,7 +25,8 @@ CG.Demo1.DemoData = function () {
             stars: 'Tom Cruise, Emily Blunt, Bill Paxton'
         },
         currentPhase: 'Post-Production',
-        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        budgetUri: 'https://skydrive.live.com/view.aspx?resid=A23CD5C2A3F9B07E!155&cid=a23cd5c2a3f9b07e&authkey=!AAjaKBZbWCBgwSg',
+        budgetType: 'xls',
         phases: null
     };
     warnerBrothers.catalog.push(allYouNeedIsSkill);
@@ -42,6 +44,7 @@ CG.Demo1.DemoData = function () {
         },
         currentPhase: 'Distribution',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        budgetType: 'xls',
         phases: null
     }
     warnerBrothers.catalog.push(conjuring);
@@ -59,6 +62,7 @@ CG.Demo1.DemoData = function () {
         },
         currentPhase: 'Production',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        budgetType: 'xls',
         phases: null
     }
     warnerBrothers.catalog.push(godzilla);
@@ -76,6 +80,7 @@ CG.Demo1.DemoData = function () {
         },
         currentPhase: 'Distribution',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        budgetType: 'xls',
         phases: null
     }
     warnerBrothers.catalog.push(greatGatsby);
@@ -93,6 +98,7 @@ CG.Demo1.DemoData = function () {
         },
         currentPhase: 'Distribution',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        budgetType: 'xls',
         phases: null
     }
     warnerBrothers.catalog.push(hangover3);
@@ -110,6 +116,7 @@ CG.Demo1.DemoData = function () {
         },
         currentPhase: 'Post-Production',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        budgetType: 'xls',
         phases: null
     }
     warnerBrothers.catalog.push(hobbitDesolation);
@@ -127,14 +134,18 @@ CG.Demo1.DemoData = function () {
         },
         currentPhase: 'Production',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        budgetType: 'xls',
         phases: {
             development: {
                 name: 'Development',
                 budgetUri: '',
+                budgetType: '',
                 iconUri: 'img/icons/dev.png',
                 departments: [
                     {
                         name: 'Script',
+                        start: new Date("11/2/2012"),
+                        end: new Date("11/20/2012"),
                         assets: [
                             {
                                 name: 'dark-knight-rises.pdf',
@@ -151,11 +162,14 @@ CG.Demo1.DemoData = function () {
             preProduction: {
                 name: 'Pre-Production',
                 budgetUri: '',
+                budgetType: '',
                 iconUri: 'img/icons/pre-prod.png',
                 departments: [
                     {
                         name: 'Art',
                         iconUri: 'img/icons/art.jpg',
+                        start: new Date("1/2/2012"),
+                        end: new Date("1/22/2012"),
                         assets: [
                             {
                                 name: 'storyboard-1.jpg',
@@ -245,11 +259,14 @@ CG.Demo1.DemoData = function () {
             production: {
                 name: 'Production',
                 budgetUri: 'assets/budget/Prod-4K_Budget.xls',
+                budgetType: 'xls',
                 iconUri: 'img/icons/prod.jpg',
                 departments: [
                     {
                         name: 'Shoot',
                         iconUri: 'img/icons/prod.png',
+                        start: new Date("4/23/2012"),
+                        end: new Date("5/23/2012"),
                         assets: [
                             {
                                 name: 'EDIT_DeliveryReport20130423.pdf',
@@ -280,6 +297,8 @@ CG.Demo1.DemoData = function () {
                     {
                         name: 'Dailies',
                         iconUri: 'img/icons/dailies.jpg',
+                        start: new Date("4/23/2012"),
+                        end: new Date("5/23/2012"),
                         assets: [
                             {
                                 name: 'A0070.ale',
@@ -598,6 +617,8 @@ CG.Demo1.DemoData = function () {
                     {
                         name: 'VFX',
                         iconUri: 'img/icons/prod-vfx.jpg',
+                        start: new Date("4/23/2012"),
+                        end: new Date("5/23/2012"),
                         assets: [
                             {
                                 name: '0089_003_A0070.1271972_look.jpg',
@@ -867,6 +888,8 @@ CG.Demo1.DemoData = function () {
                     },
                     {
                         name: 'Script Notes',
+                        start: new Date("4/23/2012"),
+                        end: new Date("5/23/2012"),
                         iconUri: 'img/icons/script-notes.png',
                         assets: [
                             {
@@ -940,11 +963,14 @@ CG.Demo1.DemoData = function () {
             postProduction: {
                 name: 'Post-Production',
                 budgetUri: 'assets/budget/Post Prod-4K_Budget.xls',
+                budgetType: 'xls',
                 iconUri: 'img/icons/post.jpg',
                 departments: [
                     {
                         name: 'Deliverable Planning',
                         iconUri: 'img/icons/dist-planning.png',
+                        start: new Date("5/3/2012"),
+                        end: new Date("5/8/2012"),
                         assets: [
                             {
                                 name: 'IM3_CG_Reel_By_Reel_Plan_20130326.pdf',
@@ -975,6 +1001,8 @@ CG.Demo1.DemoData = function () {
                     {
                         name: 'VFX Delivery',
                         iconUri: 'img/icons/post-vfx.jpg',
+                        start: new Date("5/3/2012"),
+                        end: new Date("6/8/2012"),
                         assets: [
                             {
                                 name: 'A0070.ALE',
@@ -1357,7 +1385,7 @@ CG.Demo1.DemoData = function () {
                                 version: '1',
                                 versionDate: new Date('5/3/2013'),
                                 type: 'MOV',
-                                assetUri: 'assets/post/short.mp4',
+                                assetUri: 'assets/post/vfx/short.mp4',
                                 category: ''
                             }
                         ]
@@ -1367,6 +1395,7 @@ CG.Demo1.DemoData = function () {
             distribution: {
                 name: 'Distribution',
                 budgetUri: '',
+                budgetType: '',
                 iconUri: 'img/icons/dist.png',
                 departments: []
             }
@@ -1387,6 +1416,7 @@ CG.Demo1.DemoData = function () {
         },
         currentPhase: 'Distribution',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        budgetType: 'xls',
         phases: null
     }
     warnerBrothers.catalog.push(manOfSteel);
@@ -1404,6 +1434,7 @@ CG.Demo1.DemoData = function () {
         },
         currentPhase: 'Distribution',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        budgetType: 'xls',
         phases: null
     }
     warnerBrothers.catalog.push(pacificRim);
@@ -1421,6 +1452,7 @@ CG.Demo1.DemoData = function () {
         },
         currentPhase: 'Production',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        budgetType: 'xls',
         phases: null
     }
     warnerBrothers.catalog.push(legoMovie);
@@ -1438,6 +1470,7 @@ CG.Demo1.DemoData = function () {
         },
         currentPhase: 'Post-Production',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        budgetType: 'xls',
         phases: null
     }
     warnerBrothers.catalog.push(seventhSon);
@@ -1455,6 +1488,7 @@ CG.Demo1.DemoData = function () {
         },
         currentPhase: 'Production',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        budgetType: 'xls',
         phases: null
     }
     warnerBrothers.catalog.push(threeHundred2);

@@ -82,7 +82,7 @@ CG.TileControls = function (options, camera, renderFunction, swipeAreaContainer,
 
         }
 
-        console.log({ 'newY': newY, 'newZ': newZ });
+        //console.log({ 'newY': newY, 'newZ': newZ });
  
         if ((_this.is3D === true && newZ != _camera.position.z) ||
             (_this.is3D === false && newY != _camera.position.y)) {

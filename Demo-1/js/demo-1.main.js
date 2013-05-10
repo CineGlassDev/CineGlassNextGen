@@ -318,6 +318,8 @@ CG.Demo1.StartApp = function () {
         tile.title = dept.name;
         tile.assets = dept.assets;
         tile.departmentName = dept.name;
+        tile.start = dept.start;
+        tile.end = dept.end;
         tile.phaseName = phase.name;
 
         //
@@ -456,10 +458,6 @@ CG.Demo1.StartApp = function () {
 
                         showSubAssets(this);
 
-
-                        // TODO:
-                        // ---- transform to sub-asset tiles in main area        
-
                         return false;
 
                     });
@@ -530,10 +528,7 @@ CG.Demo1.StartApp = function () {
                         return;
                     }
 
-                    // TODO:
-                    // ---- display dialog with asset name and asset preview
-                    // create logo element
-                    //                    
+                    showItemViewer(this.asset.name, this.asset.assetUri, this.asset.type);
 
                     return false;
 
@@ -597,7 +592,7 @@ CG.Demo1.StartApp = function () {
                         return;
                     }
 
-                    // TODO: Show viewer
+                    showItemViewer(this.asset.name, this.asset.assetUri, this.asset.type);
 
                     return false;
 
@@ -736,13 +731,27 @@ CG.Demo1.StartApp = function () {
         budgetContainer.id = 'budget-container';
         $details.append(budgetContainer);
 
-        var budgetIcon = document.createElement('div');
+        var budgetIcon = document.createElement('div');        
+        budgetIcon.title = 'Studio Budget';
         budgetIcon.className = 'studio-budget-icon';
         budgetContainer.appendChild(budgetIcon);
 
+        if (_studioData.budgetUri.length > 0) {
+            
+            budgetIcon.itemSource = _studioData.budgetUri;
+            budgetIcon.itemType = _studioData.budgetType;
+
+        } else {
+
+            $(budgetIcon).addClass('icon-disabled');
+            budgetIcon.disabled = true;
+
+        }
+
         $(budgetIcon).hammer().on('tap', function (event) {
 
-            // TODO: Open studio budget PDF
+            // show studio budget
+            showItemViewer(this.title, this.itemSource, this.itemType);
 
         });
 
@@ -773,9 +782,8 @@ CG.Demo1.StartApp = function () {
         _lastMovieTile = movieTile;
 
         // change page background to one-sheet
-        $viewport.css('background-image', 'url("' + movieTile.movieData.oneSheet + '")');
+        $viewport.css('background-image', 'url("' + getFileDirectory(movieTile.movieData.oneSheet) + '/original-size/' + getFileName(movieTile.movieData.oneSheet) + '")');
 
-       
         $details.empty();
 
         var caption = document.createElement('div');
@@ -801,13 +809,27 @@ CG.Demo1.StartApp = function () {
         movieBudgetItem.className = 'budget-item';
         budgetContainer.appendChild(movieBudgetItem);
 
-        var movieBudgetIcon = document.createElement('div');
+        var movieBudgetIcon = document.createElement('div');        
+        movieBudgetIcon.title = 'Movie Budget';
         movieBudgetIcon.className = 'icon';
         movieBudgetItem.appendChild(movieBudgetIcon);
 
+        if (movieTile.movieData.budgetUri.length > 0) {
+            
+            movieBudgetIcon.itemSource = movieTile.movieData.budgetUri;
+            movieBudgetIcon.itemType = movieTile.movieData.budgetType;
+
+        } else {
+
+            $(movieBudgetIcon).addClass('icon-disabled');
+            movieBudgetIcon.disabled = true;
+
+        }        
+
         $(movieBudgetIcon).hammer().on('tap', function (event) {
 
-            // TODO: Open movie budget PDF
+            // show movie budget
+            showItemViewer(this.title, this.itemSource, this.itemType);
 
         });
 
@@ -820,13 +842,28 @@ CG.Demo1.StartApp = function () {
         prodBudgetItem.className = 'budget-item';
         budgetContainer.appendChild(prodBudgetItem);
 
-        var prodBudgetIcon = document.createElement('div');
+        var prodBudgetIcon = document.createElement('div');        
+        prodBudgetIcon.title = 'Prod Budget';
         prodBudgetIcon.className = 'icon';
         prodBudgetItem.appendChild(prodBudgetIcon);
 
+        if (movieTile.movieData.phases &&
+            movieTile.movieData.phases.production.budgetUri.length > 0) {
+            
+            prodBudgetIcon.itemSource = movieTile.movieData.phases.production.budgetUri;
+            prodBudgetIcon.itemType = movieTile.movieData.phases.production.budgetType;
+
+        } else {
+
+            $(prodBudgetIcon).addClass('icon-disabled');
+            prodBudgetIcon.disabled = true;            
+
+        }
+
         $(prodBudgetIcon).hammer().on('tap', function (event) {
 
-            // TODO: Open prod budget PDF
+            // show prod budget
+            showItemViewer(this.title, this.itemSource, this.itemType);
 
         });
 
@@ -840,13 +877,27 @@ CG.Demo1.StartApp = function () {
         postBudgetItem.className = 'budget-item';
         budgetContainer.appendChild(postBudgetItem);
 
-        var postBudgetIcon = document.createElement('div');
+        var postBudgetIcon = document.createElement('div');        
+        postBudgetIcon.title = 'Post Budget';
         postBudgetIcon.className = 'icon';
         postBudgetItem.appendChild(postBudgetIcon);
 
+        if (movieTile.movieData.phases && movieTile.movieData.phases.postProduction.budgetUri.length > 0) {
+            
+            postBudgetIcon.itemSource = movieTile.movieData.phases.postProduction.budgetUri;
+            postBudgetIcon.itemType = movieTile.movieData.phases.postProduction.budgetType;
+
+        } else {
+
+            $(postBudgetIcon).addClass('icon-disabled');
+            postBudgetIcon.disabled = true;            
+
+        }      
+       
         $(postBudgetIcon).hammer().on('tap', function (event) {
 
-            // TODO: Open post budget PDF
+            // show post budget
+            showItemViewer(this.title, this.itemSource, this.itemType);
 
         });
 
@@ -888,6 +939,10 @@ CG.Demo1.StartApp = function () {
         caption.textContent = departmentTile.departmentName;
         $details.append(caption);
 
+        var dates = document.createElement('div');
+        dates.className = 'details-item-info';
+        dates.textContent = formatDate(departmentTile.start) + ' thru ' + formatDate(departmentTile.end);
+        $details.append(dates);
      
         // set options for rendering
         setTransformOptions('asset', _isCurrentView3D);
@@ -934,12 +989,11 @@ CG.Demo1.StartApp = function () {
         var backNav = $backNav.get(0);
 
         if (view == CG.Demo1.Views.None) {
-            new TWEEN.FadeOut(backNav, 200);
 
-            //$backNav.css('display', 'none');
+            if ($backNav.css('display') !== 'none') {
+                new TWEEN.FadeOut(backNav, 200);
+            }
         } else {
-            //$backNav.css('display', 'block');
-            
             new TWEEN.FadeIn(backNav, 1000);
         }
 
@@ -979,6 +1033,16 @@ CG.Demo1.StartApp = function () {
         } else {
             return ("url('img/icons/" + asset.type.toLowerCase() + ".png')");
         }
+    }
+
+    function getEncoding(itemType) {
+
+        switch (itemType.toLowerCase()) {
+            case 'pdf': return 'application/pdf';
+            case 'txt': return 'text/plain';
+            default: return ''
+        }
+
     }
 
     function getFileDirectory(filePath) {
@@ -1198,8 +1262,6 @@ CG.Demo1.StartApp = function () {
             camera.position.y != initialPosition.y ||
             camera.position.z != initialPosition.z) {
 
-            $('#modalscreen').css('visibility', 'hidden');
-
             tileControls.disabled = true;
 
             $viewport.itemViewer('hide');
@@ -1290,9 +1352,7 @@ CG.Demo1.StartApp = function () {
 
     function onWindowResize() {
 
-        $('#modalscreen').css({
-            width: window.innerWidth + 'px', height: window.innerHeight + 'px'
-        });
+        resizeItemViewer();
 
     	camera.aspect = window.innerWidth / window.innerHeight;
 
@@ -1301,6 +1361,145 @@ CG.Demo1.StartApp = function () {
     	renderer.setSize(window.innerWidth, window.innerHeight);
 
     	render();
+    }
+
+    function showItemViewer(caption, itemSrc, itemType) {
+
+        itemType = itemType.toLowerCase();
+
+        if (itemType == 'xls' ||
+            itemType == 'doc' ||
+            itemType == 'eml') {
+
+            window.open(itemSrc, caption);
+
+        } else {
+
+            resizeItemViewer();
+
+            var $dialog = $('#item-viewer-dialog');
+            var $header = $('#item-viewer-header');
+            var $embed = $('#item-viewer-dialog embed');
+            var $imgContainer = $('#imageContainer');
+            var $img = $('#item-viewer-content img');
+
+            
+            if (itemType == 'img') {
+                
+                $img.attr({
+                    'src' : itemSrc,
+                    'alt' : caption,
+                    'title' : caption
+                });
+
+                $embed.hide();
+                $imgContainer.show();
+
+            } else {
+
+                if (itemType == 'txt') {
+                    $('#item-viewer-content').css('background-color', 'white');
+                } else {
+                    $('#item-viewer-content').css('background-color', 'inherit');
+                }
+
+                var encodingType = getEncoding(itemType);
+
+                $embed.attr({
+                    'src': itemSrc,
+                    'type': encodingType
+                });               
+
+                $imgContainer.hide();
+                $embed.show();
+
+            }
+
+            $header.text(caption);
+
+            $dialog.fadeIn(300);
+
+            // Add the mask to body
+            $('body').append('<div id="item-viewer-mask"></div>');
+            $('#item-viewer-mask').fadeIn(300);
+
+        }
+
+    }
+
+    function showItemViewer2(caption, itemSrc, itemType) {
+
+        itemType = itemType.toLowerCase();
+
+        if (itemType == 'xls' ||
+            itemType == 'doc' ||
+            itemType == 'eml') {
+
+            window.open(itemSrc, caption);
+
+        } else {
+
+            resizeItemViewer();
+
+            var $dialog = $('#item-viewer-dialog');
+            var $header = $('#item-viewer-header');
+            var $embed = $('#item-viewer-dialog embed');
+            var $img = $('#item-viewer-dialog img');
+
+            var encodingType = getEncoding(itemType);
+            $embed.attr({
+                'src': itemSrc,
+                'type': encodingType
+            });
+
+            $header.text(caption);
+
+            $dialog.fadeIn(300);
+
+            // Add the mask to body
+            $('body').append('<div id="item-viewer-mask"></div>');
+            $('#item-viewer-mask').fadeIn(300);
+
+        }
+
+    }
+
+    function resizeItemViewer() {
+
+        var MARGIN = 24;
+
+        var $dialog = $('#item-viewer-dialog');
+        var $header = $('#item-viewer-header');
+        var $imgContainer = $('#imageContainer');
+        var $embed = $('#item-viewer-dialog embed');
+
+        var dialogWidth = Math.round(window.innerWidth * 0.85);
+        var dialogHeight = Math.round(window.innerHeight * 0.85);
+
+        $dialog.css({
+            width: dialogWidth + 'px',
+            height: dialogHeight + 'px'
+        });
+
+        $imgContainer.css({
+            width: dialogWidth + 'px',
+            height: dialogHeight - $header.height() - (MARGIN * 2) + 'px'
+        });
+
+        $embed.attr({
+            'width': dialogWidth, // - (MARGIN * 2),
+            'height': dialogHeight - $header.height() - (MARGIN * 2)
+        });
+
+        // center align
+        var viewerMarginTop = (dialogHeight + MARGIN) / 2;
+        var viewerMarginLeft = (dialogWidth + MARGIN) / 2;
+
+        $dialog.css({
+            'margin-top': -viewerMarginTop,
+            'margin-left': -viewerMarginLeft
+        });
+
     }
 
     $(document).on('selectstart', function (event) {
@@ -1349,37 +1548,19 @@ CG.Demo1.StartApp = function () {
         }
 
     });
+
+    $('#item-viewer-close').hammer().on('tap', function (event) {
+
+        $('#item-viewer-mask, #item-viewer-dialog').fadeOut(300, function () {
+            $('#item-viewer-mask').remove();
+        });
+
+        return false;
+
+    });
     
     initialize();
     animate();
 
 
 }
-
-$(document).ready(function () {
-
-    CG.Demo1.StartApp();
-
-});
-
-
-
-
-
-
-
-
-//xlsx(URL)
-//pdf(EMBED)
-//ale(EMBED)
-//mp4(EMBED)
-//docx(URL)
-//eml(URL)
-
-
-// http://jbk404.site50.net/css3/scrollingmodalwindow/
-// http://jbkflex.wordpress.com/2012/07/20/cooler-modal-popup-window-with-fade-effect-gradient-colors-border-drop-shadow-and-center-position/
-// http://www.alessioatzeni.com/blog/login-box-modal-dialog-window-with-css-and-jquery/
-// http://www.alessioatzeni.com/wp-content/tutorials/jquery/login-box-modal-dialog-window/index.html
-
-// http://jbkflex.wordpress.com/2012/04/21/a-look-at-iscroll-native-way-of-scrolling-content-in-mobile-webkit/
