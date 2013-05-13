@@ -25,7 +25,7 @@ CG.Demo1.DemoData = function () {
             stars: 'Tom Cruise, Emily Blunt, Bill Paxton'
         },
         currentPhase: 'Post-Production',
-        budgetUri: 'https://skydrive.live.com/view.aspx?resid=A23CD5C2A3F9B07E!155&cid=a23cd5c2a3f9b07e&authkey=!AAjaKBZbWCBgwSg',
+        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
         budgetType: 'xls',
         phases: null
     };

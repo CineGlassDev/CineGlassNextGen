@@ -87,6 +87,7 @@ CG.Demo1.StartApp = function () {
     var _lastDepartmentTile;
     var _lastAssetTile;
     var _studioData;
+    var _itemsToPreload = [];    
 
     //
     // jQuery cache variables
@@ -94,7 +95,7 @@ CG.Demo1.StartApp = function () {
 
     $viewport = $('#viewport');
     $backNav = $('#backNav');
-    $details = $('#details-container');
+    $details = $('#details-container-inner');
 
 
     //////////////////////////////////
@@ -105,6 +106,15 @@ CG.Demo1.StartApp = function () {
 
 
     function initialize() {
+
+        if (isIDevice() === true) {
+            $('#item-viewer-content').css({
+                'overflow': 'scroll',
+                '-webkit-overflow-scrolling': 'touch'
+            });
+        } else {
+            $('#item-viewer-content').css('overflow', 'hidden');
+        }
 
         // initialize scene
         scene = new THREE.Scene();
@@ -127,19 +137,32 @@ CG.Demo1.StartApp = function () {
         $viewport.append(renderer.domElement);
 
         // initialize all objects required for 3D rendering
-        initializeTilesAndVectors();        
+        initializeTilesAndVectors();
 
-        //
-        // wire-up event handler for back nav
-        //
-        $('#backNav').hammer().on('tap', function (event) {
-            navBack();
-        });
+        $('*').cineGlassPreLoader({
+            barColor: 'rgba(0,0,0,0.75)',
+            percentageColor: 'rgba(255,255,255,0.75)',
+            backgroundColor: 'rbga(0,0,0,0.25)',
+            percentage: true,
+            barHeight: 30,
+            completeAnimation: 'grow',
+            studioData: _studioData,
+            getAssetIconUrlFunction: getAssetIconUrl,
+            onComplete: function () {
 
-        //
-        // kick off the 3D movies by default
-        //     
-        showMovieTiles();
+                //
+                // kick off the 3D movies by default
+                //     
+                showMovieTiles();
+
+
+                $('#product-logo').show();
+                $('#details-container').show();
+                renderDetailsContext();
+
+
+            }
+        });       
               
     }
 
@@ -357,19 +380,6 @@ CG.Demo1.StartApp = function () {
             }
 
             showAssets(this);
-
-            // TODO:
-            // ---- phase, department name, logo at top of page
-            // ---- budget button at top of page for respective phase (if applicable)...incorporate swatch line at top of button
-            // ---- transform to asset tiles in main area
-
-
-
-
-            //// set back nav
-            //setBackNav(CG.Views.Departments, 'Departments');
-
-            
 
             return false;
 
@@ -722,19 +732,24 @@ CG.Demo1.StartApp = function () {
         caption.textContent = _studioData.name;
         $details.append(caption);
 
+        var contextWrapper = document.createElement('div');
+        contextWrapper.id = 'details-context-wrapper';
+        $details.append(contextWrapper);
+
         var context = document.createElement('div');
         context.className = 'details-item-info';
         context.textContent = 'Pipeline Catalog';
-        $details.append(context);
+        contextWrapper.appendChild(context);
 
         var budgetContainer = document.createElement('div');
         budgetContainer.id = 'budget-container';
-        $details.append(budgetContainer);
+        contextWrapper.appendChild(budgetContainer);
 
         var budgetIcon = document.createElement('div');        
         budgetIcon.title = 'Studio Budget';
         budgetIcon.className = 'studio-budget-icon';
         budgetContainer.appendChild(budgetIcon);
+
 
         if (_studioData.budgetUri.length > 0) {
             
@@ -775,6 +790,8 @@ CG.Demo1.StartApp = function () {
 
         // set back nav button
         setBackNav(CG.Demo1.Views.None, '');
+
+        renderDetailsContext();
     }
 
     function showDepartments(movieTile) {
@@ -796,14 +813,18 @@ CG.Demo1.StartApp = function () {
         phaseCaption.textContent = 'In ' + movieTile.movieData.currentPhase;
         $details.append(phaseCaption);
 
+        var contextWrapper = document.createElement('div');
+        contextWrapper.id = 'details-context-wrapper';
+        $details.append(contextWrapper);        
+
         var context = document.createElement('div');
         context.className = 'details-item-info';
         context.textContent = movieTile.movieData.genre + '  -  ' + formatDate(movieTile.movieData.releaseDate) + ' (' + movieTile.movieData.releaseCountry + ')';
-        $details.append(context);
+        contextWrapper.appendChild(context);
 
         var budgetContainer = document.createElement('div');
         budgetContainer.id = 'budget-container';
-        $details.append(budgetContainer);
+        contextWrapper.appendChild(budgetContainer);
 
         var movieBudgetItem = document.createElement('div');
         movieBudgetItem.className = 'budget-item';
@@ -920,6 +941,7 @@ CG.Demo1.StartApp = function () {
         // set back nav button
         setBackNav(CG.Demo1.Views.Catalog, 'Pipeline Catalog');
 
+        renderDetailsContext();
     }
 
     function showAssets(departmentTile) {
@@ -939,10 +961,14 @@ CG.Demo1.StartApp = function () {
         caption.textContent = departmentTile.departmentName;
         $details.append(caption);
 
+        var contextWrapper = document.createElement('div');
+        contextWrapper.id = 'details-context-wrapper';
+        $details.append(contextWrapper);
+
         var dates = document.createElement('div');
         dates.className = 'details-item-info';
         dates.textContent = formatDate(departmentTile.start) + ' thru ' + formatDate(departmentTile.end);
-        $details.append(dates);
+        contextWrapper.appendChild(dates);
      
         // set options for rendering
         setTransformOptions('asset', _isCurrentView3D);
@@ -957,6 +983,8 @@ CG.Demo1.StartApp = function () {
 
         // set back nav button
         setBackNav(CG.Demo1.Views.Departments, 'Departments');
+
+        renderDetailsContext();
 
     }
 
@@ -977,7 +1005,6 @@ CG.Demo1.StartApp = function () {
 
         // set back nav button
         setBackNav(CG.Demo1.Views.Assets, assetTile.phaseName + ' - ' + assetTile.departmentName);
-
     }
 
     function setBackNav(view, caption) {
@@ -1038,7 +1065,12 @@ CG.Demo1.StartApp = function () {
     function getEncoding(itemType) {
 
         switch (itemType.toLowerCase()) {
+            case 'mov': return 'video/mpeg';
+            case 'doc': return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+            case 'eml': return 'message/rfc822';
             case 'pdf': return 'application/pdf';
+            case 'img': return 'image/png';
+            case 'xls': return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
             case 'txt': return 'text/plain';
             default: return ''
         }
@@ -1367,98 +1399,41 @@ CG.Demo1.StartApp = function () {
 
         itemType = itemType.toLowerCase();
 
-        if (itemType == 'xls' ||
+        var isIpad = isIDevice();
+
+        var useItemViewer = true;
+
+        if ((itemType == 'xls' && !isIpad) ||
             itemType == 'doc' ||
             itemType == 'eml') {
 
-            window.open(itemSrc, caption);
+            useItemViewer = false;
 
-        } else {
+        } else if (itemType == 'pdf' && isIpad) {
 
-            resizeItemViewer();
-
-            var $dialog = $('#item-viewer-dialog');
-            var $header = $('#item-viewer-header');
-            var $embed = $('#item-viewer-dialog embed');
-            var $imgContainer = $('#imageContainer');
-            var $img = $('#item-viewer-content img');
-
-            
-            if (itemType == 'img') {
-                
-                $img.attr({
-                    'src' : itemSrc,
-                    'alt' : caption,
-                    'title' : caption
-                });
-
-                $embed.hide();
-                $imgContainer.show();
-
-            } else {
-
-                if (itemType == 'txt') {
-                    $('#item-viewer-content').css('background-color', 'white');
-                } else {
-                    $('#item-viewer-content').css('background-color', 'inherit');
-                }
-
-                var encodingType = getEncoding(itemType);
-
-                $embed.attr({
-                    'src': itemSrc,
-                    'type': encodingType
-                });               
-
-                $imgContainer.hide();
-                $embed.show();
-
-            }
-
-            $header.text(caption);
-
-            $dialog.fadeIn(300);
-
-            // Add the mask to body
-            $('body').append('<div id="item-viewer-mask"></div>');
-            $('#item-viewer-mask').fadeIn(300);
+            useItemViewer = false;
 
         }
 
-    }
-
-    function showItemViewer2(caption, itemSrc, itemType) {
-
-        itemType = itemType.toLowerCase();
-
-        if (itemType == 'xls' ||
-            itemType == 'doc' ||
-            itemType == 'eml') {
-
-            window.open(itemSrc, caption);
-
-        } else {
+        if (useItemViewer) {
 
             resizeItemViewer();
 
-            var $dialog = $('#item-viewer-dialog');
-            var $header = $('#item-viewer-header');
-            var $embed = $('#item-viewer-dialog embed');
-            var $img = $('#item-viewer-dialog img');
-
-            var encodingType = getEncoding(itemType);
-            $embed.attr({
-                'src': itemSrc,
-                'type': encodingType
+            $('#itemViewer').attr({
+                src: itemSrc
             });
 
-            $header.text(caption);
+            $('#item-viewer-header').text(caption);
 
-            $dialog.fadeIn(300);
+            $('#item-viewer-dialog').fadeIn(300);
 
             // Add the mask to body
             $('body').append('<div id="item-viewer-mask"></div>');
             $('#item-viewer-mask').fadeIn(300);
+
+        } else {
+
+            window.open(itemSrc, caption);
 
         }
 
@@ -1470,8 +1445,6 @@ CG.Demo1.StartApp = function () {
 
         var $dialog = $('#item-viewer-dialog');
         var $header = $('#item-viewer-header');
-        var $imgContainer = $('#imageContainer');
-        var $embed = $('#item-viewer-dialog embed');
 
         var dialogWidth = Math.round(window.innerWidth * 0.85);
         var dialogHeight = Math.round(window.innerHeight * 0.85);
@@ -1481,14 +1454,9 @@ CG.Demo1.StartApp = function () {
             height: dialogHeight + 'px'
         });
 
-        $imgContainer.css({
+        $('#item-viewer-content').css({
             width: dialogWidth + 'px',
             height: dialogHeight - $header.height() - (MARGIN * 2) + 'px'
-        });
-
-        $embed.attr({
-            'width': dialogWidth, // - (MARGIN * 2),
-            'height': dialogHeight - $header.height() - (MARGIN * 2)
         });
 
         // center align
@@ -1500,6 +1468,47 @@ CG.Demo1.StartApp = function () {
             'margin-left': -viewerMarginLeft
         });
 
+    }
+
+    function isIDevice() {
+
+        var isIDevice = navigator.userAgent.match(/iPad/i) != null;
+
+        if (!isIDevice) {
+
+            isIDevice = (
+                //Detect iPhone
+                (navigator.platform.indexOf("iPhone") != -1) ||
+                //Detect iPod
+                (navigator.platform.indexOf("iPod") != -1)
+            );
+        }
+
+        return isIDevice;
+
+    }
+
+    function renderDetailsContext() {
+
+        var $container = $('#details-container');
+        var $icon = $('#details-expand-collapse');
+        var $context = $('#details-context-wrapper');
+
+        var isExpanded = true;
+
+        if (typeof (Storage) !== "undefined") {
+            isExpanded = (localStorage.detailsIsExpanded == 'true');
+        }
+
+        if (isExpanded) {
+            $container.css('height', 'auto');
+            $icon.css('background-image', 'url("../img/icons/collapse.png")');
+            $context.show();
+        } else {
+            $container.css('height', $('#details-caption').height() + $('.details-item-phase').height() + 'px');
+            $icon.css('background-image', 'url("../img/icons/expand.png")');
+            $context.hide();
+        }
     }
 
     $(document).on('selectstart', function (event) {
@@ -1558,8 +1567,31 @@ CG.Demo1.StartApp = function () {
         return false;
 
     });
-    
+
+    $('#details-expand-collapse').hammer().on('tap', function (event) {
+        
+
+        if (typeof (Storage) !== "undefined") {
+            localStorage.detailsIsExpanded = !$('#details-context-wrapper').is(':visible');
+        }
+
+        renderDetailsContext();
+
+        return false;
+
+    });
+
+    $('#backNav').hammer().on('tap', function (event) {
+        navBack();
+    });
+
+    $('#imageContainer').hammer().on('drag', function (event) {
+        return true;
+    });
+
+
     initialize();
+    resizeItemViewer();
     animate();
 
 
