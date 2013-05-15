@@ -4,22 +4,22 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "http://localhost", "http://localhost", "{63435CDB-18A4-43B4-8ADA-B149B3124341}"
 	ProjectSection(WebsiteProperties) = preProject
 		UseIISExpress = "false"
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv2.0"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
 		Debug.AspNetCompiler.VirtualPath = "/localhost"
-		Debug.AspNetCompiler.PhysicalPath = "..\..\..\..\Downloads\CineGlass\"
+		Debug.AspNetCompiler.PhysicalPath = "..\Demo-1\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/localhost"
-		Release.AspNetCompiler.PhysicalPath = "..\..\..\..\Downloads\CineGlass\"
+		Release.AspNetCompiler.PhysicalPath = "..\Demo-1\"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		SlnRelativePath = "..\..\..\..\Downloads\CineGlass\"
+		SlnRelativePath = "..\Demo-1\"
 	EndProjectSection
 EndProject
 Global

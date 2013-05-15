@@ -82,12 +82,18 @@ CG.Demo1.StartApp = function () {
     var _isCurrentView3D = true;
     var _currentVectorKey = null;
     var _currentTileObjects = null;
+    var _currentView = 0;
 
     var _lastMovieTile;
     var _lastDepartmentTile;
     var _lastAssetTile;
     var _studioData;
-    var _itemsToPreload = [];    
+    var _itemsToPreload = [];
+
+    // initialize hammer touch event manager
+    var _hammer = $(document).hammer({
+        swipe_velocity: 0.1
+    });
 
     //
     // jQuery cache variables
@@ -139,6 +145,14 @@ CG.Demo1.StartApp = function () {
         // initialize all objects required for 3D rendering
         initializeTilesAndVectors();
 
+        // initialize controls, defaulting to catalog controls
+        setTransformOptions('catalog', _isCurrentView3D);
+        var options = getTransformOptions();
+        tileControls = new CG.TileControls(options, camera, render, $('#viewport'), 1000, _hammer);
+
+        // initialize event handlers
+        initializeEventHandlers();
+
         $('*').cineGlassPreLoader({
             barColor: 'rgba(0,0,0,0.75)',
             percentageColor: 'rgba(255,255,255,0.75)',
@@ -154,12 +168,13 @@ CG.Demo1.StartApp = function () {
                 // kick off the 3D movies by default
                 //     
                 showMovieTiles();
-
-
+                
                 $('#product-logo').show();
                 $('#details-container').show();
-                renderDetailsContext();
+                $('#toggle-menu').show();
+                $('#release-notes').show();
 
+                renderDetailsContext();
 
             }
         });       
@@ -233,22 +248,6 @@ CG.Demo1.StartApp = function () {
             oneSheet.className = 'movie-tile one-sheet';
             oneSheet.style.backgroundImage = "url('" + movieData.oneSheet + "')";
             tile.appendChild(oneSheet);
-
-            //
-            // wire-up tap event handler for movie tile
-            //
-            $(tile).hammer().on('tap', function (event) {
-                var _this = this;
-
-                if (tileControls.disabled === true) {
-                    return;
-                }
-
-                showDepartments(this);                
-
-                return false;
-
-            });
 
             //
             // create a CSS3D object for this movie tile
@@ -371,21 +370,6 @@ CG.Demo1.StartApp = function () {
         tile.appendChild(logo);
 
         //
-        // wire-up tap event handler for department tile
-        //
-        $(tile).hammer().on('tap', function (event) {
-
-            if (tileControls.disabled === true) {
-                return;
-            }
-
-            showAssets(this);
-
-            return false;
-
-        });
-
-        //
         // create a CSS3D object for this movie tile
         // and initialize with a random Z vector
         //
@@ -430,7 +414,7 @@ CG.Demo1.StartApp = function () {
                     // create a tile for the asset category
                     //
                     var categoryTile = document.createElement('div');
-                    categoryTile.className = 'asset-tile';
+                    categoryTile.className = 'asset-tile category';
                     categoryTile.phaseName = phase.name;
                     categoryTile.departmentName = dept.name;
                     categoryTile.categoryName = asset.category;
@@ -456,21 +440,6 @@ CG.Demo1.StartApp = function () {
                     logo.className = 'asset-tile logo';
                     logo.style.backgroundImage = getAssetIconUrl(null);
                     categoryTile.appendChild(logo);
-
-                    //
-                    // wire-up tap event handler for category tile
-                    //
-                    $(categoryTile).hammer().on('tap', function (event) {
-
-                        if (tileControls.disabled === true) {
-                            return;
-                        }
-
-                        showSubAssets(this);
-
-                        return false;
-
-                    });
 
                     //
                     // create a CSS3D object for this movie tile
@@ -530,21 +499,6 @@ CG.Demo1.StartApp = function () {
                 tile.appendChild(logo);
 
                 //
-                // wire-up tap event handler for department tile
-                //
-                $(tile).hammer().on('tap', function (event) {
-
-                    if (tileControls.disabled === true) {
-                        return;
-                    }
-
-                    showItemViewer(this.asset.name, this.asset.assetUri, this.asset.type);
-
-                    return false;
-
-                });
-
-                //
                 // create a CSS3D object for this movie tile
                 // and initialize with a random vector
                 //
@@ -592,21 +546,6 @@ CG.Demo1.StartApp = function () {
                 logo.className = 'asset-tile logo';
                 logo.style.backgroundImage = getAssetIconUrl(asset);
                 tile.appendChild(logo);
-
-                //
-                // wire-up tap event handler for department tile
-                //
-                $(tile).hammer().on('tap', function (event) {
-
-                    if (tileControls.disabled === true) {
-                        return;
-                    }
-
-                    showItemViewer(this.asset.name, this.asset.assetUri, this.asset.type);
-
-                    return false;
-
-                });
 
                 //
                 // create a CSS3D object for this movie tile
@@ -720,7 +659,154 @@ CG.Demo1.StartApp = function () {
             }
         }
     }
+    
+    function initializeEventHandlers() {
+        
+        $(document).on('selectstart', function (event) {
+            //
+            // cancel selection/highlighting
+            //
+            return false;
+        });
 
+        $(window).on('resize orientationchange', function (event) {
+            onWindowResize();
+        });       
+
+        //
+        // wire-up tap event handler for movie tile
+        //
+        _hammer.on('tap', '.movie-tile', function (event) {
+
+            event.gesture.preventDefault();
+
+            if (tileControls.disabled === true) {
+                return;
+            }
+
+            showDepartments(event.gesture.target.parentElement);
+
+            return false;
+
+        });
+
+        //
+        // wire-up tap event handler for department tile
+        //
+        _hammer.on('tap', '.department-tile', function (event) {
+
+            event.gesture.preventDefault();
+
+            if (tileControls.disabled === true) {
+                return;
+            }
+
+            showAssets(event.gesture.target.parentElement);
+
+            return false;
+
+        });
+
+        //
+        // wire-up tap event handler for category tile
+        //
+        _hammer.on('tap', '.asset-tile.category', function (event) {
+
+            event.gesture.preventDefault();
+
+            if (tileControls.disabled === true) {
+                return;
+            }
+
+            showSubAssets(event.gesture.target.parentElement);
+
+        });
+
+        //
+        // wire-up tap event handler for department tile
+        //
+        _hammer.on('tap', '.asset-tile', function (event) {
+
+            if (tileControls.disabled === true) {
+                return;
+            }
+
+            var asset = event.gesture.target.parentElement.asset;
+
+            if (typeof asset != 'undefined') {
+                showItemViewer(asset.name, asset.assetUri, asset.type);
+                event.gesture.preventDefault();
+            }
+
+        });
+
+        _hammer.on('tap', '#tiles3d', function (event) {
+
+            event.gesture.preventDefault();
+
+            if (tileControls.disabled === false) {
+                toggle2D3D(true, 800);
+            }
+
+        });
+
+        _hammer.on('tap', '#tiles2d', function (event) {
+
+            event.gesture.preventDefault();
+
+            if (tileControls.disabled === false) {
+                toggle2D3D(false, 800);
+            }
+
+        });
+
+        _hammer.on('tap', '#item-viewer-close', function (event) {
+
+            event.gesture.preventDefault();
+
+            // clear the viewer's contents
+            $('#itemViewer').attr({
+                src: 'about:blank'
+            });
+
+            $('#item-viewer-mask, #item-viewer-dialog').fadeOut(300, function () {
+                $('#item-viewer-mask').remove();
+            });
+
+            return false;
+
+        });
+
+        _hammer.on('tap', '#details-expand-collapse', function (event) {
+
+            event.gesture.preventDefault();
+
+            if (typeof (Storage) !== "undefined") {
+
+                localStorage.setItem('detailsIsExpanded-' + _currentView, !$('#details-context-wrapper').is(':visible'));
+            }
+
+            renderDetailsContext();
+
+            return false;
+
+        });
+
+        _hammer.on('tap', '#backNav', function (event) {
+
+            event.gesture.preventDefault();
+            navBack();
+
+        });
+
+        _hammer.on('tap', '#release-notes', function (event) {
+            event.gesture.preventDefault();
+            showItemViewer('CineGlass Release Notes', '../release-notes.txt', 'txt');
+        });
+        
+
+    }
+    
     function showMovieTiles() {
         // change page background to use studio's logo
         $viewport.css('background-image', 'url("' + _tileObjects.logo + '")');
@@ -780,17 +866,15 @@ CG.Demo1.StartApp = function () {
         var options = getTransformOptions();
 
         // initialize controls
-        if (tileControls) {
-            tileControls.destroy();
-        }
-        tileControls = new CG.TileControls(options, camera, render, $('#viewport'), 1000);
+        tileControls.reset(options, camera, render, $('#viewport'), 1000, _hammer);
 
         // start transformation rendering
-        transform(_tileObjects.movieObjects, 'catalog', 1000);
+        transform(_tileObjects.movieObjects, 'catalog', 500);
 
         // set back nav button
         setBackNav(CG.Demo1.Views.None, '');
 
+        _currentView = 0;
         renderDetailsContext();
     }
 
@@ -821,6 +905,42 @@ CG.Demo1.StartApp = function () {
         context.className = 'details-item-info';
         context.textContent = movieTile.movieData.genre + '  -  ' + formatDate(movieTile.movieData.releaseDate) + ' (' + movieTile.movieData.releaseCountry + ')';
         contextWrapper.appendChild(context);
+
+        var directorsDiv = document.createElement('div');
+        directorsDiv.className = 'details-item-cast';
+        contextWrapper.appendChild(directorsDiv);
+        var directorsLabel = document.createElement('span');
+        directorsLabel.className = 'label';
+        directorsLabel.textContent = 'Directors:';
+        directorsDiv.appendChild(directorsLabel);
+        var directorsValue = document.createElement('span');
+        directorsValue.className = 'value';
+        directorsValue.textContent = movieTile.movieData.topCredits.directors;
+        directorsDiv.appendChild(directorsValue);
+
+        var writersDiv = document.createElement('div');
+        writersDiv.className = 'details-item-cast';
+        contextWrapper.appendChild(writersDiv);
+        var writersLabel = document.createElement('span');
+        writersLabel.className = 'label';
+        writersLabel.textContent = 'Writers:';
+        writersDiv.appendChild(writersLabel);
+        var writersValue = document.createElement('span');
+        writersValue.className = 'value';
+        writersValue.textContent = movieTile.movieData.topCredits.writers;
+        writersDiv.appendChild(writersValue);
+        
+        var starsDiv = document.createElement('div');
+        starsDiv.className = 'details-item-cast';
+        contextWrapper.appendChild(starsDiv);
+        var starsLabel = document.createElement('span');
+        starsLabel.className = 'label';
+        starsLabel.textContent = 'Stars:';
+        starsDiv.appendChild(starsLabel);
+        var starsValue = document.createElement('span');
+        starsValue.className = 'value';
+        starsValue.textContent = movieTile.movieData.topCredits.stars;
+        starsDiv.appendChild(starsValue);
 
         var budgetContainer = document.createElement('div');
         budgetContainer.id = 'budget-container';
@@ -932,15 +1052,15 @@ CG.Demo1.StartApp = function () {
         var options = getTransformOptions();
 
         // initialize the controls
-        tileControls.destroy();
-        tileControls = new CG.TileControls(options, camera, render, $('#viewport'), 1000);
+        tileControls.reset(options, camera, render, $('#viewport'), 1000, _hammer);
 
         // start transformation rendering
-        transform(movieTile.parentObject.departmentObjects, movieTile.movieData.name, 1000);
+        transform(movieTile.parentObject.departmentObjects, movieTile.movieData.name, 500);
 
         // set back nav button
         setBackNav(CG.Demo1.Views.Catalog, 'Pipeline Catalog');
 
+        _currentView = 1;
         renderDetailsContext();
     }
 
@@ -975,15 +1095,15 @@ CG.Demo1.StartApp = function () {
         var options = getTransformOptions();
 
         // initialize the controls
-        tileControls.destroy();
-        tileControls = new CG.TileControls(options, camera, render, $('#viewport'), 1000);
+        tileControls.reset(options, camera, render, $('#viewport'), 1000, _hammer);
 
         // start transformation rendering
-        transform(departmentTile.parentObject.assetObjects, departmentTile.phaseName + '|' + departmentTile.departmentName, 1000);
+        transform(departmentTile.parentObject.assetObjects, departmentTile.phaseName + '|' + departmentTile.departmentName, 500);
 
         // set back nav button
         setBackNav(CG.Demo1.Views.Departments, 'Departments');
 
+        _currentView = 2;
         renderDetailsContext();
 
     }
@@ -997,11 +1117,10 @@ CG.Demo1.StartApp = function () {
         var options = getTransformOptions();
 
         // initialize the controls
-        tileControls.destroy();
-        tileControls = new CG.TileControls(options, camera, render, $('#viewport'), 1000);
+        tileControls.reset(options, camera, render, $('#viewport'), 1000, _hammer);
 
         // start transformation rendering
-        transform(assetTile.parentObject.subAssetObjects, assetTile.phaseName + '|' + assetTile.departmentName + '|' + assetTile.categoryName, 1000);
+        transform(assetTile.parentObject.subAssetObjects, assetTile.phaseName + '|' + assetTile.departmentName + '|' + assetTile.categoryName, 500);
 
         // set back nav button
         setBackNav(CG.Demo1.Views.Assets, assetTile.phaseName + ' - ' + assetTile.departmentName);
@@ -1401,19 +1520,7 @@ CG.Demo1.StartApp = function () {
 
         var isIpad = isIDevice();
 
-        var useItemViewer = true;
-
-        if ((itemType == 'xls' && !isIpad) ||
-            itemType == 'doc' ||
-            itemType == 'eml') {
-
-            useItemViewer = false;
-
-        } else if (itemType == 'pdf' && isIpad) {
-
-            useItemViewer = false;
-
-        }
+        var useItemViewer = (itemType == 'img' || itemType == 'mov');
 
         if (useItemViewer) {
 
@@ -1497,7 +1604,7 @@ CG.Demo1.StartApp = function () {
         var isExpanded = true;
 
         if (typeof (Storage) !== "undefined") {
-            isExpanded = (localStorage.detailsIsExpanded == 'true');
+            isExpanded =(localStorage.getItem('detailsIsExpanded-' + _currentView) == 'true');
         }
 
         if (isExpanded) {
@@ -1510,86 +1617,7 @@ CG.Demo1.StartApp = function () {
             $context.hide();
         }
     }
-
-    $(document).on('selectstart', function (event) {
-        //
-        // cancel selection/highlighting
-        //
-        return false;
-    });
-
-    $(window).on('resize', function (event) {
-        onWindowResize();
-    });
-
-    $(document).hammer().on('tap', function (event) {
-
-        render();
-
-
-        if (tileControls.disabled === true) {
-            return;
-        }
-
-        //
-        // if user taps outside tiles, etc. then
-        // reset the camera to its default settings
-        //				    
-
-        //resetCamera();
-
-    });
-
-    $('#tiles3d').hammer().on('tap', function (event) {
-
-        if (tileControls.disabled === false) {
-            event.gesture.preventDefault();
-            toggle2D3D(true, 800);
-        }
-
-    });
-
-    $('#tiles2d').hammer().on('tap', function (event) {
-
-        if (tileControls.disabled === false) {
-            event.gesture.preventDefault();
-            toggle2D3D(false, 800);
-        }
-
-    });
-
-    $('#item-viewer-close').hammer().on('tap', function (event) {
-
-        $('#item-viewer-mask, #item-viewer-dialog').fadeOut(300, function () {
-            $('#item-viewer-mask').remove();
-        });
-
-        return false;
-
-    });
-
-    $('#details-expand-collapse').hammer().on('tap', function (event) {
-        
-
-        if (typeof (Storage) !== "undefined") {
-            localStorage.detailsIsExpanded = !$('#details-context-wrapper').is(':visible');
-        }
-
-        renderDetailsContext();
-
-        return false;
-
-    });
-
-    $('#backNav').hammer().on('tap', function (event) {
-        navBack();
-    });
-
-    $('#imageContainer').hammer().on('drag', function (event) {
-        return true;
-    });
-
-
+    
     initialize();
     resizeItemViewer();
     animate();

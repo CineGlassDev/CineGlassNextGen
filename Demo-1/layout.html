@@ -351,12 +351,7 @@
             color:rgba(255,255,255,0.5);
         }
 
-        
-
-
-
-
-        /*.details-item-cast {
+        .details-item-cast {
             position:relative;
             font-size: 12px;
             color:rgba(255,255,255, 0.75);
@@ -376,7 +371,82 @@
             font-size: 12px;
             color:rgba(255,255,255, 0.75);
             text-align: left;
-        }*/
+        }
+
+
+
+        #mini-timeline-container
+        {
+            position:relative;
+            height:20px;
+        }
+
+        #mini-timeline-label-beginning
+        {
+            position:absolute;
+            width:28px;
+            height:26px;
+            background-color:red;
+            left:8px;
+            top:-26px;
+            font-size:10px;
+            color:#fff;
+            text-align:center;
+        }
+
+        #mini-timeline-label-ending
+        {
+            position:absolute;
+            width:28px;
+            height:26px;
+            background-color:red;
+            right:7px;
+            top:-26px;
+            font-size:10px;
+            color:#fff;
+            text-align:center;
+        }
+
+        #mini-timeline-marker-beginning
+        {
+            position:absolute;
+            width:2px;
+            height:20px;
+            background-color:#fff;
+            display:inline-block;
+            left:20px;
+        }
+
+        #mini-timeline-marker-middle
+        {
+            position:absolute;
+            width:356px;
+            height:2px;
+            background-color:#fff;
+            display:inline-block;
+            left:22px;
+            top:9px;
+        }
+
+        #mini-timeline-marker-ending
+        {
+            position:absolute;
+            width:2px;
+            height:20px;
+            background-color:#fff;
+            display:inline-block;
+            right:20px;
+        }
+
+        #mini-timeline-development
+        {
+            position:absolute;
+            width:30px;
+            height: 14px;
+            background-color: rgba(0,255,255,0.5);
+            left:22px;
+            top:3px;
+        }
 
     
 
@@ -418,6 +488,21 @@
             <div class="details-item-info">                
                 Action | Sci-Fi&nbsp;&nbsp;-&nbsp;&nbsp;7/25/2014 (USA)
             </div>
+            
+            <div class="details-item-cast">
+                <span class="label">Directors:</span>
+                <span class="value">Andy Wachowski, Lana Wachowski</span>
+                                
+            </div>
+            <div class="details-item-cast">
+                <span class="label">Writers:</span>
+                <span class="value">Andy Wachowski, Lana Wachowski</span>             
+            </div>
+            <div class="details-item-cast">
+                <span class="label">Stars:</span>
+                <span class="value">Channing Tatum, Mila Kunis, Sean Bean</span>         
+            </div>
+
             <div id="budget-container">
                 <div class="budget-item">
                     <div class="icon"></div>
@@ -432,31 +517,25 @@
                     <div class="label">Post Budget</div>
                 </div>
             </div>
+
+            <div id="mini-timeline-container">
+                <div id="mini-timeline-label-beginning">
+                    Jan<br />2014
+                </div>
+                <div id="mini-timeline-marker-beginning"></div>
+                <div id="mini-timeline-development"></div>
+                <div id="mini-timeline-marker-middle"></div>
+                <div id="mini-timeline-marker-ending"></div>
+                <div id="mini-timeline-label-ending">
+                    Oct<br />2015
+                </div>
+            </div>
+
         </div>
 
         
 
 
-
-
-
-
-
-        <!--<div class="details-item-cast">
-                <span class="label">Directors:</span>
-                <span class="value">Andy Wachowski, Lana Wachowski</span>
-                                
-            </div>
-            <div class="details-item-cast">
-                <span class="label">Writers:</span>
-                <span class="value">Andy Wachowski, Lana Wachowski</span>             
-            </div>
-            <div class="details-item-cast">
-                <span class="label">Stars:</span>
-                <span class="value">Channing Tatum, Mila Kunis, Sean Bean</span>         
-            </div>-->
-
-    </div>
 
 </body>
 </html>

@@ -1,0 +1,20 @@
+﻿
+*********************************
+  CineGlass v0.0.2 on 5-14-2013
+*********************************
+--- BUG FIXES ---
+- Now clears previously loaded assets from viewer before loading new asset.
+- Added user-friendly messaging for browser incompatibility.
+- Details box expand/collapse user state is now saved by view.
+
+--- ENHANCEMENTS ---
+- Made animation snappier.
+- Improved performance on event bubbling and swipe handling.
+- Added version/release notes "view" functionality.
+- Mofified all non-image/non-video assets to open in new tab (instead of inline viewer).  REASON: To provide a consistent experience and to allow multiple assets to be opened at a time.
+
+
+*********************************
+  CineGlass v0.0.1 on 5-13-2013
+*********************************
+- Initial release to internal CineGlass team.

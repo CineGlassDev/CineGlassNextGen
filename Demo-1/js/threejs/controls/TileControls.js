@@ -1,7 +1,7 @@
 /** @namespace */
 var CG = CG || {};
 
-CG.TileControls = function (options, camera, renderFunction, swipeAreaContainer, moveDuration) {
+CG.TileControls = function (options, camera, renderFunction, swipeAreaContainer, moveDuration, hammer) {
 
     var _this = this;
 
@@ -12,6 +12,7 @@ CG.TileControls = function (options, camera, renderFunction, swipeAreaContainer,
     var _renderFunction = renderFunction;
     var _swipeAreaContainer = swipeAreaContainer;
     var _moveDuration = moveDuration;
+    var _hammer = hammer;
     
     this.disabled = false;
     this.is3D = options.is3D;
@@ -25,6 +26,7 @@ CG.TileControls = function (options, camera, renderFunction, swipeAreaContainer,
 
         event.gesture.preventDefault();
         handleSwipe(true, event.gesture.distance, event.gesture.velocityY);
+        event.gesture.stopDetect();
 
     }
 
@@ -32,6 +34,7 @@ CG.TileControls = function (options, camera, renderFunction, swipeAreaContainer,
 
         event.gesture.preventDefault();
         handleSwipe(false, event.gesture.distance, event.gesture.velocityY);
+        event.gesture.stopDetect();
 
     }
 
@@ -40,8 +43,9 @@ CG.TileControls = function (options, camera, renderFunction, swipeAreaContainer,
         //
         // bind swipe events
         //
-        $(_swipeAreaContainer).hammer().on('swipeup', onSwipeUp);
-        $(_swipeAreaContainer).hammer().on('swipedown', onSwipeDown);
+
+        _hammer.on('swipeup', _swipeAreaContainer, onSwipeUp);
+        _hammer.on('swipedown', _swipeAreaContainer, onSwipeDown);
 
     }
 
@@ -58,6 +62,9 @@ CG.TileControls = function (options, camera, renderFunction, swipeAreaContainer,
         var newZ;
         var newY;
 
+        // bump up the velocity for a snappier interface
+        velocity = velocity * 2;
+
         if (isUp === true) {                        
             
             adjustmentZ = _options.offsetZ * velocity;
@@ -68,16 +75,16 @@ CG.TileControls = function (options, camera, renderFunction, swipeAreaContainer,
             adjustmentZ = _options.offsetZ * -1 * velocity;
             adjustmentY = _options.rise3d * velocity;
 
-        }
-
-        newY = _camera.position.y + adjustmentY;
+        }        
 
         if (_this.is3D === true) {
 
+            newY = _camera.position.y + adjustmentY;
             newZ = _camera.position.z + adjustmentZ;
 
         } else {
 
+            newY = _camera.position.y + (adjustmentY * 1.5); // bump up 2D Y move to make it snappier
             newZ = _camera.position.z;
 
         }
@@ -108,18 +115,27 @@ CG.TileControls = function (options, camera, renderFunction, swipeAreaContainer,
     }
 
 
-    //
-    // public functions
-    //
-
-    this.destroy = function () {
+    this.reset = function (options, camera, renderFunction, swipeAreaContainer, moveDuration, hammer) {
 
         //
-        // unbind swipe events
+        // destroy current event bindings
         //
-        $(_swipeAreaContainer).hammer().off('swipeup', onSwipeUp);
-        $(_swipeAreaContainer).hammer().off('swipedown', onSwipeDown);
+        _hammer.off('swipeup', _swipeAreaContainer, onSwipeUp);
+        _hammer.off('swipedown', _swipeAreaContainer, onSwipeDown);
 
+        _options = options;
+        _originalY = camera.position.y;
+        _originalZ = camera.position.z;
+        _camera = camera;
+        _renderFunction = renderFunction;
+        _swipeAreaContainer = swipeAreaContainer;
+        _moveDuration = moveDuration;
+        _hammer = hammer;
+
+        this.disabled = false;
+        this.is3D = options.is3D;
+
+        initialize();
     }
 
     initialize();

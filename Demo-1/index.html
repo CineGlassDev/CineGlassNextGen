@@ -6,6 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>CineGlass</title>
     <link href="css/demo-1.main.css" rel="stylesheet" />
+    <script src="js/modernizr.custom.69161.js"></script>
     <link rel="prefetch" href="/" />
 </head>
 
@@ -24,21 +25,18 @@
     <script src="js/demo-1.data.js"></script>
     <script src="js/demo-1.main.js"></script>
 
-    <!--- START OF LAYOUT --->
-   
-    <div id="product-logo"></div>
-    <div id="company-logo"></div>
+    <div id="backNav" title=""></div>
+
+    <div id="release-notes">v0.0.2</div>
 
     <div id="details-container">
         <div id="details-expand-collapse"></div>
         <div id="details-container-inner"></div>        
-    </div>
-
-    <div id="backNav" title=""></div>
+    </div>    
 
     <div id='viewport'></div>
 
-    <div id='menu'>
+    <div id='toggle-menu'>
         <button id='tiles3d'></button>
         <button id='tiles2d'></button>
     </div>
@@ -52,10 +50,13 @@
             <iframe id="itemViewer" seamless="seamless"></iframe>
         </div>
     </div>
-     
+
+    <div id="product-logo"></div>
+
     <script>
 
-        
+        var _app;
+
         function disableEvent(event) {
 
             event.preventDefault();
@@ -64,7 +65,25 @@
         
         $(document).ready(function () {
 
-            CG.Demo1.StartApp();           
+            if (Modernizr.webgl === true) {                
+                _app = CG.Demo1.StartApp();
+            } else {
+                var badBrowser = document.createElement('div');
+                badBrowser.id = 'badBrowser';
+                badBrowser.textContent = 'Your browser does not support WebGL, which is required for the CineGlass experience.  Please upgrade to a browser that supports WebGL (preferrably Chrome or Safari).';
+
+                var browserLink = document.createElement('a');
+                browserLink.href = 'http://browsehappy.com/';
+                browserLink.text = '- Upgrade Options -';
+
+                var paragraph = document.createElement('p');
+                paragraph.appendChild(browserLink);
+
+                badBrowser.appendChild(paragraph);
+                              
+                var $viewport = $('#viewport');
+                $viewport.append(badBrowser);    
+            }
 
         });
 
