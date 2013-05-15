@@ -168,8 +168,8 @@ CG.Demo1.DemoData = function () {
                     {
                         name: 'Art',
                         iconUri: 'img/icons/art.jpg',
-                        start: new Date("1/2/2012"),
-                        end: new Date("1/22/2012"),
+                        start: new Date("11/20/2012"),
+                        end: new Date("1/22/2013"),
                         assets: [
                             {
                                 name: 'storyboard-1.jpg',
@@ -265,8 +265,8 @@ CG.Demo1.DemoData = function () {
                     {
                         name: 'Shoot',
                         iconUri: 'img/icons/prod.png',
-                        start: new Date("4/23/2012"),
-                        end: new Date("5/23/2012"),
+                        start: new Date("1/22/2013"),
+                        end: new Date("8/23/2013"),
                         assets: [
                             {
                                 name: 'EDIT_DeliveryReport20130423.pdf',
@@ -297,8 +297,8 @@ CG.Demo1.DemoData = function () {
                     {
                         name: 'Dailies',
                         iconUri: 'img/icons/dailies.jpg',
-                        start: new Date("4/23/2012"),
-                        end: new Date("5/23/2012"),
+                        start: new Date("1/22/2013"),
+                        end: new Date("8/23/2013"),
                         assets: [
                             {
                                 name: 'A0070.ale',
@@ -617,8 +617,8 @@ CG.Demo1.DemoData = function () {
                     {
                         name: 'VFX',
                         iconUri: 'img/icons/prod-vfx.jpg',
-                        start: new Date("4/23/2012"),
-                        end: new Date("5/23/2012"),
+                        start: new Date("1/22/2013"),
+                        end: new Date("8/23/2013"),
                         assets: [
                             {
                                 name: '0089_003_A0070.1271972_look.jpg',
@@ -888,8 +888,8 @@ CG.Demo1.DemoData = function () {
                     },
                     {
                         name: 'Script Notes',
-                        start: new Date("4/23/2012"),
-                        end: new Date("5/23/2012"),
+                        start: new Date("1/22/2013"),
+                        end: new Date("5/23/2013"),
                         iconUri: 'img/icons/script-notes.png',
                         assets: [
                             {
@@ -969,8 +969,8 @@ CG.Demo1.DemoData = function () {
                     {
                         name: 'Deliverable Planning',
                         iconUri: 'img/icons/dist-planning.png',
-                        start: new Date("5/3/2012"),
-                        end: new Date("5/8/2012"),
+                        start: new Date("5/3/2014"),
+                        end: new Date("5/8/2014"),
                         assets: [
                             {
                                 name: 'IM3_CG_Reel_By_Reel_Plan_20130326.pdf',
@@ -1001,8 +1001,8 @@ CG.Demo1.DemoData = function () {
                     {
                         name: 'VFX Delivery',
                         iconUri: 'img/icons/post-vfx.jpg',
-                        start: new Date("5/3/2012"),
-                        end: new Date("6/8/2012"),
+                        start: new Date("8/23/2013"),
+                        end: new Date("6/8/2014"),
                         assets: [
                             {
                                 name: 'A0070.ALE',

@@ -378,7 +378,7 @@
         #mini-timeline-container
         {
             position:relative;
-            height:20px;
+            height:30px;
         }
 
         #mini-timeline-label-beginning
@@ -386,7 +386,6 @@
             position:absolute;
             width:28px;
             height:26px;
-            background-color:red;
             left:8px;
             top:-26px;
             font-size:10px;
@@ -399,11 +398,22 @@
             position:absolute;
             width:28px;
             height:26px;
-            background-color:red;
             right:7px;
             top:-26px;
             font-size:10px;
             color:#fff;
+            text-align:center;
+        }
+
+        #mini-timeline-label-today
+        {
+            position:absolute;
+            width:28px;
+            height:14px;
+            left:267px;
+            top:24px;
+            font-size:10px;
+            color:rgb(0,255,0);
             text-align:center;
         }
 
@@ -438,16 +448,55 @@
             right:20px;
         }
 
+        #mini-timeline-marker-today
+        {
+            position:absolute;
+            width:2px;
+            height:24px;
+            background-color:rgb(0,255,0);
+            display:inline-block;
+            left:280px;
+        }
+
         #mini-timeline-development
         {
             position:absolute;
             width:30px;
             height: 14px;
-            background-color: rgba(0,255,255,0.5);
+            background-color: rgba(174,208,207,0.85);
             left:22px;
             top:3px;
         }
 
+        #mini-timeline-pre-production
+        {
+            position:absolute;
+            width:80px;
+            height: 14px;
+            background-color: rgba(104,154,196,0.85);
+            left:52px;
+            top:3px;
+        }
+
+        #mini-timeline-production
+        {
+            position:absolute;
+            width:100px;
+            height: 14px;
+            background-color: rgba(196,104,173,0.85);
+            left:132px;
+            top:3px;
+        }
+
+        #mini-timeline-post-production
+        {
+            position:absolute;
+            width:146px;
+            height: 14px;
+            background-color: rgba(196,154,104,0.85);
+            left:232px;
+            top:3px;
+        }
     
 
     </style>
@@ -523,11 +572,18 @@
                     Jan<br />2014
                 </div>
                 <div id="mini-timeline-marker-beginning"></div>
-                <div id="mini-timeline-development"></div>
+                <div id="mini-timeline-development" title="Development"></div>
+                <div id="mini-timeline-pre-production" title="Pre-Production"></div>
+                <div id="mini-timeline-production" title="Production"></div>
+                <div id="mini-timeline-post-production" title="Post-Production"></div>
                 <div id="mini-timeline-marker-middle"></div>
                 <div id="mini-timeline-marker-ending"></div>
                 <div id="mini-timeline-label-ending">
                     Oct<br />2015
+                </div>
+                <div id="mini-timeline-marker-today"></div>
+                <div id="mini-timeline-label-today">
+                    Today
                 </div>
             </div>
 

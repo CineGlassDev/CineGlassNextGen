@@ -5,9 +5,10 @@
 --- BUG FIXES ---
 - Now clears previously loaded assets from viewer before loading new asset.
 - Added user-friendly messaging for browser incompatibility.
-- Details box expand/collapse user state is now saved by view.
+- The expand/collapse user state for the details box is now saved by view.
 
 --- ENHANCEMENTS ---
+- Added mini-timeline to movie details box.
 - Made animation snappier.
 - Improved performance on event bubbling and swipe handling.
 - Added version/release notes "view" functionality.

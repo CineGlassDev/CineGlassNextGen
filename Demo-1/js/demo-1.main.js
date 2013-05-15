@@ -899,7 +899,15 @@ CG.Demo1.StartApp = function () {
 
         var contextWrapper = document.createElement('div');
         contextWrapper.id = 'details-context-wrapper';
-        $details.append(contextWrapper);        
+        $details.append(contextWrapper);
+
+        //
+        // build mini-timeline
+        //
+        var miniTimeline = buildMovieMiniTimeline(movieTile.movieData);
+        if (miniTimeline != null) {
+            contextWrapper.appendChild(miniTimeline);
+        }
 
         var context = document.createElement('div');
         context.className = 'details-item-info';
@@ -1592,6 +1600,266 @@ CG.Demo1.StartApp = function () {
         }
 
         return isIDevice;
+
+    }
+
+    function sortMovieDepartments(movieData, byStart) {
+        sortDepartments(movieData.phases.development.departments, byStart);
+        sortDepartments(movieData.phases.preProduction.departments, byStart);
+        sortDepartments(movieData.phases.production.departments, byStart);
+        sortDepartments(movieData.phases.postProduction.departments, byStart);
+        sortDepartments(movieData.phases.distribution.departments, byStart);
+    }
+
+    function sortDepartments(depts, byStart) {
+
+        if (byStart === true) {
+            depts.sort(function (dept1, dept2) {
+                if (dept1.start < dept2.start) {
+                    return -1;
+                } else if (dept1.start > dept2.start) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+        } else {
+            depts.sort(function (dept1, dept2) {
+                if (dept1.end < dept2.end) {
+                    return -1;
+                } else if (dept1.end > dept2.end) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+        }
+
+    }
+
+    function buildMovieMiniTimeline(movieData) {
+
+        if (movieData.phases != null) {
+
+            var phaseSlugs = [];
+            var timelineEnd = new Date('1/1/1976');
+                        
+            //
+            //
+            // determine start date
+            //
+            //
+
+            // sort all departments by start date
+            sortMovieDepartments(movieData, true);
+                                    
+            var timelineStart = null;
+            if (movieData.phases.development.departments.length > 0) {
+                
+                timelineStart = movieData.phases.development.departments[0].start;
+
+                // sort departments by end date
+                sortDepartments(movieData.phases.development.departments, false);
+
+                var phaseEnd = movieData.phases.development.departments[movieData.phases.development.departments.length - 1].end;
+
+                var slug = {
+                    phase: 'Development',
+                    start: timelineStart,
+                    end: phaseEnd
+                };
+
+                phaseSlugs.push(slug);
+
+                timelineEnd = (phaseEnd > timelineEnd ? phaseEnd : timelineEnd);
+
+            }
+            if (movieData.phases.preProduction.departments.length > 0) {
+                
+                if (timelineStart == null) {
+                    timelineStart = movieData.phases.preProduction.departments[0].start;
+                }
+
+                var phaseStart = movieData.phases.preProduction.departments[0].start;
+                
+                // sort departments by end date
+                sortDepartments(movieData.phases.preProduction.departments, false);
+
+                var phaseEnd = movieData.phases.preProduction.departments[movieData.phases.preProduction.departments.length - 1].end;
+
+                var slug = {
+                    phase: 'Pre-Production',
+                    start: phaseStart,
+                    end: phaseEnd
+                };
+
+                phaseSlugs.push(slug);
+
+                timelineEnd = (phaseEnd > timelineEnd ? phaseEnd : timelineEnd);
+
+            }
+            if (movieData.phases.production.departments.length > 0) {
+                
+                if (timelineStart == null) {
+                    timelineStart = movieData.phases.production.departments[0].start;
+                }
+
+                var phaseStart = movieData.phases.production.departments[0].start;
+
+                // sort departments by end date
+                sortDepartments(movieData.phases.production.departments, false);
+
+                var phaseEnd = movieData.phases.production.departments[movieData.phases.production.departments.length - 1].end;
+                               
+                var slug = {
+                    phase: 'Production',
+                    start: phaseStart,
+                    end: phaseEnd
+                };
+
+                phaseSlugs.push(slug);
+
+                timelineEnd = (phaseEnd > timelineEnd ? phaseEnd : timelineEnd);
+
+            }
+            if (movieData.phases.postProduction.departments.length > 0) {
+                
+                if (timelineStart == null) {
+                    timelineStart = movieData.phases.postProduction.departments[0].start;
+                }
+
+                var phaseStart = movieData.phases.postProduction.departments[0].start;
+
+                // sort departments by end date
+                sortDepartments(movieData.phases.postProduction.departments, false);
+
+                var phaseEnd = movieData.phases.postProduction.departments[movieData.phases.postProduction.departments.length - 1].end;
+
+                var slug = {
+                    phase: 'Post-Production',
+                    start: phaseStart,
+                    end: phaseEnd
+                };
+
+                phaseSlugs.push(slug);
+
+                timelineEnd = (phaseEnd > timelineEnd ? phaseEnd : timelineEnd);
+
+            }
+            if (movieData.phases.distribution.departments.length > 0) {
+
+                if (timelineStart == null) {
+                    // don't even bother
+                    return;
+                }
+
+                var phaseStart = movieData.phases.distribution.departments[0].start;
+
+                // sort departments by end date
+                sortDepartments(movieData.phases.distribution.departments, false);
+
+                var phaseEnd = movieData.phases.distribution.departments[movieData.phases.distribution.departments.length - 1].end;
+
+                var slug = {
+                    phase: 'Distribution',
+                    start: phaseStart,
+                    end: phaseEnd
+                };
+
+                phaseSlugs.push(slug);
+
+                timelineEnd = (phaseEnd > timelineEnd ? phaseEnd : timelineEnd);
+
+            }
+
+            var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+            //
+            // we now have all the data required to build the timeline...so do it!
+            //
+
+            var timelineContainer = document.createElement('div');
+            timelineContainer.id = 'mini-timeline-container';                        
+
+            var labelStart = document.createElement('div');
+            labelStart.id = 'mini-timeline-label-start';
+            labelStart.innerHTML = monthNames[timelineStart.getMonth()] + '<br />' + timelineStart.getFullYear();
+            timelineContainer.appendChild(labelStart);
+
+            var labelEnd = document.createElement('div');
+            labelEnd.id = 'mini-timeline-label-end';
+            labelEnd.innerHTML = monthNames[timelineEnd.getMonth()] + '<br />' + timelineEnd.getFullYear();
+            timelineContainer.appendChild(labelEnd);
+
+            var markerStart = document.createElement('div');
+            markerStart.id = 'mini-timeline-marker-start';
+            timelineContainer.appendChild(markerStart);
+
+            var markerMiddle = document.createElement('div');
+            markerMiddle.id = 'mini-timeline-marker-middle';
+            timelineContainer.appendChild(markerMiddle);
+
+            var markerEnd = document.createElement('div');
+            markerEnd.id = 'mini-timeline-marker-end';
+            timelineContainer.appendChild(markerEnd);
+
+            var movieTicks = (timelineEnd.getTime() - timelineStart.getTime());
+            var phaseSlugLength = phaseSlugs.length;
+            var middleMarkerWidth = 356;
+            var nextLeft = 22;
+            var widthTally = 0;
+
+            for (var index = 0; index < phaseSlugLength; index++) {
+
+                var phaseSlug = phaseSlugs[index];
+
+                //
+                // calculate phase width based on its scale
+                // in relation to the entire movie start/end dates
+                //
+                var phaseTicks = (phaseSlug.end.getTime() - phaseSlug.start.getTime());
+
+                var width;
+
+                if (index < (phaseSlugLength - 1)) {
+                    width = Math.round(middleMarkerWidth * (phaseTicks / movieTicks));
+                    widthTally += width;
+                } else {
+                    width = middleMarkerWidth - widthTally;
+                }                 
+                
+                var slug = document.createElement('div');
+                slug.className = 'mini-timeline-phase phase-swatch ' + phaseSlug.phase.toLowerCase();
+                slug.title = phaseSlug.phase;
+                slug.style.left = nextLeft + 'px';
+                slug.style.width = width + 'px';
+                
+                timelineContainer.appendChild(slug);
+                
+                nextLeft += width;
+
+            }
+            
+            var todayMarker = document.createElement('div');
+            todayMarker.id = 'mini-timeline-marker-today';
+            var todayTicks = (new Date().getTime() - timelineStart.getTime());
+            var todayLeft = Math.round(middleMarkerWidth * (todayTicks / movieTicks));
+            todayMarker.style.left = todayLeft + 'px';
+
+            timelineContainer.appendChild(todayMarker);
+
+            var todayLabel = document.createElement('div');
+            todayLabel.id = 'mini-timeline-label-today';
+            todayLabel.textContent = 'Today';
+            todayLabel.style.left = (todayLeft - 13) + 'px';
+
+            timelineContainer.appendChild(todayLabel);
+
+            return timelineContainer;
+
+        } else {
+            return null;
+        }
 
     }
 
