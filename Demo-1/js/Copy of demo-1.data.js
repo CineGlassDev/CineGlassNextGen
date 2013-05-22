@@ -5,7 +5,7 @@ CG.Demo1 = CG.Demo1 || {};
 
 CG.Demo1.DemoData = function () {
 
-    var warnerBrothers = {
+    var warnerBrothers = { 
         name: 'Warner Bros. Pictures',
         logo: 'img/studios/warner-brothers-pictures.jpg',
         budgetUri: 'assets/budget/Studio YTD Budget Analysis.pdf',
@@ -258,7 +258,7 @@ CG.Demo1.DemoData = function () {
                                 type: 'IMG',
                                 assetUri: 'assets/pre-prod/pre-viz/previz-5.png',
                                 category: 'Pre-Viz'
-                            }
+                            }                            
                         ],
                         status: null
                     }

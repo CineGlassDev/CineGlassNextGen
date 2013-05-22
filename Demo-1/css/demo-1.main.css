@@ -819,7 +819,7 @@ button
 
         .phase-swatch.development
         {
-            background-color: rgba(174,208,207,0.85);
+            background-color: rgba(174,208,207,0.85) !important;
         }
 
 .details-item-phase.development {
@@ -828,7 +828,7 @@ button
 
         .phase-swatch.pre-production
         {
-            background-color: rgba(104,154,196,0.85);
+            background-color: rgba(104,154,196,0.85) !important;
         }
 
 .details-item-phase.pre-production {
@@ -837,7 +837,7 @@ button
 
         .phase-swatch.production
         {
-            background-color: rgba(196,104,173,0.85);
+            background-color: rgba(196,104,173,0.85) !important;
         }
 
 .details-item-phase.production {
@@ -845,7 +845,7 @@ button
 }
         .phase-swatch.post-production
         {
-            background-color: rgba(196,154,104,0.85);
+            background-color: rgba(196,154,104,0.85) !important;
         }
 
 .details-item-phase.post-production {
@@ -853,7 +853,7 @@ button
 }
         .phase-swatch.distribution
         {
-            background-color: rgba(104,196,119,0.85);
+            background-color: rgba(104,196,119,0.85) !important;
         }
 
 .details-item-phase.distribution {

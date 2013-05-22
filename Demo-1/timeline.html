@@ -1,0 +1,694 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>CineGlass Timeline</title>
+
+    <link href="css/demo-1.main.css" rel="stylesheet" />
+    <link href="css/timeline.css" rel="stylesheet" />
+
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            background-color: #000000;
+            background-image: url("../img/cg-bg-2.jpg") !important;
+            margin: 0;
+            font-family: 'Segoe UI', 'Trebuchet MS', Verdana;
+            overflow: hidden;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            min-width:600px;
+
+
+        }
+
+        a {
+            color: #ffffff;
+        }
+
+        #viewport {
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 100%;
+            height: 100%;          
+        }
+
+        
+
+/**********************/
+/****** TIMELINE ******/
+/**********************/
+
+
+#timeline-container
+{
+    position:absolute;
+    top:85px;
+    bottom:55px;
+    width:101%;
+    left:-1%;
+
+    display:block;
+    display:inline-block;
+    overflow:hidden;
+    overflow-y:auto;
+
+    -webkit-box-shadow:0 0 15px #ffffff; 
+    -moz-box-shadow: 0 0 15px #ffffff; 
+    box-shadow:0 0 15px #ffffff;
+
+    border-top:none;
+
+    padding-bottom:2px;
+    padding-top:2px;
+
+
+}
+
+div.timeline-frame
+{
+    border:none !important;
+    /*border-bottom:1px solid darkgray !important;*/
+}
+
+div.timeline-axis
+{
+    border:none !important;
+    border-top:1px solid lightgray !important;
+    background-color: rgba(133,133,133,1) !important;
+}
+
+div.timeline-currenttime
+{
+    width:2px !important;
+    z-index:1000 !important;
+    border-right:2px solid red !important;
+}
+
+div.timeline-majormarker
+{
+    width: 2px !important;
+    z-index:1000 !important;
+    border-right:2px solid purple !important;
+}
+
+div.timeline-axis-text {
+    line-height:1em !important;
+    color:#000 !important;
+    text-shadow: 0px 1px 1px #fff !important;
+}
+
+div.timeline-axis-text-major
+{
+    font-size:1.25em !important;    
+}
+
+div.timeline-axis-text-minor
+{
+    font-size:0.8em !important;
+    margin-top:0px !important;
+}
+
+div.timeline-axis-grid
+{
+    border-left-style: none !important;
+}
+
+div.timeline-event
+{
+    cursor:pointer !important;
+    text-align:center !important;
+    text-shadow: none !important;
+    border-radius: 5px !important;
+    -moz-border-radius: 5px !important;  /* For Firefox 3.6 and older */
+
+
+    font-size:16px;
+    line-height:16px;
+    font-weight:bold;
+}
+
+div.timeline-item
+{
+    background-color: rgba(255,255,255,0.5) !important;
+    border:1px dotted rgba(255,255,255,0.5) !important;
+    color: #fff !important;
+    box-shadow: 0 0 20px #fff !important;
+    text-shadow: 0px 0px 50px rgba(0, 0, 0, 0.5) !important;
+}
+
+div.timeline-event-box
+{
+    border-style:dotted !important;    
+    border-width:2px !important; 
+    box-shadow: 0 0 20px lightblue !important;
+    border-radius: 15px !important;
+    -moz-border-radius: 15px !important;  /* For Firefox 3.6 and older */
+    font-size:0.75em !important;
+}
+
+div.timeline-event-box.future
+{
+    background-color: rgba(41,70,239,0.40) !important; 
+    border-color: #fff !important;   
+    color: #fff !important;
+}
+
+div.timeline-event-box.past
+{
+    background-color: rgba(0,0,255,0.10) !important;
+    border-color: lightblue !important;    
+    color: lightgray !important;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVQYV2NkIALwmZf+ZySkDqTo08luRrwKYYpAhuFUiKwIp0J0RVgVYlOEoRCXIhSF+BTBFRJSBFZIjCKQQgBygCXEmHBeSAAAAABJRU5ErkJggg==) repeat;
+    box-shadow: none !important;
+    
+}
+
+div.timeline-event-line
+{
+    margin-top:1px !important;
+    border-left:1px solid #fff !important;
+}
+
+div.timeline-event-dot
+{
+    border-color:#fff !important;
+    opacity:0.75 !important;
+}
+
+div.timeline-development
+{
+    background-color: rgba(22,235,230,0.85) !important;
+}
+div.timeline-pre-production
+{
+    background-color: rgba(0,139,255,0.85) !important;
+}
+div.timeline-production
+{
+    background-color: rgba(150,0,112,0.85) !important;
+}
+div.timeline-post-production
+{
+    background-color: rgba(255,139,0,0.85) !important;
+}
+div.timeline-distribution
+{
+    background-color: rgba(0,255,42,0.85) !important;
+}
+
+
+
+#clock
+{
+    position:absolute;
+    top:1.75em;
+    right:0.85em;
+    text-align:right;
+    text-shadow: 1px 2px 3px rgba(169, 160, 160, 1);
+    font-size:0.75em;
+    color:rgba(255,255,255,0.75);
+    width:250px;
+}
+
+    #clock .label
+    {       
+        position:relative;
+    }
+    #clock .daysLeft
+    {
+        position:relative; 
+        top:-0.15em; 
+        font-size:1.85em;     
+    }
+    #clock .unit
+    {
+        font-size:0.7em;          
+    }
+
+
+
+
+
+    </style>
+
+    <script src="js/jquery/jquery-1.9.1.min.js"></script>
+    <script src="js/modernizr.custom.69161.js"></script>
+    <script src="js/jquery/jquery.hammer.min.js"></script>
+    <script src="js/jquery/jquery.countdown.js"></script>
+
+    <script src="js/timeline.js"></script>
+    <script src="js/demo-1.data.js"></script>
+
+
+</head>
+<body ontouchmove="disableEvent(event);" ondragstart="disableEvent(event);">
+
+
+    <div id="clock">
+        <div class="label"></div>
+        <div class="daysLeft"></div>      
+    </div>
+
+    <div id="viewport">
+
+        <div id="timeline-container"></div>
+
+        <script>
+
+            var _studioData;
+            var _timeline;
+            
+            $(document).ready(function () {
+
+                initializeTimeline();
+
+            });
+
+            function initializeTimeline() {
+
+                // get data
+                _studioData = CG.Demo1.DemoData();
+                                
+                // jupiter ascending ... TEST ONLY
+                var jupiterAscending = _studioData.catalog[6];
+
+                initializeReleaseCountdown(jupiterAscending.releaseDate, jupiterAscending.releaseCountry);
+
+                var timelineData = getTimelineDataForMovie(jupiterAscending);
+                var minDate = new Date(timelineData[1].start).setDate(timelineData[1].start.getDate() - 60); // start at 2nd element to allow for static milestone
+                var maxDate = new Date(timelineData[timelineData.length - 1].end).setDate(timelineData[timelineData.length - 1].end.getDate() + 60);
+                var releasePlus30 = new Date(jupiterAscending.releaseDate).setDate(jupiterAscending.releaseDate.getDate() + 60);
+                maxDate = (maxDate > releasePlus30 ? maxDate : releasePlus30);
+
+                var timelineMin = new Date(minDate);
+                var timelineMax = new Date(maxDate);
+                var phaseData = getPhases(jupiterAscending, timelineMin, timelineMax);
+
+                _timeline = new links.Timeline(document.getElementById('timeline-container'));
+
+                var timelineOptions = {
+                    height: "100%",
+                    axisOnTop: true,
+                    showPhases: true,
+                    phases: phaseData,
+                    animate: false,
+                    animateZoom: false,
+                    selectable: true,
+                    editable: false,
+                    moveable: true,
+                    showMajorMarker: false,
+                    majorMarkerDate: jupiterAscending.releaseDate,
+                    majorMarkerContent: jupiterAscending.releaseCountry,
+                    min: timelineMin,
+                    max: timelineMax,
+                    start: timelineMin,
+                    end: timelineMax
+                };
+
+                _timeline.draw(timelineData, timelineOptions);
+
+                redrawTimeline();               
+                
+            }
+
+            function getTimelineDataForCatalog(studioData) {
+
+                var timelineData = [];
+
+                var catalogLength = studioData.catalog.length;
+                
+                for (var movieIndex = 0; movieIndex < catalogLength; movieIndex++) {
+
+                    var movie = studioData.catalog[movieIndex];
+
+                    var item = {};
+                    item['content'] = movie.name;
+                    item['tooltip'] = movie.name;
+                    item['terminator'] = getTerminatorUri(movie.status);
+                    item['className'] = 'timeline-item phase-swatch ' + movie.currentPhase.toLowerCase();
+
+                    if (movie.phases) {
+
+                        var phaseData = getPhases(movie);
+                        item['start'] = phaseData[0].start; // first start date in first phase
+
+                    } else {
+
+                        var start = new Date(movie.releaseDate).setDate(movie.releaseDate.getDate() - 540);
+                        item['start'] = new Date(start); // releaseDate minus 540 days
+                        
+                    }
+
+                    var end = new Date(movie.releaseDate).setDate(movie.releaseDate.getDate() + 90);
+                    item['end'] = new Date(end); // releaseDate plus 90 days
+
+                    timelineData.push(item);
+                }
+
+                return timelineData;
+
+            }
+
+            function getTimelineDataForMovie(movie) {
+
+                var timelineData = [];
+
+                //
+                // create milestone item for release date
+                //
+                var releaseText = movie.releaseCountry + ' Theatrical Release';
+                var releaseMilestone = {};
+                releaseMilestone['content'] = releaseText;
+                releaseMilestone['tooltip'] = releaseText;
+                releaseMilestone['terminator'] = null;
+                releaseMilestone['className'] = 'future';
+                releaseMilestone['start'] = movie.releaseDate;
+                timelineData.push(releaseMilestone);
+
+                if (movie.phases) {
+
+                    var addItem = function (dept, phase) {
+
+                        var item = {};
+                        item['content'] = dept.name;
+                        item['tooltip'] = dept.name;
+                        item['terminator'] = getTerminatorUri(dept.status);
+                        item['className'] = 'timeline-item timeline-' + phase.toLowerCase();
+                        item['start'] = dept.start;
+                        item['end'] = dept.end;
+
+                        timelineData.push(item);
+                    }
+                    
+                    //
+                    // Development phase departments
+                    //
+                    var deptLength = movie.phases.development.departments.length;
+                    for (var deptIndex = 0; deptIndex < deptLength; deptIndex++) {
+
+                        var dept = movie.phases.development.departments[deptIndex];
+                        addItem(dept, 'development');
+
+                    }
+
+                    //
+                    // Pre-Production phase departments
+                    //
+                    deptLength = movie.phases.preProduction.departments.length;
+                    for (var deptIndex = 0; deptIndex < deptLength; deptIndex++) {
+
+                        var dept = movie.phases.preProduction.departments[deptIndex];
+                        addItem(dept, 'pre-production');
+                        
+                    }
+
+                    //
+                    // Production phase departments
+                    //
+                    deptLength = movie.phases.production.departments.length;
+                    for (var deptIndex = 0; deptIndex < deptLength; deptIndex++) {
+
+                        var dept = movie.phases.production.departments[deptIndex];
+                        addItem(dept, 'production');
+
+                    }
+
+                    //
+                    // Post-Production phase departments
+                    //
+                    deptLength = movie.phases.postProduction.departments.length;
+                    for (var deptIndex = 0; deptIndex < deptLength; deptIndex++) {
+
+                        var dept = movie.phases.postProduction.departments[deptIndex];
+                        addItem(dept, 'post-production');
+
+                    }
+
+                    //
+                    // Distribution phase departments
+                    //
+                    deptLength = movie.phases.distribution.departments.length;
+                    for (var deptIndex = 0; deptIndex < deptLength; deptIndex++) {
+
+                        var dept = movie.phases.distribution.departments[deptIndex];
+                        addItem(dept, 'distribution');
+
+                    }
+
+                }
+
+                return timelineData;
+
+            }
+
+            function redrawTimeline() {
+                var range = _timeline.getVisibleChartRange();
+                _timeline.setVisibleChartRange(range.start, range.end);
+
+                if (_timeline.dom.contentTimelines.clientHeight == 0) {
+                    setTimeout(redrawTimeline, 100);
+                }
+            }
+
+            function getPhases(movieData, min, max) {
+
+                if (movieData.phases != null) {
+
+                    var phaseSlugs = [];
+
+                    //
+                    //
+                    // determine start date
+                    //
+                    //
+
+                    // sort all departments by start date
+                    sortMovieDepartments(movieData, true);
+
+                    var timelineStart = null;
+                    if (movieData.phases.development.departments.length > 0) {
+
+                        timelineStart = movieData.phases.development.departments[0].start;
+
+                        // sort departments by end date
+                        sortDepartments(movieData.phases.development.departments, false);
+
+                        var phaseEnd = movieData.phases.development.departments[movieData.phases.development.departments.length - 1].end;
+
+                        var slug = {
+                            phase: 'Development',
+                            start: timelineStart,
+                            end: phaseEnd
+                        };
+
+                        phaseSlugs.push(slug);
+
+                    }
+                    if (movieData.phases.preProduction.departments.length > 0) {
+
+                        if (timelineStart == null) {
+                            timelineStart = movieData.phases.preProduction.departments[0].start;
+                        }
+
+                        var phaseStart = movieData.phases.preProduction.departments[0].start;
+
+                        // sort departments by end date
+                        sortDepartments(movieData.phases.preProduction.departments, false);
+
+                        var phaseEnd = movieData.phases.preProduction.departments[movieData.phases.preProduction.departments.length - 1].end;
+
+                        var slug = {
+                            phase: 'Pre-Production',
+                            start: phaseStart,
+                            end: phaseEnd
+                        };
+
+                        phaseSlugs.push(slug);
+
+                    }
+                    if (movieData.phases.production.departments.length > 0) {
+
+                        if (timelineStart == null) {
+                            timelineStart = movieData.phases.production.departments[0].start;
+                        }
+
+                        var phaseStart = movieData.phases.production.departments[0].start;
+
+                        // sort departments by end date
+                        sortDepartments(movieData.phases.production.departments, false);
+
+                        var phaseEnd = movieData.phases.production.departments[movieData.phases.production.departments.length - 1].end;
+
+                        var slug = {
+                            phase: 'Production',
+                            start: phaseStart,
+                            end: phaseEnd
+                        };
+
+                        phaseSlugs.push(slug);
+
+                    }
+                    if (movieData.phases.postProduction.departments.length > 0) {
+
+                        if (timelineStart == null) {
+                            timelineStart = movieData.phases.postProduction.departments[0].start;
+                        }
+
+                        var phaseStart = movieData.phases.postProduction.departments[0].start;
+
+                        // sort departments by end date
+                        sortDepartments(movieData.phases.postProduction.departments, false);
+
+                        var phaseEnd = movieData.phases.postProduction.departments[movieData.phases.postProduction.departments.length - 1].end;
+
+                        var slug = {
+                            phase: 'Post-Production',
+                            start: phaseStart,
+                            end: phaseEnd
+                        };
+
+                        phaseSlugs.push(slug);
+
+                    }
+                    if (movieData.phases.distribution.departments.length > 0) {
+
+                        if (timelineStart == null) {
+                            // don't even bother
+                            return;
+                        }
+
+                        var phaseStart = movieData.phases.distribution.departments[0].start;
+
+                        // sort departments by end date
+                        sortDepartments(movieData.phases.distribution.departments, false);
+
+                        var phaseEnd = movieData.phases.distribution.departments[movieData.phases.distribution.departments.length - 1].end;
+
+                        var slug = {
+                            phase: 'Distribution',
+                            start: phaseStart,
+                            end: phaseEnd
+                        };
+
+                        phaseSlugs.push(slug);
+                    }
+
+                    // adjust first and last phases so their start/end dates match timeline
+                    phaseSlugs[0].start = min;
+                    phaseSlugs[phaseSlugs.length - 1].end = max;
+
+                    return phaseSlugs;
+
+                } else {
+                    return null;
+                }
+
+            }
+            
+            function getTerminatorUri(status) {
+
+                switch (status) {                    
+                    case 'pending':
+                        return '/img/icons/square-blue.png';
+                    case 'critical':
+                        return '/img/icons/diamond-red.png';
+                    case 'warning':
+                        return '/img/icons/triangle-yellow.png';
+                    case 'okay':
+                        return '/img/icons/circle-green.png';
+                    case 'inactive':
+                    default:
+                        return null;
+                }
+
+            }
+
+            function initializeReleaseCountdown(releaseDate, releaseCountry) {
+
+                console.log(releaseCountry);
+
+                $('div#clock .label').text(releaseCountry.toUpperCase() + ' THEATRICAL RELEASE IN');
+
+                $('div#clock').countdown(releaseDate, function (event) {
+                    $this = $(this);
+                    switch (event.type) {
+                        case "days":
+                            $this.find('.daysLeft').html(event.value + ' <span class="unit">DAYS</span>');
+                            break;
+                        case "finished":
+                            $this.fadeTo('slow', .5);
+                            break;
+                    }
+                });
+
+            }
+
+            function hideReleaseCountdown() {
+                $('div#clock').fadeTo('slow', 0);
+            }
+
+            $(window).on('resize orientationchange', function (event) {
+                
+                redrawTimeline();
+
+            });
+            
+
+            //
+            // FUNCTIONS THAT ALREADY EXIST!!!
+            //
+
+            function sortMovieDepartments(movieData, byStart) {
+                sortDepartments(movieData.phases.development.departments, byStart);
+                sortDepartments(movieData.phases.preProduction.departments, byStart);
+                sortDepartments(movieData.phases.production.departments, byStart);
+                sortDepartments(movieData.phases.postProduction.departments, byStart);
+                sortDepartments(movieData.phases.distribution.departments, byStart);
+            }
+
+            function sortDepartments(depts, byStart) {
+
+                if (byStart === true) {
+                    depts.sort(function (dept1, dept2) {
+                        if (dept1.start < dept2.start) {
+                            return -1;
+                        } else if (dept1.start > dept2.start) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    });
+                } else {
+                    depts.sort(function (dept1, dept2) {
+                        if (dept1.end < dept2.end) {
+                            return -1;
+                        } else if (dept1.end > dept2.end) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    });
+                }
+
+            }
+            
+            function disableEvent(event) { event.preventDefault(); }
+
+        </script>
+
+        
+
+   </div>
+
+
+    
+
+
+
+</body>
+</html>
