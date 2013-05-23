@@ -6,6 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>CineGlass</title>
     <link href="css/demo-1.main.css" rel="stylesheet" />
+    <link href="css/timeline.css" rel="stylesheet" />
     <script src="js/modernizr.custom.69161.js"></script>
     <link rel="prefetch" href="/" />
 </head>
@@ -22,17 +23,20 @@
     <script src="js/jquery/jquery.cg.preLoader.js"></script>
     <script src="js/jquery/jquery.hammer.min.js"></script>
     <script src="js/jquery/jquery.countdown.js"></script>
-
+    <script src="js/timeline.js"></script>
 
     <script src="js/demo-1.data.js"></script>
     <script src="js/demo-1.main.js"></script>
 
     
-
+    <div id="countdown-clock">
+        <div class="label"></div>
+        <div class="daysLeft"></div>      
+    </div>
 
     <div id="backNav" title=""></div>
 
-    <div id="release-notes">v0.0.2</div>
+    <div id="release-notes">v0.0.3</div>
 
     <div id="details-container">
         <div id="details-expand-collapse"></div>
@@ -41,9 +45,12 @@
 
     <div id='viewport'></div>
 
+    <div id="timeline-container"></div>
+
     <div id='toggle-menu'>
         <button id='tiles3d'></button>
         <button id='tiles2d'></button>
+        <button id='schedule2d'></button>
     </div>
 
     <div id="item-viewer-dialog">

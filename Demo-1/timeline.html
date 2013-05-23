@@ -249,14 +249,14 @@ div.timeline-distribution
 <body ontouchmove="disableEvent(event);" ondragstart="disableEvent(event);">
 
 
-    <div id="clock">
-        <div class="label"></div>
-        <div class="daysLeft"></div>      
-    </div>
+    <div id="timeline-container"></div>
 
     <div id="viewport">
 
-        <div id="timeline-container"></div>
+        <div id="clock">
+            <div class="label"></div>
+            <div class="daysLeft"></div>      
+        </div>
 
         <script>
 
@@ -608,37 +608,6 @@ div.timeline-distribution
 
             }
 
-            function initializeReleaseCountdown(releaseDate, releaseCountry) {
-
-                console.log(releaseCountry);
-
-                $('div#clock .label').text(releaseCountry.toUpperCase() + ' THEATRICAL RELEASE IN');
-
-                $('div#clock').countdown(releaseDate, function (event) {
-                    $this = $(this);
-                    switch (event.type) {
-                        case "days":
-                            $this.find('.daysLeft').html(event.value + ' <span class="unit">DAYS</span>');
-                            break;
-                        case "finished":
-                            $this.fadeTo('slow', .5);
-                            break;
-                    }
-                });
-
-            }
-
-            function hideReleaseCountdown() {
-                $('div#clock').fadeTo('slow', 0);
-            }
-
-            $(window).on('resize orientationchange', function (event) {
-                
-                redrawTimeline();
-
-            });
-            
-
             //
             // FUNCTIONS THAT ALREADY EXIST!!!
             //
@@ -678,6 +647,34 @@ div.timeline-distribution
             }
             
             function disableEvent(event) { event.preventDefault(); }
+            
+            function initializeReleaseCountdown(releaseDate, releaseCountry) {
+
+                $('div#clock .label').text(releaseCountry.toUpperCase() + ' THEATRICAL RELEASE IN');
+
+                $('div#clock').countdown(releaseDate, function (event) {
+                    $this = $(this);
+                    switch (event.type) {
+                        case "days":
+                            $this.find('.daysLeft').html(event.value + ' <span class="unit">DAYS</span>');
+                            break;
+                        case "finished":
+                            $this.fadeTo('slow', .5);
+                            break;
+                    }
+                });
+
+            }
+
+            function hideReleaseCountdown() {
+                $('div#clock').fadeTo('slow', 0);
+            }
+
+            $(window).on('resize orientationchange', function (event) {
+
+                redrawTimeline();
+
+            });
 
         </script>
 

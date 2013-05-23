@@ -89,6 +89,7 @@ CG.Demo1.StartApp = function () {
     var _lastAssetTile;
     var _studioData;
     var _itemsToPreload = [];
+    var _timeline;
 
     // initialize hammer touch event manager
     var _hammer = $(document).hammer({
@@ -102,6 +103,7 @@ CG.Demo1.StartApp = function () {
     $viewport = $('#viewport');
     $backNav = $('#backNav');
     $details = $('#details-container-inner');
+    $timelineContainer = $('#timeline-container');
 
 
     //////////////////////////////////
@@ -670,7 +672,7 @@ CG.Demo1.StartApp = function () {
         });
 
         $(window).on('resize orientationchange', function (event) {
-            onWindowResize();
+            onWindowResize();            
         });       
 
         //
@@ -684,7 +686,15 @@ CG.Demo1.StartApp = function () {
                 return;
             }
 
-            showDepartments(event.gesture.target.parentElement);
+            var tile;
+
+            if (event.gesture.target.parentObject) {
+                tile = event.gesture.target;
+            } else {
+                tile = event.gesture.target.parentElement;
+            }
+
+            showDepartments(tile);
 
             return false;
 
@@ -701,7 +711,15 @@ CG.Demo1.StartApp = function () {
                 return;
             }
 
-            showAssets(event.gesture.target.parentElement);
+            var tile;
+
+            if (event.gesture.target.parentObject) {
+                tile = event.gesture.target;
+            } else {
+                tile = event.gesture.target.parentElement;
+            }
+
+            showAssets(tile);
 
             return false;
 
@@ -718,7 +736,15 @@ CG.Demo1.StartApp = function () {
                 return;
             }
 
-            showSubAssets(event.gesture.target.parentElement);
+            var tile;
+
+            if (event.gesture.target.parentObject) {
+                tile = event.gesture.target;
+            } else {
+                tile = event.gesture.target.parentElement;
+            }
+
+            showSubAssets(tile);
 
         });
 
@@ -731,7 +757,15 @@ CG.Demo1.StartApp = function () {
                 return;
             }
 
-            var asset = event.gesture.target.parentElement.asset;
+            var tile;
+
+            if (event.gesture.target.parentObject) {
+                tile = event.gesture.target;
+            } else {
+                tile = event.gesture.target.parentElement;
+            }
+
+            var asset = tile.asset;
 
             if (typeof asset != 'undefined') {
                 showItemViewer(asset.name, asset.assetUri, asset.type);
@@ -756,6 +790,16 @@ CG.Demo1.StartApp = function () {
 
             if (tileControls.disabled === false) {
                 toggle2D3D(false, 800);
+            }
+
+        });
+
+        _hammer.on('tap', '#schedule2d', function (event) {
+
+            event.gesture.preventDefault();
+
+            if (tileControls.disabled === false) {
+                showScheduleView(800);
             }
 
         });
@@ -803,13 +847,20 @@ CG.Demo1.StartApp = function () {
             event.gesture.preventDefault();
             showItemViewer('CineGlass Release Notes', '../release-notes.txt', 'txt');
         });
-        
+
+        _hammer.on('tap', '#mini-timeline-container', function (event) {
+            event.gesture.preventDefault();
+            showScheduleView(800);
+        });        
 
     }
     
     function showMovieTiles() {
         // change page background to use studio's logo
         $viewport.css('background-image', 'url("' + _tileObjects.logo + '")');
+
+        // hide movie countdown clock
+        hideReleaseCountdown();
 
         $details.empty();
 
@@ -884,6 +935,9 @@ CG.Demo1.StartApp = function () {
 
         // change page background to one-sheet
         $viewport.css('background-image', 'url("' + getFileDirectory(movieTile.movieData.oneSheet) + '/original-size/' + getFileName(movieTile.movieData.oneSheet) + '")');
+
+        // show countdown clock for this movie
+        showReleaseCountdown(movieTile.movieData.releaseDate, movieTile.movieData.releaseCountry);
 
         $details.empty();
 
@@ -1159,7 +1213,10 @@ CG.Demo1.StartApp = function () {
             return;
         }
 
-        // TODO: Finish implementing
+        if ($timelineContainer.css('display') != 'none') {
+            hideScheduleView();
+            $viewport.fadeIn('slow');
+        }
 
         switch (_navBackTo) {
 
@@ -1223,6 +1280,11 @@ CG.Demo1.StartApp = function () {
     }    
    
     function toggle2D3D(isTo3D, duration) {
+
+        if ($timelineContainer.css('display') != 'none') {
+            hideScheduleView();
+            $viewport.fadeIn('slow');
+        }
 
         if (!_tileVectors[_currentVectorKey]) {
             return;
@@ -1512,6 +1574,7 @@ CG.Demo1.StartApp = function () {
     function onWindowResize() {
 
         resizeItemViewer();
+        redrawTimeline();
 
     	camera.aspect = window.innerWidth / window.innerHeight;
 
@@ -1884,6 +1947,397 @@ CG.Demo1.StartApp = function () {
             $icon.css('background-image', 'url("../img/icons/expand.png")');
             $context.hide();
         }
+    }
+
+    function showReleaseCountdown(releaseDate, releaseCountry) {
+
+        $('#countdown-clock .label').text(releaseCountry.toUpperCase() + ' THEATRICAL RELEASE IN');
+        
+        $('#countdown-clock').css('opacity', 1);
+
+        $('#countdown-clock').fadeIn('fast');
+
+        $('#countdown-clock').countdown(releaseDate, function (event) {
+            $this = $(this);
+            switch (event.type) {
+                case "days":
+                    $this.find('.daysLeft').html(event.value + ' <span class="unit">DAYS</span>');
+                    break;
+                case "finished":
+                    $this.fadeTo('slow', .5);
+                    break;
+            }
+        });
+
+    }
+
+    function hideReleaseCountdown() {
+
+        $('#countdown-clock').fadeOut('fast');
+
+    }
+
+    function getTimelineDataForCatalog(studioData) {
+
+        var timelineData = [];
+
+        var catalogLength = studioData.catalog.length;
+
+        for (var movieIndex = 0; movieIndex < catalogLength; movieIndex++) {
+
+            var movie = studioData.catalog[movieIndex];
+
+            var item = {};
+            item['content'] = movie.name;
+            item['tooltip'] = movie.name;
+            item['terminator'] = getTerminatorUri(movie.status);
+            item['className'] = 'timeline-item phase-swatch ' + movie.currentPhase.toLowerCase();
+
+            if (movie.phases) {
+
+                var phaseData = getPhases(movie);
+                item['start'] = phaseData[0].start; // first start date in first phase
+
+            } else {
+
+                var start = new Date(movie.releaseDate).setDate(movie.releaseDate.getDate() - 540);
+                item['start'] = new Date(start); // releaseDate minus 540 days
+
+            }
+
+            var end = new Date(movie.releaseDate).setDate(movie.releaseDate.getDate() + 90);
+            item['end'] = new Date(end); // releaseDate plus 90 days
+
+            timelineData.push(item);
+        }
+
+        return timelineData;
+
+    }
+
+    function getTimelineDataForMovie(movie) {
+
+        var timelineData = [];
+
+        //
+        // create milestone item for release date
+        //
+        var releaseText = movie.releaseCountry + ' Theatrical Release';
+        var releaseMilestone = {};
+        releaseMilestone['content'] = releaseText;
+        releaseMilestone['tooltip'] = releaseText;
+        releaseMilestone['terminator'] = null;
+        releaseMilestone['className'] = 'future';
+        releaseMilestone['start'] = movie.releaseDate;
+        timelineData.push(releaseMilestone);
+
+        if (movie.phases) {
+
+            var addItem = function (dept, phase) {
+
+                var item = {};
+                item['content'] = dept.name;
+                item['tooltip'] = dept.name;
+                item['terminator'] = getTerminatorUri(dept.status);
+                item['className'] = 'timeline-item timeline-' + phase.toLowerCase();
+                item['start'] = dept.start;
+                item['end'] = dept.end;
+
+                timelineData.push(item);
+            }
+
+            //
+            // Development phase departments
+            //
+            var deptLength = movie.phases.development.departments.length;
+            for (var deptIndex = 0; deptIndex < deptLength; deptIndex++) {
+
+                var dept = movie.phases.development.departments[deptIndex];
+                addItem(dept, 'development');
+
+            }
+
+            //
+            // Pre-Production phase departments
+            //
+            deptLength = movie.phases.preProduction.departments.length;
+            for (var deptIndex = 0; deptIndex < deptLength; deptIndex++) {
+
+                var dept = movie.phases.preProduction.departments[deptIndex];
+                addItem(dept, 'pre-production');
+
+            }
+
+            //
+            // Production phase departments
+            //
+            deptLength = movie.phases.production.departments.length;
+            for (var deptIndex = 0; deptIndex < deptLength; deptIndex++) {
+
+                var dept = movie.phases.production.departments[deptIndex];
+                addItem(dept, 'production');
+
+            }
+
+            //
+            // Post-Production phase departments
+            //
+            deptLength = movie.phases.postProduction.departments.length;
+            for (var deptIndex = 0; deptIndex < deptLength; deptIndex++) {
+
+                var dept = movie.phases.postProduction.departments[deptIndex];
+                addItem(dept, 'post-production');
+
+            }
+
+            //
+            // Distribution phase departments
+            //
+            deptLength = movie.phases.distribution.departments.length;
+            for (var deptIndex = 0; deptIndex < deptLength; deptIndex++) {
+
+                var dept = movie.phases.distribution.departments[deptIndex];
+                addItem(dept, 'distribution');
+
+            }
+
+        }
+
+        return timelineData;
+
+    }
+
+    function redrawTimeline() {
+        var range = _timeline.getVisibleChartRange();
+        _timeline.setVisibleChartRange(range.start, range.end);
+
+        if (_timeline.dom.contentTimelines.clientHeight == 0) {
+            setTimeout(redrawTimeline, 100);
+        }
+    }
+
+    function getPhases(movieData, min, max) {
+
+        if (movieData.phases != null) {
+
+            var phaseSlugs = [];
+
+            //
+            //
+            // determine start date
+            //
+            //
+
+            // sort all departments by start date
+            sortMovieDepartments(movieData, true);
+
+            var timelineStart = null;
+            if (movieData.phases.development.departments.length > 0) {
+
+                timelineStart = movieData.phases.development.departments[0].start;
+
+                // sort departments by end date
+                sortDepartments(movieData.phases.development.departments, false);
+
+                var phaseEnd = movieData.phases.development.departments[movieData.phases.development.departments.length - 1].end;
+
+                var slug = {
+                    phase: 'Development',
+                    start: timelineStart,
+                    end: phaseEnd
+                };
+
+                phaseSlugs.push(slug);
+
+            }
+            if (movieData.phases.preProduction.departments.length > 0) {
+
+                if (timelineStart == null) {
+                    timelineStart = movieData.phases.preProduction.departments[0].start;
+                }
+
+                var phaseStart = movieData.phases.preProduction.departments[0].start;
+
+                // sort departments by end date
+                sortDepartments(movieData.phases.preProduction.departments, false);
+
+                var phaseEnd = movieData.phases.preProduction.departments[movieData.phases.preProduction.departments.length - 1].end;
+
+                var slug = {
+                    phase: 'Pre-Production',
+                    start: phaseStart,
+                    end: phaseEnd
+                };
+
+                phaseSlugs.push(slug);
+
+            }
+            if (movieData.phases.production.departments.length > 0) {
+
+                if (timelineStart == null) {
+                    timelineStart = movieData.phases.production.departments[0].start;
+                }
+
+                var phaseStart = movieData.phases.production.departments[0].start;
+
+                // sort departments by end date
+                sortDepartments(movieData.phases.production.departments, false);
+
+                var phaseEnd = movieData.phases.production.departments[movieData.phases.production.departments.length - 1].end;
+
+                var slug = {
+                    phase: 'Production',
+                    start: phaseStart,
+                    end: phaseEnd
+                };
+
+                phaseSlugs.push(slug);
+
+            }
+            if (movieData.phases.postProduction.departments.length > 0) {
+
+                if (timelineStart == null) {
+                    timelineStart = movieData.phases.postProduction.departments[0].start;
+                }
+
+                var phaseStart = movieData.phases.postProduction.departments[0].start;
+
+                // sort departments by end date
+                sortDepartments(movieData.phases.postProduction.departments, false);
+
+                var phaseEnd = movieData.phases.postProduction.departments[movieData.phases.postProduction.departments.length - 1].end;
+
+                var slug = {
+                    phase: 'Post-Production',
+                    start: phaseStart,
+                    end: phaseEnd
+                };
+
+                phaseSlugs.push(slug);
+
+            }
+            if (movieData.phases.distribution.departments.length > 0) {
+
+                if (timelineStart == null) {
+                    // don't even bother
+                    return;
+                }
+
+                var phaseStart = movieData.phases.distribution.departments[0].start;
+
+                // sort departments by end date
+                sortDepartments(movieData.phases.distribution.departments, false);
+
+                var phaseEnd = movieData.phases.distribution.departments[movieData.phases.distribution.departments.length - 1].end;
+
+                var slug = {
+                    phase: 'Distribution',
+                    start: phaseStart,
+                    end: phaseEnd
+                };
+
+                phaseSlugs.push(slug);
+            }
+
+            // adjust first and last phases so their start/end dates match timeline
+            phaseSlugs[0].start = min;
+            phaseSlugs[phaseSlugs.length - 1].end = max;
+
+            return phaseSlugs;
+
+        } else {
+            return null;
+        }
+
+    }
+
+    function getTerminatorUri(status) {
+
+        switch (status) {
+            case 'pending':
+                return '/img/icons/square-blue.png';
+            case 'critical':
+                return '/img/icons/diamond-red.png';
+            case 'warning':
+                return '/img/icons/triangle-yellow.png';
+            case 'okay':
+                return '/img/icons/circle-green.png';
+            case 'inactive':
+            default:
+                return null;
+        }
+
+    }
+
+    function showScheduleView(duration) {
+
+        var timelineOptions = {
+            height: "100%",
+            axisOnTop: true,
+            showPhases: false,
+            animate: false,
+            animateZoom: false,
+            selectable: true,
+            editable: false,
+            moveable: true,
+            showMajorMarker: false
+        };
+
+        var timelineData;
+        var minDate;
+        var maxDate;
+        var timelineMin;
+        var timelineMax;
+
+        if (_currentView == 0) {
+            // show catalog schedule
+            timelineData = getTimelineDataForCatalog(_studioData);
+
+            minDate = new Date(timelineData[0].start).setDate(timelineData[0].start.getDate() - 60);
+            maxDate = new Date(timelineData[timelineData.length - 1].end).setDate(timelineData[timelineData.length - 1].end.getDate() + 60);
+
+            timelineMin = new Date(minDate);
+            timelineMax = new Date(maxDate);
+
+        } else {
+
+            if (_currentView > 1) {
+                // first, nav back to department view
+                navBack();
+            }
+
+            // show movie schedule
+            timelineData = getTimelineDataForMovie(_lastMovieTile.movieData);
+
+            minDate = new Date(timelineData[1].start).setDate(timelineData[1].start.getDate() - 60); // start at 2nd element to allow for static milestone
+            maxDate = new Date(timelineData[timelineData.length - 1].end).setDate(timelineData[timelineData.length - 1].end.getDate() + 60);
+            var releasePlus30 = new Date(_lastMovieTile.movieData.releaseDate).setDate(_lastMovieTile.movieData.releaseDate.getDate() + 60);
+            maxDate = (maxDate > releasePlus30 ? maxDate : releasePlus30);
+
+            timelineMin = new Date(minDate);
+            timelineMax = new Date(maxDate);
+
+            timelineOptions.phases = getPhases(_lastMovieTile.movieData, timelineMin, timelineMax);
+            timelineOptions.showPhases = true;
+        }
+
+        timelineOptions.min = timelineMin;
+        timelineOptions.max = timelineMax;
+        timelineOptions.start = timelineMin;
+        timelineOptions.end = timelineMax;
+
+        _timeline = new links.Timeline(document.getElementById('timeline-container'));
+        
+        _timeline.draw(timelineData, timelineOptions);
+
+        // hide the viewport
+        $viewport.fadeOut('slow');
+        $timelineContainer.fadeIn('slow');
+        redrawTimeline();
+    }
+
+    function hideScheduleView() {
+        $timelineContainer.fadeOut('slow');
     }
     
     initialize();

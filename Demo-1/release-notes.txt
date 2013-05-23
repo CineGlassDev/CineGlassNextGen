@@ -1,5 +1,30 @@
 ﻿
 *********************************
+  CineGlass v0.0.4 on 5-23-2013
+*********************************
+--- BUG FIXES ---
+- Schedule view's current date indicator (red vertical bar) no longer overlays above details expander box. 
+- Tweaked schedule slugs look.
+
+
+*********************************
+  CineGlass v0.0.3 on 5-22-2013
+*********************************
+--- ENHANCEMENTS ---
+- Added movie release countdown clock.
+- Integrated in the schedule (aka gantt) view.
+
+--- IN-PROGRESS ---
+- Hooking in behavior when schedule slug is tapped, which will be: show departments when catalog slug tapped and show department assets when department slug tapped.
+- Tweaking schedule slug look-and-feel (colors, shadows, etc.)
+- Movie slider at bottom of screen (when viewing a movie's departments) so user doesn't have to naviagate back to switch movies).
+- Provisioning new movie (Gravity).
+- Integrating/testing new Jupiter Ascending dates that Brian provided.
+
+--- IN-QUEUE ---
+- Add upload asset feature.
+
+*********************************
   CineGlass v0.0.2 on 5-14-2013
 *********************************
 --- BUG FIXES ---
