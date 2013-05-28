@@ -1,10 +1,24 @@
 ﻿
 *********************************
-  CineGlass v0.0.4 on 5-23-2013
+  CineGlass v0.0.4 on 5-27-2013
 *********************************
 --- BUG FIXES ---
 - Schedule view's current date indicator (red vertical bar) no longer overlays above details expander box. 
-- Tweaked schedule slugs look.
+- Fixed navigation bugs when toggling between tile and schedule views at different data levels.
+
+--- ENHANCEMENTS ---
+- Now when schedule slug is tapped, applicable information is shown.
+- Tweaked phase swatches' look.
+- Tweaked schedule slugs' look.
+- User can now perform multiple concurrent swipes when navigating tiles.
+
+--- IN-PROGRESS ---
+- Movie slider at bottom of screen (when viewing a movie's departments) so user doesn't have to naviagate back to switch movies).
+- Provisioning new movie (Gravity).
+- Integrating/testing new Jupiter Ascending dates that Brian provided.
+
+--- IN-QUEUE ---
+- Add upload asset feature.
 
 
 *********************************

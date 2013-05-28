@@ -52,10 +52,10 @@ CG.TileControls = function (options, camera, renderFunction, swipeAreaContainer,
     function handleSwipe(isUp, distance, velocity) {
         
         if (_this.disabled === true) {
-            return;
-        }
 
-        _this.disabled = true;
+            return;
+
+        }
 
         var adjustmentZ;
         var adjustmentY;

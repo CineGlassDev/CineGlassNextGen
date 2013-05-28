@@ -10,6 +10,13 @@ CG.Demo1.Views = {
     SubAssets: 4
 };
 
+CG.Demo1.Toggles = {
+    Toggle2D: 1,
+    Toggle3D: 2,
+    ToggleSchedule: 3
+}
+
+
 CG.Demo1.StartApp = function () {
 
     var DEFAULT_CAMERA_X = 0;
@@ -79,10 +86,10 @@ CG.Demo1.StartApp = function () {
     };
 
     var _transformOptions;
-    var _isCurrentView3D = true;
     var _currentVectorKey = null;
     var _currentTileObjects = null;
-    var _currentView = 0;
+    var _currentView = CG.Demo1.Views.Catalog;
+    var _currentToggle = CG.Demo1.Toggles.Toggle3D;
 
     var _lastMovieTile;
     var _lastDepartmentTile;
@@ -90,6 +97,8 @@ CG.Demo1.StartApp = function () {
     var _studioData;
     var _itemsToPreload = [];
     var _timeline;
+    var _wasLastTileView3D = true;
+    var _lastTileView;
 
     // initialize hammer touch event manager
     var _hammer = $(document).hammer({
@@ -148,7 +157,7 @@ CG.Demo1.StartApp = function () {
         initializeTilesAndVectors();
 
         // initialize controls, defaulting to catalog controls
-        setTransformOptions('catalog', _isCurrentView3D);
+        setTransformOptions('catalog', (_currentToggle == CG.Demo1.Toggles.Toggle3D));
         var options = getTransformOptions();
         tileControls = new CG.TileControls(options, camera, render, $('#viewport'), 1000, _hammer);
 
@@ -176,7 +185,7 @@ CG.Demo1.StartApp = function () {
                 $('#toggle-menu').show();
                 $('#release-notes').show();
 
-                renderDetailsContext();
+                renderDetailsContext(_currentView);
 
             }
         });       
@@ -779,7 +788,7 @@ CG.Demo1.StartApp = function () {
             event.gesture.preventDefault();
 
             if (tileControls.disabled === false) {
-                toggle2D3D(true, 800);
+                toggleView(CG.Demo1.Toggles.Toggle3D, 800);
             }
 
         });
@@ -789,7 +798,7 @@ CG.Demo1.StartApp = function () {
             event.gesture.preventDefault();
 
             if (tileControls.disabled === false) {
-                toggle2D3D(false, 800);
+                toggleView(CG.Demo1.Toggles.Toggle2D, 800);
             }
 
         });
@@ -799,7 +808,7 @@ CG.Demo1.StartApp = function () {
             event.gesture.preventDefault();
 
             if (tileControls.disabled === false) {
-                showScheduleView(800);
+                toggleView(CG.Demo1.Toggles.ToggleSchedule, 800);
             }
 
         });
@@ -830,7 +839,7 @@ CG.Demo1.StartApp = function () {
                 localStorage.setItem('detailsIsExpanded-' + _currentView, !$('#details-context-wrapper').is(':visible'));
             }
 
-            renderDetailsContext();
+            renderDetailsContext(_currentView);
 
             return false;
 
@@ -850,12 +859,13 @@ CG.Demo1.StartApp = function () {
 
         _hammer.on('tap', '#mini-timeline-container', function (event) {
             event.gesture.preventDefault();
-            showScheduleView(800);
+            toggleView(CG.Demo1.Toggles.ToggleSchedule, 800);
         });        
 
     }
     
-    function showMovieTiles() {
+    function showMovieTiles(isScheduleView) {
+        
         // change page background to use studio's logo
         $viewport.css('background-image', 'url("' + _tileObjects.logo + '")');
 
@@ -912,24 +922,30 @@ CG.Demo1.StartApp = function () {
         budgetLabel.textContent = 'Studio Budget';
         budgetContainer.appendChild(budgetLabel);
 
-        // set options for rendering
-        setTransformOptions('catalog', _isCurrentView3D);
-        var options = getTransformOptions();
+        //if (!isScheduleView) {
 
-        // initialize controls
-        tileControls.reset(options, camera, render, $('#viewport'), 1000, _hammer);
+            // set options for rendering
+            setTransformOptions('catalog', (_currentToggle == CG.Demo1.Toggles.Toggle3D));
+            var options = getTransformOptions();
 
-        // start transformation rendering
-        transform(_tileObjects.movieObjects, 'catalog', 500);
+            // initialize controls
+            tileControls.reset(options, camera, render, $('#viewport'), 1000, _hammer);
+
+            // start transformation rendering
+            transform(_tileObjects.movieObjects, 'catalog', 500);            
+                       
+        //}
 
         // set back nav button
         setBackNav(CG.Demo1.Views.None, '');
 
-        _currentView = 0;
-        renderDetailsContext();
+        _currentView = CG.Demo1.Views.Catalog;
+        _lastTileView = CG.Demo1.Views.Catalog;
+
+        renderDetailsContext(_currentView);
     }
 
-    function showDepartments(movieTile) {
+    function showDepartments(movieTile, isScheduleView) {
 
         _lastMovieTile = movieTile;
 
@@ -938,6 +954,40 @@ CG.Demo1.StartApp = function () {
 
         // show countdown clock for this movie
         showReleaseCountdown(movieTile.movieData.releaseDate, movieTile.movieData.releaseCountry);
+
+        // create expander box for movie details
+        renderMovieDetails(movieTile);
+
+        if (!isScheduleView) {
+
+            // set options for rendering
+            setTransformOptions('department', (_currentToggle == CG.Demo1.Toggles.Toggle3D));
+            var options = getTransformOptions();
+
+            // initialize the controls
+            tileControls.reset(options, camera, render, $('#viewport'), 1000, _hammer);
+
+            // start transformation rendering
+            transform(movieTile.parentObject.departmentObjects, movieTile.movieData.name, 500);
+
+            // set back nav button
+            setBackNav(CG.Demo1.Views.Catalog, 'Pipeline Catalog');
+            
+
+        } else {
+
+            // set back nav button
+            setBackNav(CG.Demo1.Views.CatalogSchedule, 'Pipeline Catalog');
+
+        }
+
+        _currentView = CG.Demo1.Views.Departments;
+        _lastTileView = CG.Demo1.Views.Departments;
+
+        renderDetailsContext(_currentView);
+    }
+
+    function renderMovieDetails(movieTile) {
 
         $details.empty();
 
@@ -991,7 +1041,7 @@ CG.Demo1.StartApp = function () {
         writersValue.className = 'value';
         writersValue.textContent = movieTile.movieData.topCredits.writers;
         writersDiv.appendChild(writersValue);
-        
+
         var starsDiv = document.createElement('div');
         starsDiv.className = 'details-item-cast';
         contextWrapper.appendChild(starsDiv);
@@ -1012,13 +1062,13 @@ CG.Demo1.StartApp = function () {
         movieBudgetItem.className = 'budget-item';
         budgetContainer.appendChild(movieBudgetItem);
 
-        var movieBudgetIcon = document.createElement('div');        
+        var movieBudgetIcon = document.createElement('div');
         movieBudgetIcon.title = 'Movie Budget';
         movieBudgetIcon.className = 'icon';
         movieBudgetItem.appendChild(movieBudgetIcon);
 
         if (movieTile.movieData.budgetUri.length > 0) {
-            
+
             movieBudgetIcon.itemSource = movieTile.movieData.budgetUri;
             movieBudgetIcon.itemType = movieTile.movieData.budgetType;
 
@@ -1027,7 +1077,7 @@ CG.Demo1.StartApp = function () {
             $(movieBudgetIcon).addClass('icon-disabled');
             movieBudgetIcon.disabled = true;
 
-        }        
+        }
 
         $(movieBudgetIcon).hammer().on('tap', function (event) {
 
@@ -1045,21 +1095,21 @@ CG.Demo1.StartApp = function () {
         prodBudgetItem.className = 'budget-item';
         budgetContainer.appendChild(prodBudgetItem);
 
-        var prodBudgetIcon = document.createElement('div');        
+        var prodBudgetIcon = document.createElement('div');
         prodBudgetIcon.title = 'Prod Budget';
         prodBudgetIcon.className = 'icon';
         prodBudgetItem.appendChild(prodBudgetIcon);
 
         if (movieTile.movieData.phases &&
             movieTile.movieData.phases.production.budgetUri.length > 0) {
-            
+
             prodBudgetIcon.itemSource = movieTile.movieData.phases.production.budgetUri;
             prodBudgetIcon.itemType = movieTile.movieData.phases.production.budgetType;
 
         } else {
 
             $(prodBudgetIcon).addClass('icon-disabled');
-            prodBudgetIcon.disabled = true;            
+            prodBudgetIcon.disabled = true;
 
         }
 
@@ -1074,29 +1124,29 @@ CG.Demo1.StartApp = function () {
         prodBudgetLabel.className = 'label';
         prodBudgetLabel.textContent = 'Prod Budget';
         prodBudgetItem.appendChild(prodBudgetLabel);
-        
+
 
         var postBudgetItem = document.createElement('div');
         postBudgetItem.className = 'budget-item';
         budgetContainer.appendChild(postBudgetItem);
 
-        var postBudgetIcon = document.createElement('div');        
+        var postBudgetIcon = document.createElement('div');
         postBudgetIcon.title = 'Post Budget';
         postBudgetIcon.className = 'icon';
         postBudgetItem.appendChild(postBudgetIcon);
 
         if (movieTile.movieData.phases && movieTile.movieData.phases.postProduction.budgetUri.length > 0) {
-            
+
             postBudgetIcon.itemSource = movieTile.movieData.phases.postProduction.budgetUri;
             postBudgetIcon.itemType = movieTile.movieData.phases.postProduction.budgetType;
 
         } else {
 
             $(postBudgetIcon).addClass('icon-disabled');
-            postBudgetIcon.disabled = true;            
+            postBudgetIcon.disabled = true;
 
-        }      
-       
+        }
+
         $(postBudgetIcon).hammer().on('tap', function (event) {
 
             // show post budget
@@ -1109,24 +1159,12 @@ CG.Demo1.StartApp = function () {
         postBudgetLabel.textContent = 'Post Budget';
         postBudgetItem.appendChild(postBudgetLabel);
 
-        // set options for rendering
-        setTransformOptions('department', _isCurrentView3D);
-        var options = getTransformOptions();
-
-        // initialize the controls
-        tileControls.reset(options, camera, render, $('#viewport'), 1000, _hammer);
-
-        // start transformation rendering
-        transform(movieTile.parentObject.departmentObjects, movieTile.movieData.name, 500);
-
-        // set back nav button
-        setBackNav(CG.Demo1.Views.Catalog, 'Pipeline Catalog');
-
-        _currentView = 1;
-        renderDetailsContext();
     }
 
     function showAssets(departmentTile) {
+
+        $timelineContainer.fadeOut('slow');
+        $viewport.fadeIn('slow');
 
         _lastDepartmentTile = departmentTile;
         
@@ -1153,7 +1191,7 @@ CG.Demo1.StartApp = function () {
         contextWrapper.appendChild(dates);
      
         // set options for rendering
-        setTransformOptions('asset', _isCurrentView3D);
+        setTransformOptions('asset', (_currentToggle == CG.Demo1.Toggles.Toggle3D));
         var options = getTransformOptions();
 
         // initialize the controls
@@ -1165,17 +1203,22 @@ CG.Demo1.StartApp = function () {
         // set back nav button
         setBackNav(CG.Demo1.Views.Departments, 'Departments');
 
-        _currentView = 2;
-        renderDetailsContext();
+        _currentView = CG.Demo1.Views.Assets;
+        _lastTileView = CG.Demo1.Views.Assets;
+
+        renderDetailsContext(_currentView);
 
     }
 
     function showSubAssets(assetTile) {
 
+        $timelineContainer.fadeOut('slow');
+        $viewport.fadeIn('slow');
+
         _lastAssetTile = assetTile;
 
         // set options for rendering
-        setTransformOptions('asset', _isCurrentView3D);
+        setTransformOptions('asset', (_currentToggle == CG.Demo1.Toggles.Toggle3D));
         var options = getTransformOptions();
 
         // initialize the controls
@@ -1213,11 +1256,6 @@ CG.Demo1.StartApp = function () {
             return;
         }
 
-        if ($timelineContainer.css('display') != 'none') {
-            hideScheduleView();
-            $viewport.fadeIn('slow');
-        }
-
         switch (_navBackTo) {
 
             case CG.Demo1.Views.Catalog:
@@ -1231,6 +1269,10 @@ CG.Demo1.StartApp = function () {
                 break;
             case CG.Demo1.Views.SubAssets:
                 showSubAssets(_lastAssetTile);
+                break;
+            case CG.Demo1.Views.CatalogSchedule:
+                showMovieTiles(true);
+                toggleView(CG.Demo1.Toggles.ToggleSchedule, 800);
                 break;
         }
 
@@ -1279,94 +1321,109 @@ CG.Demo1.StartApp = function () {
         }
     }    
    
-    function toggle2D3D(isTo3D, duration) {
-
-        if ($timelineContainer.css('display') != 'none') {
-            hideScheduleView();
-            $viewport.fadeIn('slow');
-        }
+    function toggleView(toggle, duration) {
 
         if (!_tileVectors[_currentVectorKey]) {
             return;
         }
 
-        if (tileControls.disabled === true) {
-            return;
-        }
+        var previousToggle = _currentToggle;
+        _currentToggle = toggle;
 
-        if (isTo3D && _isCurrentView3D ||
-            !isTo3D && !_isCurrentView3D) {
-            // erroneous request
-            return;
-        }
-
-        tileControls.disabled = true;
-        tileControls.is3D = isTo3D;
-        
-        TWEEN.removeAll();
-
-        var toVectors;
-        
-        if (isTo3D) {
-
-            toVectors = _tileVectors[_currentVectorKey].threeD;
-
+        if (toggle == CG.Demo1.Toggles.ToggleSchedule) {
+                       
+            hide2D3DView();
+            showScheduleView(800);
+            
         } else {
 
-            toVectors = _tileVectors[_currentVectorKey].twoD;
+            hideScheduleView();
+
+            if (previousToggle == CG.Demo1.Toggles.ToggleSchedule) {
+                //
+                // need to ensure proper tile level is set
+                //
+
+                if (_lastTileView == CG.Demo1.Views.Catalog) {
+                    showMovieTiles(false);
+                } else {
+                    showDepartments(_lastMovieTile, false);
+                }
+            } else {
+
+                tileControls.disabled = true;
+
+                TWEEN.removeAll();
+
+                var toVectors;
+
+                if (toggle == CG.Demo1.Toggles.Toggle3D) {
+
+                    _wasLastTileView3D = true;
+                    tileControls.is3D = true;
+                    toVectors = _tileVectors[_currentVectorKey].threeD;
+
+                } else {
+
+                    _wasLastTileView3D = false;
+                    tileControls.is3D = false;
+                    toVectors = _tileVectors[_currentVectorKey].twoD;
+
+                }
+
+                var maxDuration = 0;
+                var initialPosition = getInitialCameraPosition((toggle == CG.Demo1.Toggles.Toggle3D));
+
+                if (camera.position.x != initialPosition.x ||
+                    camera.position.y != initialPosition.y ||
+                    camera.position.z != initialPosition.z) {
+
+                    //
+                    // tween camera to it's original position
+                    //
+
+                    var cameraDuration = Math.random() * duration + duration;
+                    maxDuration = Math.max(maxDuration, cameraDuration);
+
+                    new TWEEN.Tween(camera.position)
+                        .to({ x: initialPosition.x, y: initialPosition.y, z: initialPosition.z }, cameraDuration)
+                        .easing(TWEEN.Easing.Exponential.Out)
+                        .start();
+                }
+
+                //
+                // tween all of the current tiles to
+                // their other dimensions, accordingly
+                //
+
+                var vectorLength = toVectors.length;
+                for (var index = 0; index < vectorLength; index++) {
+
+                    var tileDuration = Math.random() * duration + duration;
+                    maxDuration = Math.max(maxDuration, tileDuration);
+
+                    var fromObject = _currentTileObjects[index];
+                    var toVector = toVectors[index];
+
+                    new TWEEN.Tween(fromObject.position)
+                        .to({ x: toVector.position.x, y: toVector.position.y, z: toVector.position.z }, tileDuration)
+                        .easing(TWEEN.Easing.Exponential.Out)
+                        .start();
+                }
+
+                new TWEEN.Tween(this)
+                    .to({}, maxDuration)
+                    .onUpdate(render)
+                    .onComplete(function () {
+
+                        tileControls.disabled = false;
+
+                    })
+                    .start();
+
+            }
 
         }
-
-        var maxDuration = 0;
-        var initialPosition = getInitialCameraPosition(isTo3D);
-
-        if (camera.position.x != initialPosition.x ||
-            camera.position.y != initialPosition.y ||
-            camera.position.z != initialPosition.z) {
-
-            //
-            // tween camera to it's original position
-            //
-
-            var cameraDuration = Math.random() * duration + duration;
-            maxDuration = Math.max(maxDuration, cameraDuration);
-
-            new TWEEN.Tween(camera.position)
-                .to({ x: initialPosition.x, y: initialPosition.y, z: initialPosition.z }, cameraDuration)
-                .easing(TWEEN.Easing.Exponential.Out)
-                .start();
-        }
-
-        //
-        // tween all of the current tiles to
-        // their other dimensions, accordingly
-        //
-
-        var vectorLength = toVectors.length;
-        for (var index = 0; index < vectorLength; index++) {
-
-            var tileDuration = Math.random() * duration + duration;
-            maxDuration = Math.max(maxDuration, tileDuration);
-
-            var fromObject = _currentTileObjects[index];
-            var toVector = toVectors[index];
-            
-            new TWEEN.Tween(fromObject.position)
-                .to({ x: toVector.position.x, y: toVector.position.y, z: toVector.position.z }, tileDuration)
-                .easing(TWEEN.Easing.Exponential.Out)
-                .start();
-        }
-
-        new TWEEN.Tween(this)
-			.to({}, maxDuration)
-			.onUpdate(render)
-			.onComplete(function () {
-
-			    _isCurrentView3D = isTo3D;
-			    tileControls.disabled = false;			    
-
-			})
-            .start();
 
     }
 
@@ -1402,7 +1459,7 @@ CG.Demo1.StartApp = function () {
         }
 
         var maxDuration = 0;
-        var initialPosition = getInitialCameraPosition(_isCurrentView3D);
+        var initialPosition = getInitialCameraPosition((_currentToggle == CG.Demo1.Toggles.Toggle3D));
 
         if (camera.position.x != initialPosition.x ||
             camera.position.y != initialPosition.y ||
@@ -1430,7 +1487,7 @@ CG.Demo1.StartApp = function () {
             var toObject = toTileObjects[index];
             var toVector;
 
-            if (_isCurrentView3D) {
+            if ((_currentToggle == CG.Demo1.Toggles.Toggle3D)) {
                 toVector = _tileVectors[toVectorKey].threeD[index];
             } else {
                 toVector = _tileVectors[toVectorKey].twoD[index];
@@ -1477,7 +1534,7 @@ CG.Demo1.StartApp = function () {
 
     function resetCamera() {
 
-        var initialPosition = getInitialCameraPosition(_isCurrentView3D);
+        var initialPosition = getInitialCameraPosition((_currentToggle == CG.Demo1.Toggles.Toggle3D));
 
         if (camera.position.x != initialPosition.x ||
             camera.position.y != initialPosition.y ||
@@ -1892,7 +1949,7 @@ CG.Demo1.StartApp = function () {
                 }                 
                 
                 var slug = document.createElement('div');
-                slug.className = 'mini-timeline-phase phase-swatch ' + phaseSlug.phase.toLowerCase();
+                slug.className = 'mini-timeline-phase timeline-' + phaseSlug.phase.toLowerCase();
                 slug.title = phaseSlug.phase;
                 slug.style.left = nextLeft + 'px';
                 slug.style.width = width + 'px';
@@ -1926,7 +1983,7 @@ CG.Demo1.StartApp = function () {
 
     }
 
-    function renderDetailsContext() {
+    function renderDetailsContext(view) {
 
         var $container = $('#details-container');
         var $icon = $('#details-expand-collapse');
@@ -1935,7 +1992,7 @@ CG.Demo1.StartApp = function () {
         var isExpanded = true;
 
         if (typeof (Storage) !== "undefined") {
-            isExpanded =(localStorage.getItem('detailsIsExpanded-' + _currentView) == 'true');
+            isExpanded =(localStorage.getItem('detailsIsExpanded-' + view) == 'true');
         }
 
         if (isExpanded) {
@@ -1991,7 +2048,7 @@ CG.Demo1.StartApp = function () {
             item['content'] = movie.name;
             item['tooltip'] = movie.name;
             item['terminator'] = getTerminatorUri(movie.status);
-            item['className'] = 'timeline-item phase-swatch ' + movie.currentPhase.toLowerCase();
+            item['className'] = 'timeline-item timeline-' + movie.currentPhase.toLowerCase();
 
             if (movie.phases) {
 
@@ -2239,9 +2296,16 @@ CG.Demo1.StartApp = function () {
                 phaseSlugs.push(slug);
             }
 
-            // adjust first and last phases so their start/end dates match timeline
-            phaseSlugs[0].start = min;
-            phaseSlugs[phaseSlugs.length - 1].end = max;
+            //
+            // if applicable, adjust first and last phases so 
+            // their start/end dates match timeline
+            //
+            if (min) {
+                phaseSlugs[0].start = min;
+            }
+            if (max) {
+                phaseSlugs[phaseSlugs.length - 1].end = max;
+            }
 
             return phaseSlugs;
 
@@ -2288,56 +2352,236 @@ CG.Demo1.StartApp = function () {
         var maxDate;
         var timelineMin;
         var timelineMax;
+        var renderTimeline = true;
+               
 
-        if (_currentView == 0) {
+        if (_currentView == CG.Demo1.Views.Catalog) {
+
             // show catalog schedule
             timelineData = getTimelineDataForCatalog(_studioData);
 
-            minDate = new Date(timelineData[0].start).setDate(timelineData[0].start.getDate() - 60);
-            maxDate = new Date(timelineData[timelineData.length - 1].end).setDate(timelineData[timelineData.length - 1].end.getDate() + 60);
+            if (timelineData.length > 0) {
 
-            timelineMin = new Date(minDate);
-            timelineMax = new Date(maxDate);
+                setBackNav(CG.Demo1.Views.None, '');
 
+                _timeline = new links.Timeline(document.getElementById('timeline-container'));
+
+                minDate = new Date(timelineData[0].start).setDate(timelineData[0].start.getDate() - 60);
+                maxDate = new Date(timelineData[timelineData.length - 1].end).setDate(timelineData[timelineData.length - 1].end.getDate() + 60);
+
+                timelineMin = new Date(minDate);
+                timelineMax = new Date(maxDate);
+
+                _hammer.off('tap', '.timeline-event', onTimelineDepartmentClick);
+                _hammer.on('tap', '.timeline-event', onTimelineMovieClick);
+            } else {
+
+                renderTimeline = false;
+
+            }            
         } else {
-
-            if (_currentView > 1) {
-                // first, nav back to department view
-                navBack();
-            }
 
             // show movie schedule
             timelineData = getTimelineDataForMovie(_lastMovieTile.movieData);
 
-            minDate = new Date(timelineData[1].start).setDate(timelineData[1].start.getDate() - 60); // start at 2nd element to allow for static milestone
-            maxDate = new Date(timelineData[timelineData.length - 1].end).setDate(timelineData[timelineData.length - 1].end.getDate() + 60);
-            var releasePlus30 = new Date(_lastMovieTile.movieData.releaseDate).setDate(_lastMovieTile.movieData.releaseDate.getDate() + 60);
-            maxDate = (maxDate > releasePlus30 ? maxDate : releasePlus30);
+            //
+            // check > 1 because one record will be there
+            // for the automatic movie release milestone
+            //
+            if (timelineData.length > 1) {
 
-            timelineMin = new Date(minDate);
-            timelineMax = new Date(maxDate);
+                setBackNav(CG.Demo1.Views.CatalogSchedule, 'Pipeline Catalog');
 
-            timelineOptions.phases = getPhases(_lastMovieTile.movieData, timelineMin, timelineMax);
-            timelineOptions.showPhases = true;
+                _timeline = new links.Timeline(document.getElementById('timeline-container'));
+
+                _hammer.off('tap', '.timeline-event', onTimelineMovieClick);
+                _hammer.on('tap', '.timeline-event', onTimelineDepartmentClick);
+
+                renderMovieDetails(_lastMovieTile);
+                renderDetailsContext(1);
+
+                minDate = new Date(timelineData[1].start).setDate(timelineData[1].start.getDate() - 60); // start at 2nd element to allow for static milestone
+                maxDate = new Date(timelineData[timelineData.length - 1].end).setDate(timelineData[timelineData.length - 1].end.getDate() + 60);
+                var releasePlus30 = new Date(_lastMovieTile.movieData.releaseDate).setDate(_lastMovieTile.movieData.releaseDate.getDate() + 60);
+                maxDate = (maxDate > releasePlus30 ? maxDate : releasePlus30);
+
+                timelineMin = new Date(minDate);
+                timelineMax = new Date(maxDate);
+
+                timelineOptions.phases = getPhases(_lastMovieTile.movieData, timelineMin, timelineMax);
+                timelineOptions.showPhases = true;
+
+            } else {
+
+                renderTimeline = false;
+
+            }
         }
 
-        timelineOptions.min = timelineMin;
-        timelineOptions.max = timelineMax;
-        timelineOptions.start = timelineMin;
-        timelineOptions.end = timelineMax;
+        if (renderTimeline) {
 
-        _timeline = new links.Timeline(document.getElementById('timeline-container'));
-        
-        _timeline.draw(timelineData, timelineOptions);
+            timelineOptions.min = timelineMin;
+            timelineOptions.max = timelineMax;
+            timelineOptions.start = timelineMin;
+            timelineOptions.end = timelineMax;
 
-        // hide the viewport
-        $viewport.fadeOut('slow');
-        $timelineContainer.fadeIn('slow');
-        redrawTimeline();
+            _timeline.draw(timelineData, timelineOptions);
+
+            redrawTimeline();
+
+        }
     }
 
     function hideScheduleView() {
-        $timelineContainer.fadeOut('slow');
+
+        if ($timelineContainer.css('display') != 'none') {
+
+            $timelineContainer.fadeOut('slow');
+
+        }
+
+        if ($viewport.css('display') == 'none') {
+
+            $viewport.fadeIn('slow');
+
+        }
+
+    }
+
+    function hide2D3DView() {
+
+        if ($viewport.css('display') != 'none') {
+
+            $viewport.fadeOut('slow');            
+
+        }
+
+        if ($timelineContainer.css('display') == 'none') {
+
+            $timelineContainer.fadeIn('slow');
+
+        }
+
+
+    }
+
+    function onTimelineMovieClick(event) {
+
+        event.gesture.preventDefault();
+
+        var movieName = event.gesture.target.textContent;
+        var movieTile = getMovieTile(movieName);
+        showDepartments(movieTile, true);
+        toggleView(CG.Demo1.Toggles.ToggleSchedule, 800);
+
+    }
+
+    function onTimelineDepartmentClick(event) {
+
+        event.gesture.preventDefault();
+
+        var deptName = event.gesture.target.textContent;
+        var deptTile = getDepartmentTile(deptName);
+
+        if (deptTile != null) {            
+            var toggle = (_wasLastTileView3D == true ? CG.Demo1.Toggles.Toggle3D : CG.Demo1.Toggles.Toggle2D);
+            toggleView(toggle, 800);
+            setBackNav(CG.Demo1.Views.Departments, 'Departments');
+            showAssets(deptTile);
+        }
+
+    }
+
+    function getMovieTile(movieName) {
+
+        var movieTile = null;
+        var movieLength = _tileObjects.movieObjects.length;
+
+        for (var movieObjectIndex = 0; movieObjectIndex < movieLength; movieObjectIndex++) {
+
+            var movieObject = _tileObjects.movieObjects[movieObjectIndex];
+            var tile = movieObject.element;
+
+            if (tile.movieData.name === movieName) {
+
+                //
+                // found the right movie
+                //
+
+                movieTile = tile;
+
+                break;
+            }
+
+        }
+
+        return movieTile;
+    }
+
+    function getDepartmentTile(departmentName) {
+
+        var departmentTile = null;
+        var tileLength = _currentTileObjects.length;
+
+        for (var tileIndex = 0; tileIndex < tileLength; tileIndex++) {
+            var tile = _currentTileObjects[tileIndex].element;
+
+            if (tile.departmentName) {
+                if (tile.departmentName == departmentName) {
+                    departmentTile = tile;
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+
+        if (departmentTile == null) {
+            //
+            // this probably means that the schedule view was
+            // toggled from an asset view...so we've got
+            // to do this the hard way
+            //
+
+            var movieLength = _tileObjects.movieObjects.length;
+
+            for (var movieObjectIndex = 0; movieObjectIndex < movieLength; movieObjectIndex++) {
+
+                var movieObject = _tileObjects.movieObjects[movieObjectIndex];
+                var movieTile = movieObject.element;
+
+                if (movieTile.movieData.name === _lastMovieTile.movieData.name) {
+
+                    //
+                    // found the right movie, so now find the right department
+                    //
+
+                    if (movieObject.departmentObjects && movieObject.departmentObjects.length > 0) {
+
+                        var deptLength = movieObject.departmentObjects.length;
+
+                        for (var deptIndex = 0; deptIndex < deptLength; deptIndex++) {
+
+                            var deptTile = movieObject.departmentObjects[deptIndex].element;
+
+                            if (deptTile.departmentName == departmentName) {
+                                departmentTile = deptTile;
+                                break;
+                            }
+
+                        }
+                    }
+
+                    break;
+
+                }
+
+            }
+
+        }
+
+        return departmentTile;
+
     }
     
     initialize();
