@@ -1333,8 +1333,88 @@ background-image: -webkit-gradient(
 
 
 
-/**********************************
- *** START OF UI CONTROL STYLES ***
- **********************************/
+/********************
+ *** MOVIE SLIDER ***
+ ********************/
 
+#movie-slider
+{
+    position:absolute;
+    min-width: 430px;
+    bottom:0px;
+    width: 70%;
+    height: 65px;
+    margin: 0px 15%;
+    background-color:#000;
+    border-top-left-radius:75px 55px;
+    border-top-right-radius:75px 55px;              
+            
+    -webkit-box-shadow: 0 1px 0px rgba(255,255,255,0.1) inset, 0 0px 1px rgba(0,0,0,0.7);
+	-moz-box-shadow: 0 1px 0px rgba(255,255,255,0.1) inset, 0 0px 1px rgba(0,0,0,0.7);
+	box-shadow: 0 1px 0px rgba(255,255,255,0.1) inset, 0 0px 1px rgba(0,0,0,0.7);
+	background-color: #1a0804;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#e9ede8), to(#1a0804),color-stop(0.4, #0e0301));  
+    z-index:10000;
+    
+    display:none;            
+}
 
+#movie-slider-pane
+{
+    position: absolute;
+    bottom:-10px;
+    width: 90%;
+    height: 60px;
+    margin: 0px 5%; 
+    background-color: rgba(0,0,0,0.75);
+    border:3px groove rgba(255,255,255,0.5);
+    border-radius:6px;
+
+    border-top-left-radius:70px 50px;
+    border-top-right-radius:70px 50px;
+                        
+    text-align:center;
+    overflow:hidden;
+
+    z-index:10000; 
+}
+
+#movie-slider-thumbnailcontainer
+{
+    position: absolute;
+    width:auto;
+    height:auto;
+
+    -webkit-transform: translate3d(0,0,-5);
+    -o-transform: translate3d(0,0,-5);
+    -ms-transform: translate3d(0,0,-5);
+    -moz-transform: translate3d(0,0,-5);
+    transform: translate3d(0,0,-5);
+
+    z-index:10000; 
+}
+
+/* aspect ratio: .675 , 1.48 */
+.movie-slider-thumbnail
+{
+    position:relative;
+    width:60px;
+    height:89px;
+    background-color:blue;
+    color:#fff;
+    font-size:14px;
+
+    display:inline-block;
+
+    background-size: contain;
+    background-repeat:no-repeat;
+    background-position:center;
+    opacity: 0.95;
+    background-color:transparent;
+
+    border:1px solid rgba(0,0,0,1);
+
+    cursor: pointer;
+
+    z-index:10000; 
+}

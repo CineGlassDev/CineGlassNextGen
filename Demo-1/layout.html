@@ -1,8 +1,11 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>CineGlass Layout</title>
-
+    <link rel="prefetch" href="/" />
     <style>
         html, body {
             height: 100%;
@@ -308,7 +311,7 @@
             min-width: 430px;
             bottom:0px;
             width: 70%;
-            height: 45px;
+            height: 65px;
             margin: 0px 15%;
             background-color:#000;
             border-top-left-radius:75px 55px;
@@ -324,9 +327,9 @@
         #movie-slider-pane
         {
             position: absolute;
-            bottom:-4px;
+            bottom:-10px;
             width: 90%;
-            height: 40px;
+            height: 60px;
             margin: 0px 5%; 
             background-color: rgba(0,0,0,0.75);
             border:3px groove rgba(255,255,255,0.5);
@@ -334,23 +337,30 @@
 
             border-top-left-radius:70px 50px;
             border-top-right-radius:70px 50px;
-
-            
+                        
             text-align:center;
-
-            -webkit-transform: translate3d(0,0,0);
-            -o-transform: translate3d(0,0,0);
-            -ms-transform: translate3d(0,0,0);
-            -moz-transform: translate3d(0,0,0);
-            transform: translate3d(0,0,0);
-
             overflow:hidden;
         }
 
+        #movie-slider-thumbnailcontainer
+        {
+            position: absolute;
+            width:auto;
+            height:auto;
+
+            -webkit-transform: translate3d(0,0,-5);
+            -o-transform: translate3d(0,0,-5);
+            -ms-transform: translate3d(0,0,-5);
+            -moz-transform: translate3d(0,0,-5);
+            transform: translate3d(0,0,-5);
+
+            
+        }
 
         /* aspect ratio: .675 , 1.48 */
         .movie-slider-thumbnail
         {
+            position:relative;
             width:60px;
             height:89px;
             background-color:blue;
@@ -365,10 +375,16 @@
             opacity: 0.95;
             background-color:transparent;
 
-            border:1px outset rgba(255,255,255,0.5);
-
+            border:1px solid rgba(0,0,0,1);
 
             cursor: pointer;
+
+            -webkit-transform: translate3d(0,0,-5);
+            -o-transform: translate3d(0,0,-5);
+            -ms-transform: translate3d(0,0,-5);
+            -moz-transform: translate3d(0,0,-5);
+            transform: translate3d(0,0,-5);
+
         }
 
 
@@ -387,70 +403,112 @@
     <script src="js/jquery/jquery-1.9.1.min.js"></script>
     <script src="js/modernizr.custom.69161.js"></script>
     <script src="js/jquery/jquery.hammer.min.js"></script>
+    <script src="js/threejs/libs/three.min.js"></script>
+    <script src="js/threejs/libs/tween.min.js"></script>
 
+    <script>
+
+        function disableEvent(event) {
+            event.preventDefault();
+        }
+
+        $(document).on('selectstart', function (event) {
+            event.preventDefault();
+            return false;
+        });
+
+    </script>
 </head>
 <body ontouchmove="disableEvent(event);" ondragstart="disableEvent(event);">
 
 
-    <div id="viewport">
-
-        <div id="movie-slider">
-            <div id="movie-slider-pane">
-                <div class="movie-slider-thumbnail" style="background-image:url('assets/one-sheets/allyouneediskill.jpg')"></div>
-                <div class="movie-slider-thumbnail" style="background-image:url('assets/one-sheets/conjuring.jpg')"></div>
-                <div class="movie-slider-thumbnail" style="background-image:url('assets/one-sheets/Godzillia2014.jpeg')"></div>
-                <div class="movie-slider-thumbnail" style="background-image:url('assets/one-sheets/great_gatsby.jpg')"></div>
-                <div class="movie-slider-thumbnail" style="background-image:url('assets/one-sheets/hangover_part_3.jpg')"></div>
-                <div class="movie-slider-thumbnail" style="background-image:url('assets/one-sheets/Hobbit-desolation.jpg')"></div>
-                <div class="movie-slider-thumbnail" style="background-image:url('assets/one-sheets/Jupiter Ascending.jpg')"></div>
-                <div class="movie-slider-thumbnail" style="background-image:url('assets/one-sheets/man_of_steel.jpg')"></div>
-                <div class="movie-slider-thumbnail" style="background-image:url('assets/one-sheets/pacific_rim.jpg')"></div>
-                <div class="movie-slider-thumbnail" style="background-image:url('assets/one-sheets/thelegomovie.jpg')"></div>
-                <div class="movie-slider-thumbnail" style="background-image:url('assets/one-sheets/theseventhson.jpg')"></div>
-                <div class="movie-slider-thumbnail" style="background-image:url('assets/one-sheets/three_hundred_rise_of_an_empire.jpg')"></div>
+    <div id="movie-slider">
+        <div id="movie-slider-pane">
+            <div id="movie-slider-thumbnailcontainer">
+                <div class="movie-slider-thumbnail" movie-name="All You Need Is Kill" style="background-image:url('assets/one-sheets/allyouneediskill.jpg')"></div>
+                <div class="movie-slider-thumbnail" movie-name="The Conjuring" style="background-image:url('assets/one-sheets/conjuring.jpg')"></div>
+                <div class="movie-slider-thumbnail" movie-name="Godzilla" style="background-image:url('assets/one-sheets/Godzillia2014.jpeg')"></div>
+                <div class="movie-slider-thumbnail" movie-name="The Great Gatsby" style="background-image:url('assets/one-sheets/great_gatsby.jpg')"></div>
+                <div class="movie-slider-thumbnail" movie-name="The Hangover Part III" style="background-image:url('assets/one-sheets/hangover_part_3.jpg')"></div>
+                <div class="movie-slider-thumbnail" movie-name="The Hobbit: The Desolation of Smaug" style="background-image:url('assets/one-sheets/Hobbit-desolation.jpg')"></div>
+                <div class="movie-slider-thumbnail" movie-name="Jupiter Ascending" style="background-image:url('assets/one-sheets/Jupiter Ascending.jpg')"></div>
+                <div class="movie-slider-thumbnail" movie-name="Man of Steel" style="background-image:url('assets/one-sheets/man_of_steel.jpg')"></div>
+                <div class="movie-slider-thumbnail" movie-name="Pacific Rim" style="background-image:url('assets/one-sheets/pacific_rim.jpg')"></div>
+                <div class="movie-slider-thumbnail" movie-name="The Lego Movie" style="background-image:url('assets/one-sheets/thelegomovie.jpg')"></div>
+                <div class="movie-slider-thumbnail" movie-name="The Seventh Son" style="background-image:url('assets/one-sheets/theseventhson.jpg')"></div>
+                <div class="movie-slider-thumbnail" movie-name="300: Rise of an Empire" style="background-image:url('assets/one-sheets/three_hundred_rise_of_an_empire.jpg')"></div>
             </div>
         </div>
+    </div>
+
+
+    <div id="viewport">
+
+        
 
         <script>
 
-            var $movieSlider = $('#movie-slider');
-            var $movieSliderPane = $('#movie-slider-pane');
+            var $movieSliderThumbnailContainer = $('#movie-slider-thumbnailcontainer');
+            var _movieSliderSlideDistance = 150;
 
             // initialize hammer touch event manager
             var _hammer = $(document).hammer({
                 swipe_velocity: 0.1
             });
 
-            _hammer.on('swipeleft', $movieSliderPane, function (event) {
+            _hammer.on('swipeleft', '#movie-slider-thumbnailcontainer', function (event) {
 
                 event.gesture.preventDefault();
 
-                var sliderRight = $movieSlider.position().left + $movieSlider.offsetWidth();
-                var paneRight = $movieSliderPane.position().left + $movieSliderPane.offsetWidth();
+                var moveDistance = _movieSliderSlideDistance * event.gesture.velocityX;
 
-                
-                if (paneRight < sliderRight) {
-                    // move pane to the left
-                }
-                
+                var startLeft = $movieSliderThumbnailContainer.position().left;
 
+                new TWEEN.Tween({ x: startLeft })
+                   .to({ x: startLeft - moveDistance }, 1500)
+                   .easing(TWEEN.Easing.Exponential.Out)
+                   .onUpdate(function () {
+                       $movieSliderThumbnailContainer.css('transform', 'translateX(' + this.x + 'px)');
+                   })
+                   .start();
 
             });
 
-            _hammer.on('swiperight', $movieSliderPane, function (event) {
+            _hammer.on('swiperight', '#movie-slider-thumbnailcontainer', function (event) {
 
                 event.gesture.preventDefault();
 
+                var moveDistance = _movieSliderSlideDistance * event.gesture.velocityX;
+
+                var startLeft = $movieSliderThumbnailContainer.position().left;
                 
+                new TWEEN.Tween({ x: startLeft })
+                   .to({ x: startLeft + moveDistance }, 1500)
+                   .easing(TWEEN.Easing.Exponential.Out)
+                   .onUpdate(function () {
+                       $movieSliderThumbnailContainer.css('transform', 'translateX(' + this.x + 'px)');
+                   })
+                   .start();
 
             });
 
-            function disableEvent(event) {
+            _hammer.on('tap', '#movie-slider-thumbnailcontainer .movie-slider-thumbnail', function (event) {
 
-                event.preventDefault();
+                event.gesture.preventDefault();
+
+                var thumbnail = event.gesture.target;
+                console.log(thumbnail);
+
+            });
+
+            function animate() {
+
+                requestAnimationFrame(animate); // js/RequestAnimationFrame.js needs to be included too.
+                TWEEN.update();
 
             }
 
+            animate();
 
         </script>
 

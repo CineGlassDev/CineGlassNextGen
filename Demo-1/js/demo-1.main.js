@@ -98,7 +98,8 @@ CG.Demo1.StartApp = function () {
     var _itemsToPreload = [];
     var _timeline;
     var _wasLastTileView3D = true;
-    var _lastTileView;
+    var _lastTileView;    
+    var _movieSliderSlideDistance = 150;
 
     // initialize hammer touch event manager
     var _hammer = $(document).hammer({
@@ -113,7 +114,8 @@ CG.Demo1.StartApp = function () {
     $backNav = $('#backNav');
     $details = $('#details-container-inner');
     $timelineContainer = $('#timeline-container');
-
+    $movieSliderThumbnailContainer = $('#movie-slider-thumbnailcontainer');
+    $movieSlider = $('#movie-slider');
 
     //////////////////////////////////
     //////////////////////////////////
@@ -156,6 +158,7 @@ CG.Demo1.StartApp = function () {
         // initialize all objects required for 3D rendering
         initializeTilesAndVectors();
 
+
         // initialize controls, defaulting to catalog controls
         setTransformOptions('catalog', (_currentToggle == CG.Demo1.Toggles.Toggle3D));
         var options = getTransformOptions();
@@ -163,6 +166,9 @@ CG.Demo1.StartApp = function () {
 
         // initialize event handlers
         initializeEventHandlers();
+
+        // initialize movie slider
+        initializeMovieSlider();
 
         $('*').cineGlassPreLoader({
             barColor: 'rgba(0,0,0,0.75)',
@@ -677,6 +683,7 @@ CG.Demo1.StartApp = function () {
             //
             // cancel selection/highlighting
             //
+            event.preventDefault();
             return false;
         });
 
@@ -862,6 +869,81 @@ CG.Demo1.StartApp = function () {
             toggleView(CG.Demo1.Toggles.ToggleSchedule, 800);
         });        
 
+        _hammer.on('swipeleft', '#movie-slider-thumbnailcontainer', function (event) {
+
+            event.gesture.preventDefault();
+
+            console.log('swipeleft');
+
+            var moveDistance = _movieSliderSlideDistance * event.gesture.velocityX;
+
+            var startLeft = $movieSliderThumbnailContainer.position().left;
+
+            new TWEEN.Tween({ x: startLeft })
+               .to({ x: startLeft - moveDistance }, 1500)
+               .easing(TWEEN.Easing.Exponential.Out)
+               .onUpdate(function () {
+                   $movieSliderThumbnailContainer.css('transform', 'translateX(' + this.x + 'px)');
+               })
+               .start();
+
+        });
+
+        _hammer.on('swiperight', '#movie-slider-thumbnailcontainer', function (event) {
+
+            event.gesture.preventDefault();
+
+            var moveDistance = _movieSliderSlideDistance * event.gesture.velocityX;
+
+            var startLeft = $movieSliderThumbnailContainer.position().left;
+
+            new TWEEN.Tween({ x: startLeft })
+               .to({ x: startLeft + moveDistance }, 1500)
+               .easing(TWEEN.Easing.Exponential.Out)
+               .onUpdate(function () {
+                   $movieSliderThumbnailContainer.css('transform', 'translateX(' + this.x + 'px)');
+               })
+               .start();
+
+        });
+
+        _hammer.on('tap', '#movie-slider-thumbnailcontainer .movie-slider-thumbnail', function (event) {
+
+            event.gesture.preventDefault();
+
+            var thumbnail = event.gesture.target;
+
+            var movieName = thumbnail.getAttribute('movie-name');
+            var movieTile = getMovieTile(movieName); 
+            var navBackView = (_currentToggle == CG.Demo1.Toggles.ToggleSchedule ? CG.Demo1.Views.CatalogSchedule : CG.Demo1.Views.Catalog);
+            
+            if (_currentToggle == CG.Demo1.Toggles.ToggleSchedule &&
+                movieTile.movieData.phases != null) {
+
+                showDepartments(movieTile, true);
+                toggleView(CG.Demo1.Toggles.ToggleSchedule, 800);
+
+            } else {
+
+                showDepartments(movieTile, false);
+
+                if (movieTile.movieData.phases == null) {
+
+                    if (_wasLastTileView3D === true) {
+                        _currentToggle = CG.Demo1.Toggles.Toggle3D;
+                        toggleView(CG.Demo1.Toggles.Toggle3D, 800);
+                    } else {
+                        _currentToggle = CG.Demo1.Toggles.Toggle2D;
+                        toggleView(CG.Demo1.Toggles.Toggle2D, 800);
+                    }
+
+                }
+
+            }
+
+            setBackNav(navBackView, 'Pipeline Catalog');
+            
+        });
     }
     
     function showMovieTiles(isScheduleView) {
@@ -871,6 +953,7 @@ CG.Demo1.StartApp = function () {
 
         // hide movie countdown clock
         hideReleaseCountdown();
+        hideMovieSlider();
 
         $details.empty();
 
@@ -954,6 +1037,9 @@ CG.Demo1.StartApp = function () {
 
         // show countdown clock for this movie
         showReleaseCountdown(movieTile.movieData.releaseDate, movieTile.movieData.releaseCountry);
+
+        // show the movie slider
+        showMovieSlider();
 
         // create expander box for movie details
         renderMovieDetails(movieTile);
@@ -2165,11 +2251,13 @@ CG.Demo1.StartApp = function () {
     }
 
     function redrawTimeline() {
-        var range = _timeline.getVisibleChartRange();
-        _timeline.setVisibleChartRange(range.start, range.end);
+        if (typeof _timeline != 'undefined') {
+            var range = _timeline.getVisibleChartRange();
+            _timeline.setVisibleChartRange(range.start, range.end);
 
-        if (_timeline.dom.contentTimelines.clientHeight == 0) {
-            setTimeout(redrawTimeline, 100);
+            if (_timeline.dom.contentTimelines.clientHeight == 0) {
+                setTimeout(redrawTimeline, 100);
+            }
         }
     }
 
@@ -2429,6 +2517,10 @@ CG.Demo1.StartApp = function () {
 
             redrawTimeline();
 
+        } else {
+
+            $timelineContainer.hide();
+
         }
     }
 
@@ -2582,6 +2674,42 @@ CG.Demo1.StartApp = function () {
 
         return departmentTile;
 
+    }
+
+    function initializeMovieSlider() {
+
+        var container = document.getElementById('movie-slider-thumbnailcontainer');
+        var catalog = _studioData.catalog;
+        var movieCount = catalog.length;
+
+        //
+        // initialize movie tiles
+        //
+        for (var index = 0; index < movieCount; index++) {
+
+            var movieData = catalog[index];
+
+            var movieName = movieData.name;
+
+            //
+            // create a tile for the movie
+            //
+            var thumbnail = document.createElement('div');
+            thumbnail.className = 'movie-slider-thumbnail';
+            thumbnail.title = movieName;
+            thumbnail.setAttribute('movie-name', movieName);
+            thumbnail.style.backgroundImage = "url('" + movieData.oneSheet + "')";
+
+            container.appendChild(thumbnail);
+        }
+    }
+
+    function showMovieSlider() {
+        $movieSlider.show();
+    }
+
+    function hideMovieSlider() {
+        $movieSlider.hide();
     }
     
     initialize();

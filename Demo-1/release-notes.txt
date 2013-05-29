@@ -1,5 +1,18 @@
 ﻿
 *********************************
+  CineGlass v0.0.5 on 5-28-2013
+*********************************
+--- ENHANCEMENTS ---
+- User can now select a different movie without having to nav back to catalog view by using slider at bottom of screen.
+
+--- IN-PROGRESS ---
+- Provisioning new movie (Gravity).
+- Integrating/testing new Jupiter Ascending dates that Brian provided.
+
+--- IN-QUEUE ---
+- Add upload asset feature.
+
+*********************************
   CineGlass v0.0.4 on 5-27-2013
 *********************************
 --- BUG FIXES ---
