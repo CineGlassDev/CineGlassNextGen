@@ -305,23 +305,37 @@
             top:3px;
         }
 
+
+
+
+
+
+
         #movie-slider
         {
             position:absolute;
             min-width: 430px;
             bottom:0px;
             width: 70%;
-            height: 65px;
+            height: 75px;
+            bottom:-55px;
             margin: 0px 15%;
             background-color:#000;
             border-top-left-radius:75px 55px;
-            border-top-right-radius:75px 55px;              
+            border-top-right-radius:75px 55px; 
+            cursor:pointer;          
             
             -webkit-box-shadow: 0 1px 0px rgba(255,255,255,0.1) inset, 0 0px 1px rgba(0,0,0,0.7);
 	        -moz-box-shadow: 0 1px 0px rgba(255,255,255,0.1) inset, 0 0px 1px rgba(0,0,0,0.7);
 	        box-shadow: 0 1px 0px rgba(255,255,255,0.1) inset, 0 0px 1px rgba(0,0,0,0.7);
 	        background-color: #1a0804;
 	        background-image: -webkit-gradient(linear, left top, left bottom, from(#e9ede8), to(#1a0804),color-stop(0.4, #0e0301));              
+
+            -webkit-transform: translate3d(0,0,0);
+            -o-transform: translate3d(0,0,0);
+            -ms-transform: translate3d(0,0,0);
+            -moz-transform: translate3d(0,0,0);
+            transform: translate3d(0,0,0);
         }
 
         #movie-slider-pane
@@ -345,7 +359,7 @@
         #movie-slider-thumbnailcontainer
         {
             position: absolute;
-            width:auto;
+            width:20000px;
             height:auto;
 
             -webkit-transform: translate3d(0,0,-5);
@@ -354,7 +368,8 @@
             -moz-transform: translate3d(0,0,-5);
             transform: translate3d(0,0,-5);
 
-            
+
+            text-align:left;
         }
 
         /* aspect ratio: .675 , 1.48 */
@@ -388,7 +403,45 @@
         }
 
 
+        .rivet
+        {
+            position:absolute;
+            width:4px;
+            height:4px;
+            border-radius:2px;
+            border:1px groove rgba(0,0,0,0.5);
+            top: 6px;
+            cursor:pointer;
+            
+            background-image: linear-gradient(left top, rgb(214,214,214) 2%, rgb(54,54,54) 51%);
+            background-image: -o-linear-gradient(left top, rgb(214,214,214) 2%, rgb(54,54,54) 51%);
+            background-image: -moz-linear-gradient(left top, rgb(214,214,214) 2%, rgb(54,54,54) 51%);
+            background-image: -webkit-linear-gradient(left top, rgb(214,214,214) 2%, rgb(54,54,54) 51%);
+            background-image: -ms-linear-gradient(left top, rgb(214,214,214) 2%, rgb(54,54,54) 51%);
 
+            background-image: -webkit-gradient(
+	            linear,
+	            left top,
+	            right bottom,
+	            color-stop(0.02, rgb(214,214,214)),
+	            color-stop(0.51, rgb(54,54,54))
+            );
+        }
+
+        #rivet-left
+        {            
+            left: 70px;
+        }
+
+        #rivet-center
+        {            
+            left: 50%;
+        }
+
+        #rivet-right
+        {
+            right:70px;
+        }
 
 
 
@@ -423,6 +476,8 @@
 
 
     <div id="movie-slider">
+        <div id="rivet-left" class="rivet"></div>
+        <div id="rivet-center" class="rivet"></div>
         <div id="movie-slider-pane">
             <div id="movie-slider-thumbnailcontainer">
                 <div class="movie-slider-thumbnail" movie-name="All You Need Is Kill" style="background-image:url('assets/one-sheets/allyouneediskill.jpg')"></div>
@@ -439,6 +494,7 @@
                 <div class="movie-slider-thumbnail" movie-name="300: Rise of an Empire" style="background-image:url('assets/one-sheets/three_hundred_rise_of_an_empire.jpg')"></div>
             </div>
         </div>
+        <div id="rivet-right" class="rivet"></div>
     </div>
 
 
@@ -498,6 +554,37 @@
 
                 var thumbnail = event.gesture.target;
                 console.log(thumbnail);
+
+            });
+
+            _hammer.on('tap', '#movie-slider', function (event) {
+
+                event.gesture.preventDefault();
+
+                var $slider = $('#movie-slider');
+
+                var sliderBottom = window.innerHeight - $slider.position().top - $slider.height();
+                
+                if (sliderBottom < 0) {
+
+                    new TWEEN.Tween({ x: sliderBottom })
+                      .to({ x: 0 }, 1000)
+                      .easing(TWEEN.Easing.Quadratic.Out)
+                      .onUpdate(function () {
+                          $slider.css('bottom', this.x + 'px');
+                      })
+                      .start();
+
+                } else {
+
+                    new TWEEN.Tween({ x: sliderBottom })
+                      .to({ x: -55 }, 1000)
+                      .easing(TWEEN.Easing.Quadratic.Out)
+                      .onUpdate(function () {
+                          $slider.css('bottom', this.x + 'px');
+                      })
+                      .start();
+                }
 
             });
 

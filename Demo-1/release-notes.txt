@@ -1,12 +1,13 @@
 ﻿
 *********************************
-  CineGlass v0.0.5 on 5-28-2013
+  CineGlass v0.0.5 on 5-29-2013
 *********************************
 --- ENHANCEMENTS ---
 - User can now select a different movie without having to nav back to catalog view by using slider at bottom of screen.
+- Provisioned new movie (Gravity).
+- Refactored video playback to use HTML5 player (with streaming capability).
 
 --- IN-PROGRESS ---
-- Provisioning new movie (Gravity).
 - Integrating/testing new Jupiter Ascending dates that Brian provided.
 
 --- IN-QUEUE ---

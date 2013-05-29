@@ -1343,7 +1343,8 @@ background-image: -webkit-gradient(
     min-width: 430px;
     bottom:0px;
     width: 70%;
-    height: 65px;
+    height: 75px;
+    bottom:-55px;
     margin: 0px 15%;
     background-color:#000;
     border-top-left-radius:75px 55px;
@@ -1354,9 +1355,59 @@ background-image: -webkit-gradient(
 	box-shadow: 0 1px 0px rgba(255,255,255,0.1) inset, 0 0px 1px rgba(0,0,0,0.7);
 	background-color: #1a0804;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#e9ede8), to(#1a0804),color-stop(0.4, #0e0301));  
+    
+    -webkit-transform: translate3d(0,0,0);
+    -o-transform: translate3d(0,0,0);
+    -ms-transform: translate3d(0,0,0);
+    -moz-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+    
+    
     z-index:10000;
     
+    cursor:pointer;
+
     display:none;            
+}
+
+.rivet
+{
+    position:absolute;
+    width:4px;
+    height:4px;
+    border-radius:2px;
+    border:1px groove rgba(0,0,0,0.5);
+    top: 6px;
+    cursor:pointer;
+            
+    background-image: linear-gradient(left top, rgb(214,214,214) 2%, rgb(54,54,54) 51%);
+    background-image: -o-linear-gradient(left top, rgb(214,214,214) 2%, rgb(54,54,54) 51%);
+    background-image: -moz-linear-gradient(left top, rgb(214,214,214) 2%, rgb(54,54,54) 51%);
+    background-image: -webkit-linear-gradient(left top, rgb(214,214,214) 2%, rgb(54,54,54) 51%);
+    background-image: -ms-linear-gradient(left top, rgb(214,214,214) 2%, rgb(54,54,54) 51%);
+
+    background-image: -webkit-gradient(
+	    linear,
+	    left top,
+	    right bottom,
+	    color-stop(0.02, rgb(214,214,214)),
+	    color-stop(0.51, rgb(54,54,54))
+    );
+}
+
+#rivet-left
+{            
+    left: 70px;
+}
+
+#rivet-center
+{            
+    left: 50%;
+}
+
+#rivet-right
+{
+    right:70px;
 }
 
 #movie-slider-pane
@@ -1382,8 +1433,9 @@ background-image: -webkit-gradient(
 #movie-slider-thumbnailcontainer
 {
     position: absolute;
-    width:auto;
+    width:20000px;
     height:auto;
+    text-align:left;
 
     -webkit-transform: translate3d(0,0,-5);
     -o-transform: translate3d(0,0,-5);
@@ -1392,6 +1444,9 @@ background-image: -webkit-gradient(
     transform: translate3d(0,0,-5);
 
     z-index:10000; 
+
+    
+
 }
 
 /* aspect ratio: .675 , 1.48 */
@@ -1400,7 +1455,6 @@ background-image: -webkit-gradient(
     position:relative;
     width:60px;
     height:89px;
-    background-color:blue;
     color:#fff;
     font-size:14px;
 

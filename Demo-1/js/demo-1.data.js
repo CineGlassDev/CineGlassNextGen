@@ -70,6 +70,25 @@ CG.Demo1.DemoData = function () {
     }
     warnerBrothers.catalog.push(godzilla);
 
+    var gravity = {
+        name: 'Gravity',
+        oneSheet: 'assets/one-sheets/gravity.jpg',
+        genre: 'Sci-Fi | Thriller',
+        releaseDate: new Date('10/4/2013'),
+        releaseCountry: 'USA',
+        topCredits: {
+            directors: 'Alfonso Cuarón',
+            writers: 'Alfonso Cuarón, Jonás Cuarón',
+            stars: 'Sandra Bullock, George Clooney, Basher Savage'
+        },
+        currentPhase: 'Distribution',
+        budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
+        budgetType: 'xls',
+        phases: null,
+        status: null
+    }
+    warnerBrothers.catalog.push(gravity);
+
     var greatGatsby = {
         name: 'The Great Gatsby',
         oneSheet: 'assets/one-sheets/great_gatsby.jpg',

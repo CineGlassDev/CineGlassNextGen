@@ -157,8 +157,7 @@ CG.Demo1.StartApp = function () {
 
         // initialize all objects required for 3D rendering
         initializeTilesAndVectors();
-
-
+        
         // initialize controls, defaulting to catalog controls
         setTransformOptions('catalog', (_currentToggle == CG.Demo1.Toggles.Toggle3D));
         var options = getTransformOptions();
@@ -943,6 +942,35 @@ CG.Demo1.StartApp = function () {
 
             setBackNav(navBackView, 'Pipeline Catalog');
             
+        });
+
+        _hammer.on('tap', '#movie-slider', function (event) {
+
+            event.gesture.preventDefault();
+
+            var sliderBottom = window.innerHeight - $movieSlider.position().top - $movieSlider.height();
+
+            if (sliderBottom < 0) {
+
+                new TWEEN.Tween({ x: sliderBottom })
+                  .to({ x: 0 }, 800)
+                  .easing(TWEEN.Easing.Quadratic.Out)
+                  .onUpdate(function () {
+                      $movieSlider.css('bottom', this.x + 'px');
+                  })
+                  .start();
+
+            } else {
+
+                new TWEEN.Tween({ x: sliderBottom })
+                  .to({ x: -55 }, 800)
+                  .easing(TWEEN.Easing.Quadratic.Out)
+                  .onUpdate(function () {
+                      $movieSlider.css('bottom', this.x + 'px');
+                  })
+                  .start();
+            }
+
         });
     }
     
@@ -1740,11 +1768,32 @@ CG.Demo1.StartApp = function () {
 
             resizeItemViewer();
 
-            $('#itemViewer').attr({
-                src: itemSrc
-            });
-
             $('#item-viewer-header').text(caption);
+
+            var $itemViewer = $('#itemViewer');
+            var $videoPlayer = $('#videoPlayer');
+
+            if (itemType == 'img') {
+
+                $videoPlayer.hide();
+
+                $itemViewer.attr({
+                    src: itemSrc
+                });
+
+                $itemViewer.show();
+
+            } else {
+
+                $itemViewer.hide();
+                
+                $videoPlayer.attr({
+                    poster: 'img/icons/mov.png',
+                    src: itemSrc
+                });
+               
+                $videoPlayer.show();
+            }            
 
             $('#item-viewer-dialog').fadeIn(300);
 
@@ -2710,6 +2759,7 @@ CG.Demo1.StartApp = function () {
 
     function hideMovieSlider() {
         $movieSlider.hide();
+        $movieSlider.css('bottom', '-55px');
     }
     
     initialize();
