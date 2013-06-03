@@ -176,11 +176,51 @@ CG.Demo1.DemoData = function () {
 
     var jupiterAscending = {
         name: 'Jupiter Ascending',
-        oneSheet: 'assets/one-sheets/Jupiter Ascending.jpg',
+        oneSheet: 'assets/one-sheets/jupiter-ascending.png',
         trailerUrl: '/assets/cdn/immersive_cocoon.mp4',
         genre: 'Action | Sci-Fi',
         releaseDate: new Date('7/25/2014'),
         releaseCountry: 'USA',
+        teaserDate: new Date('12/14/2013'),
+        trailerDate: new Date('12/25/2013'),
+        milestones: [
+            {
+                date: new Date('12/25/2013'),
+                text: 'Teaser Trailer'
+            },
+            {
+                date: new Date('5/23/2014'),
+                text: 'Cannes Festival'
+            },
+            {
+                date: new Date('5/30/2014'),
+                text: 'Theatrical Trailer'
+            },
+            {
+                date: new Date('6/14/2014'),
+                text: 'Comic-Con Las Vegas'
+            },
+            {
+                date: new Date('7/10/2014'),
+                text: 'Trade Screenings'
+            },
+            {
+                date: new Date('7/17/2014'),
+                text: 'Junkets'
+            },
+            {
+                date: new Date('7/19/2014'),
+                text: 'Russia Premiere'
+            },
+            {
+                date: new Date('7/22/2014'),
+                text: 'UK Premiere'
+            },
+            {
+                date: new Date('7/24/2014'),
+                text: 'World LA Premiere'
+            }
+        ],
         topCredits: {
             directors: 'Andy Wachowski, Lana Wachowski',
             writers: 'Andy Wachowski, Lana Wachowski',
@@ -358,6 +398,14 @@ CG.Demo1.DemoData = function () {
                                 versionDate: new Date('4/23/2013'),
                                 type: 'PDF',
                                 assetUri: 'assets/prod/PROD JA_CALL SHEET 18 - Thu 25 April.pdf',
+                                category: ''
+                            },
+                            {
+                                name: 'Assets',
+                                version: '1',
+                                versionDate: new Date('4/23/2013'),
+                                type: '5TH',
+                                assetUri: '/assets/prod/5th-kind-3.png',
                                 category: ''
                             }
                         ],

@@ -918,6 +918,7 @@ div.timeline-event-line
 {
     margin-top:1px !important;
     border-left:1px solid #fff !important;
+    z-index:300;
 }
 
 div.timeline-event-dot
@@ -1608,8 +1609,6 @@ background-image: -webkit-gradient(
     border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 10px;
     position: absolute;
-    width:400px;
-
     z-index:1500;
     display:none;
 }

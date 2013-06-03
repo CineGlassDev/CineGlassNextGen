@@ -1011,23 +1011,31 @@ CG.Demo1.StartApp = function () {
 
             }
 
+            var popupWidth;
+            var popupHeight;
+            
             if (budgetBars != null) {
 
                 budgetBars.style.marginTop = '0px';
+                popupHeight = 90;
+                popupWidth = 400;
 
             } else {
 
                 budgetBars = document.createElement('div');
                 budgetBars.className = 'no-budget-data';
                 budgetBars.textContent = 'No Financial Data Available';
+                popupHeight = 20;
+                popupWidth = 190;
 
             }
 
-            var popupLeft = event.gesture.center.pageX - 208;
-            var popupTop = event.gesture.center.pageY + 16;
-
-            showPopUpBox(popupLeft, popupTop, budgetBars);
-
+            showPopUpBox(
+                event.gesture.center.pageX,
+                event.gesture.center.pageY,
+                popupWidth,
+                popupHeight,
+                budgetBars);
 
         });
 
@@ -1212,46 +1220,46 @@ CG.Demo1.StartApp = function () {
             contextWrapper.appendChild(miniTimeline);
         }
 
-        //var context = document.createElement('div');
-        //context.className = 'details-item-info';
-        //context.textContent = movieTile.movieData.genre + '  -  ' + formatDate(movieTile.movieData.releaseDate) + ' (' + movieTile.movieData.releaseCountry + ')';
-        //contextWrapper.appendChild(context);
+        var context = document.createElement('div');
+        context.className = 'details-item-info';
+        context.textContent = movieTile.movieData.genre + '  -  ' + formatDate(movieTile.movieData.releaseDate) + ' (' + movieTile.movieData.releaseCountry + ')';
+        contextWrapper.appendChild(context);
 
-        //var directorsDiv = document.createElement('div');
-        //directorsDiv.className = 'details-item-cast';
-        //contextWrapper.appendChild(directorsDiv);
-        //var directorsLabel = document.createElement('span');
-        //directorsLabel.className = 'label';
-        //directorsLabel.textContent = 'Directors:';
-        //directorsDiv.appendChild(directorsLabel);
-        //var directorsValue = document.createElement('span');
-        //directorsValue.className = 'value';
-        //directorsValue.textContent = movieTile.movieData.topCredits.directors;
-        //directorsDiv.appendChild(directorsValue);
+        var directorsDiv = document.createElement('div');
+        directorsDiv.className = 'details-item-cast';
+        contextWrapper.appendChild(directorsDiv);
+        var directorsLabel = document.createElement('span');
+        directorsLabel.className = 'label';
+        directorsLabel.textContent = 'Directors:';
+        directorsDiv.appendChild(directorsLabel);
+        var directorsValue = document.createElement('span');
+        directorsValue.className = 'value';
+        directorsValue.textContent = movieTile.movieData.topCredits.directors;
+        directorsDiv.appendChild(directorsValue);
 
-        //var writersDiv = document.createElement('div');
-        //writersDiv.className = 'details-item-cast';
-        //contextWrapper.appendChild(writersDiv);
-        //var writersLabel = document.createElement('span');
-        //writersLabel.className = 'label';
-        //writersLabel.textContent = 'Writers:';
-        //writersDiv.appendChild(writersLabel);
-        //var writersValue = document.createElement('span');
-        //writersValue.className = 'value';
-        //writersValue.textContent = movieTile.movieData.topCredits.writers;
-        //writersDiv.appendChild(writersValue);
+        var writersDiv = document.createElement('div');
+        writersDiv.className = 'details-item-cast';
+        contextWrapper.appendChild(writersDiv);
+        var writersLabel = document.createElement('span');
+        writersLabel.className = 'label';
+        writersLabel.textContent = 'Writers:';
+        writersDiv.appendChild(writersLabel);
+        var writersValue = document.createElement('span');
+        writersValue.className = 'value';
+        writersValue.textContent = movieTile.movieData.topCredits.writers;
+        writersDiv.appendChild(writersValue);
 
-        //var starsDiv = document.createElement('div');
-        //starsDiv.className = 'details-item-cast';
-        //contextWrapper.appendChild(starsDiv);
-        //var starsLabel = document.createElement('span');
-        //starsLabel.className = 'label';
-        //starsLabel.textContent = 'Stars:';
-        //starsDiv.appendChild(starsLabel);
-        //var starsValue = document.createElement('span');
-        //starsValue.className = 'value';
-        //starsValue.textContent = movieTile.movieData.topCredits.stars;
-        //starsDiv.appendChild(starsValue);
+        var starsDiv = document.createElement('div');
+        starsDiv.className = 'details-item-cast';
+        contextWrapper.appendChild(starsDiv);
+        var starsLabel = document.createElement('span');
+        starsLabel.className = 'label';
+        starsLabel.textContent = 'Stars:';
+        starsDiv.appendChild(starsLabel);
+        var starsValue = document.createElement('span');
+        starsValue.className = 'value';
+        starsValue.textContent = movieTile.movieData.topCredits.stars;
+        starsDiv.appendChild(starsValue);
 
         var budgetContainer = document.createElement('div');
         budgetContainer.id = 'budget-container';
@@ -1852,7 +1860,7 @@ CG.Demo1.StartApp = function () {
 
         var isIpad = isIDevice();
 
-        var useItemViewer = (itemType == 'img' || itemType == 'mov');
+        var useItemViewer = (itemType == 'img' || itemType == 'mov' || itemType == '5th');
 
         if (useItemViewer) {
 
@@ -1863,7 +1871,7 @@ CG.Demo1.StartApp = function () {
             var $itemViewer = $('#itemViewer');
             var $videoPlayer = $('#videoPlayer');
 
-            if (itemType == 'img') {
+            if (itemType == 'img' || itemType == '5th') {
 
                 $videoPlayer.hide();
 
@@ -2458,16 +2466,22 @@ CG.Demo1.StartApp = function () {
         var timelineData = [];
 
         //
-        // create milestone item for release date
+        // create milestone items
         //
-        var releaseText = movie.releaseCountry + ' Theatrical Release';
-        var releaseMilestone = {};
-        releaseMilestone['content'] = releaseText;
-        releaseMilestone['tooltip'] = releaseText;
-        releaseMilestone['terminator'] = null;
-        releaseMilestone['className'] = 'future';
-        releaseMilestone['start'] = movie.releaseDate;
-        timelineData.push(releaseMilestone);
+        var milestoneCount = movie.milestones.length;
+        for (var index = 0; index < milestoneCount; index++) {
+
+            var milestoneData = movie.milestones[index];
+
+            var milestone = {};
+            milestone['content'] = milestoneData.text;
+            milestone['tooltip'] = milestoneData.text;
+            milestone['terminator'] = null;
+            milestone['className'] = 'future';
+            milestone['start'] = milestoneData.date;
+            timelineData.push(milestone);
+
+        }
 
         if (movie.phases) {
 
@@ -2765,14 +2779,16 @@ CG.Demo1.StartApp = function () {
             }            
         } else {
 
+            var milestoneCount = _lastMovieTile.movieData.milestones.length;
+
             // show movie schedule
             timelineData = getTimelineDataForMovie(_lastMovieTile.movieData);
 
             //
-            // check > 1 because one record will be there
-            // for the automatic movie release milestone
+            // check > 3 because three records will be there
+            // for the automatic movie milestones
             //
-            if (timelineData.length > 1) {
+            if (timelineData.length > milestoneCount) {
 
                 setBackNav(CG.Demo1.Views.CatalogSchedule, CATALOG_LABEL);
 
@@ -2782,9 +2798,9 @@ CG.Demo1.StartApp = function () {
                 _hammer.on('tap', '.timeline-event', onTimelineDepartmentClick);
 
                 renderMovieDetails(_lastMovieTile);
-                renderDetailsContext(1);
+                renderDetailsContext(1);                
 
-                minDate = new Date(timelineData[1].start).setDate(timelineData[1].start.getDate() - 60); // start at 2nd element to allow for static milestone
+                minDate = new Date(timelineData[milestoneCount].start).setDate(timelineData[milestoneCount].start.getDate() - 60); // start at Nth element to allow for milestones
                 maxDate = new Date(timelineData[timelineData.length - 1].end).setDate(timelineData[timelineData.length - 1].end.getDate() + 60);
                 var releasePlus30 = new Date(_lastMovieTile.movieData.releaseDate).setDate(_lastMovieTile.movieData.releaseDate.getDate() + 60);
                 maxDate = (maxDate > releasePlus30 ? maxDate : releasePlus30);
@@ -3009,13 +3025,39 @@ CG.Demo1.StartApp = function () {
         $movieSlider.css('bottom', '-55px');
     }
 
-    function showPopUpBox(left, top, contentElement) {
+    function showPopUpBox(mouseX, mouseY, width, height, contentElement) {
+
+        var BUBBLE_POINT_HEIGHT = 16;
+        var VERTICAL_PADDING = 20;
+
+        var showBelow = (mouseY <= (window.innerHeight / 2));
+
+        var left;
+        var top;
+
+        if (showBelow === true) {
+
+            $popupBox.removeClass('above');
+            $popupBox.addClass('below');
+            top = mouseY + BUBBLE_POINT_HEIGHT;
+            left = mouseX - (width / 2) - (BUBBLE_POINT_HEIGHT / 2);
+
+        } else {
+
+            $popupBox.removeClass('below');
+            $popupBox.addClass('above');
+            top = mouseY - BUBBLE_POINT_HEIGHT - VERTICAL_PADDING - height;
+            left = mouseX - (width / 2) - (BUBBLE_POINT_HEIGHT / 2);
+
+        }
 
         $popupBox.empty();
         $popupBox.append(contentElement);
         $popupBox.css({
             'left': left + 'px',
-            'top': top + 'px'
+            'top': top + 'px',
+            'width': width + 'px',
+            'height': height + 'px'
         });
         $popupBox.fadeIn(500);
     }
