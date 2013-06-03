@@ -23,6 +23,8 @@ CG.Demo1.StartApp = function () {
     var DEFAULT_CAMERA_Y = 0;
     var DEFAULT_CAMERA_Z = 2100;
 
+    var CATALOG_LABEL = 'Production Portfolio';
+
     var _active3dObject = null;
     var _navBackTo = CG.Demo1.Views.none;
     var camera;
@@ -116,6 +118,7 @@ CG.Demo1.StartApp = function () {
     $timelineContainer = $('#timeline-container');
     $movieSliderThumbnailContainer = $('#movie-slider-thumbnailcontainer');
     $movieSlider = $('#movie-slider');
+    $popupBox = $('#popup-box');
 
     //////////////////////////////////
     //////////////////////////////////
@@ -359,6 +362,9 @@ CG.Demo1.StartApp = function () {
         tile.start = dept.start;
         tile.end = dept.end;
         tile.phaseName = phase.name;
+        tile.budget = dept.budget;
+        tile.costToDate = dept.costToDate;
+        tile.efc = dept.efc;
 
         //
         // create phase swatch element
@@ -827,6 +833,9 @@ CG.Demo1.StartApp = function () {
             $('#itemViewer').attr({
                 src: 'about:blank'
             });
+            $('#videoPlayer').attr({
+                src: ''
+            });
 
             $('#item-viewer-mask, #item-viewer-dialog').fadeOut(300, function () {
                 $('#item-viewer-mask').remove();
@@ -940,7 +949,7 @@ CG.Demo1.StartApp = function () {
 
             }
 
-            setBackNav(navBackView, 'Pipeline Catalog');
+            setBackNav(navBackView, CATALOG_LABEL);
             
         });
 
@@ -972,6 +981,62 @@ CG.Demo1.StartApp = function () {
             }
 
         });
+
+        _hammer.on('hold', '.timeline-event-range', function (event) {
+
+            var budgetBars = null;
+
+            if (_lastTileView == CG.Demo1.Views.Catalog) {
+
+                var movieTile = getMovieTile(event.gesture.target.textContent);
+
+                if (movieTile != null) {
+
+                    budgetBars = buildMovieBudgetBars(movieTile.movieData);
+
+                }
+
+            } else {
+
+                // show department budget bars
+                console.log('show department budget bars');
+
+                var deptTile = getDepartmentTile(event.gesture.target.textContent);
+                
+                if (deptTile != null) {
+
+                    budgetBars = buildMovieBudgetBars(deptTile.parentObject.element);
+
+                }                
+
+            }
+
+            if (budgetBars != null) {
+
+                budgetBars.style.marginTop = '0px';
+
+            } else {
+
+                budgetBars = document.createElement('div');
+                budgetBars.className = 'no-budget-data';
+                budgetBars.textContent = 'No Financial Data Available';
+
+            }
+
+            var popupLeft = event.gesture.center.pageX - 208;
+            var popupTop = event.gesture.center.pageY + 16;
+
+            showPopUpBox(popupLeft, popupTop, budgetBars);
+
+
+        });
+
+        _hammer.on('release dragstart', '.timeline-event-range', function (event) {
+
+            hidePopUpBox();
+
+        });
+                
     }
     
     function showMovieTiles(isScheduleView) {
@@ -996,7 +1061,7 @@ CG.Demo1.StartApp = function () {
 
         var context = document.createElement('div');
         context.className = 'details-item-info';
-        context.textContent = 'Pipeline Catalog';
+        context.textContent = CATALOG_LABEL;
         contextWrapper.appendChild(context);
 
         var budgetContainer = document.createElement('div');
@@ -1085,13 +1150,13 @@ CG.Demo1.StartApp = function () {
             transform(movieTile.parentObject.departmentObjects, movieTile.movieData.name, 500);
 
             // set back nav button
-            setBackNav(CG.Demo1.Views.Catalog, 'Pipeline Catalog');
+            setBackNav(CG.Demo1.Views.Catalog, CATALOG_LABEL);
             
 
         } else {
 
             // set back nav button
-            setBackNav(CG.Demo1.Views.CatalogSchedule, 'Pipeline Catalog');
+            setBackNav(CG.Demo1.Views.CatalogSchedule, CATALOG_LABEL);
 
         }
 
@@ -1115,6 +1180,26 @@ CG.Demo1.StartApp = function () {
         phaseCaption.textContent = 'In ' + movieTile.movieData.currentPhase;
         $details.append(phaseCaption);
 
+        if (movieTile.movieData.trailerUrl != null) {
+
+            // add button to play trailer
+            var trailerButton = document.createElement('div');
+            trailerButton.id = 'details-trailer-button';
+            trailerButton.title = '"' + movieTile.movieData.name + '" Trailer';
+            trailerButton.itemSource = movieTile.movieData.trailerUrl;
+            trailerButton.itemType = 'mov';
+            $details.append(trailerButton);
+
+            $(trailerButton).hammer().on('tap', function (event) {
+
+                // show post budget
+                showItemViewer(this.title, this.itemSource, this.itemType);
+
+            });
+            
+
+        }
+
         var contextWrapper = document.createElement('div');
         contextWrapper.id = 'details-context-wrapper';
         $details.append(contextWrapper);
@@ -1127,46 +1212,46 @@ CG.Demo1.StartApp = function () {
             contextWrapper.appendChild(miniTimeline);
         }
 
-        var context = document.createElement('div');
-        context.className = 'details-item-info';
-        context.textContent = movieTile.movieData.genre + '  -  ' + formatDate(movieTile.movieData.releaseDate) + ' (' + movieTile.movieData.releaseCountry + ')';
-        contextWrapper.appendChild(context);
+        //var context = document.createElement('div');
+        //context.className = 'details-item-info';
+        //context.textContent = movieTile.movieData.genre + '  -  ' + formatDate(movieTile.movieData.releaseDate) + ' (' + movieTile.movieData.releaseCountry + ')';
+        //contextWrapper.appendChild(context);
 
-        var directorsDiv = document.createElement('div');
-        directorsDiv.className = 'details-item-cast';
-        contextWrapper.appendChild(directorsDiv);
-        var directorsLabel = document.createElement('span');
-        directorsLabel.className = 'label';
-        directorsLabel.textContent = 'Directors:';
-        directorsDiv.appendChild(directorsLabel);
-        var directorsValue = document.createElement('span');
-        directorsValue.className = 'value';
-        directorsValue.textContent = movieTile.movieData.topCredits.directors;
-        directorsDiv.appendChild(directorsValue);
+        //var directorsDiv = document.createElement('div');
+        //directorsDiv.className = 'details-item-cast';
+        //contextWrapper.appendChild(directorsDiv);
+        //var directorsLabel = document.createElement('span');
+        //directorsLabel.className = 'label';
+        //directorsLabel.textContent = 'Directors:';
+        //directorsDiv.appendChild(directorsLabel);
+        //var directorsValue = document.createElement('span');
+        //directorsValue.className = 'value';
+        //directorsValue.textContent = movieTile.movieData.topCredits.directors;
+        //directorsDiv.appendChild(directorsValue);
 
-        var writersDiv = document.createElement('div');
-        writersDiv.className = 'details-item-cast';
-        contextWrapper.appendChild(writersDiv);
-        var writersLabel = document.createElement('span');
-        writersLabel.className = 'label';
-        writersLabel.textContent = 'Writers:';
-        writersDiv.appendChild(writersLabel);
-        var writersValue = document.createElement('span');
-        writersValue.className = 'value';
-        writersValue.textContent = movieTile.movieData.topCredits.writers;
-        writersDiv.appendChild(writersValue);
+        //var writersDiv = document.createElement('div');
+        //writersDiv.className = 'details-item-cast';
+        //contextWrapper.appendChild(writersDiv);
+        //var writersLabel = document.createElement('span');
+        //writersLabel.className = 'label';
+        //writersLabel.textContent = 'Writers:';
+        //writersDiv.appendChild(writersLabel);
+        //var writersValue = document.createElement('span');
+        //writersValue.className = 'value';
+        //writersValue.textContent = movieTile.movieData.topCredits.writers;
+        //writersDiv.appendChild(writersValue);
 
-        var starsDiv = document.createElement('div');
-        starsDiv.className = 'details-item-cast';
-        contextWrapper.appendChild(starsDiv);
-        var starsLabel = document.createElement('span');
-        starsLabel.className = 'label';
-        starsLabel.textContent = 'Stars:';
-        starsDiv.appendChild(starsLabel);
-        var starsValue = document.createElement('span');
-        starsValue.className = 'value';
-        starsValue.textContent = movieTile.movieData.topCredits.stars;
-        starsDiv.appendChild(starsValue);
+        //var starsDiv = document.createElement('div');
+        //starsDiv.className = 'details-item-cast';
+        //contextWrapper.appendChild(starsDiv);
+        //var starsLabel = document.createElement('span');
+        //starsLabel.className = 'label';
+        //starsLabel.textContent = 'Stars:';
+        //starsDiv.appendChild(starsLabel);
+        //var starsValue = document.createElement('span');
+        //starsValue.className = 'value';
+        //starsValue.textContent = movieTile.movieData.topCredits.stars;
+        //starsDiv.appendChild(starsValue);
 
         var budgetContainer = document.createElement('div');
         budgetContainer.id = 'budget-container';
@@ -1272,6 +1357,11 @@ CG.Demo1.StartApp = function () {
         postBudgetLabel.className = 'label';
         postBudgetLabel.textContent = 'Post Budget';
         postBudgetItem.appendChild(postBudgetLabel);
+
+        var budgetBars = buildMovieBudgetBars(movieTile.movieData);
+        if (budgetBars != null) {
+            contextWrapper.appendChild(budgetBars);
+        }
 
     }
 
@@ -1777,9 +1867,11 @@ CG.Demo1.StartApp = function () {
 
                 $videoPlayer.hide();
 
-                $itemViewer.attr({
-                    src: itemSrc
-                });
+                $itemViewer.css('background-image', 'url("' + itemSrc + '")');
+                //$itemViewer.attr({
+                //    src: itemSrc,
+                //    alt: caption
+                //});
 
                 $itemViewer.show();
 
@@ -1824,9 +1916,12 @@ CG.Demo1.StartApp = function () {
             height: dialogHeight + 'px'
         });
 
+        var contentHeight = dialogHeight - $header.height() - (MARGIN * 2);
+
         $('#item-viewer-content').css({
-            width: dialogWidth + 'px',
-            height: dialogHeight - $header.height() - (MARGIN * 2) + 'px'
+            'width': dialogWidth + 'px',
+            'height': contentHeight + 'px',
+            'line-height': contentHeight + 'px'
         });
 
         // center align
@@ -1897,7 +1992,7 @@ CG.Demo1.StartApp = function () {
         if (movieData.phases != null) {
 
             var phaseSlugs = [];
-            var timelineEnd = new Date('1/1/1976');
+            var timelineEnd = movieData.releaseDate;
                         
             //
             //
@@ -2110,11 +2205,162 @@ CG.Demo1.StartApp = function () {
 
             timelineContainer.appendChild(todayLabel);
 
+            var releaseMarker = document.createElement('div');
+            releaseMarker.id = 'mini-timeline-marker-release';
+            var releaseTicks = (movieData.releaseDate.getTime() - timelineStart.getTime());
+            var releaseLeft = Math.round(middleMarkerWidth * (releaseTicks / movieTicks));
+            releaseMarker.style.left = releaseLeft + 'px';
+
+            timelineContainer.appendChild(releaseMarker);
+
+            var releaseLabel = document.createElement('div');
+            releaseLabel.id = 'mini-timeline-label-release';
+            releaseLabel.textContent = movieData.releaseCountry + ' Release ' + formatDate(movieData.releaseDate);
+            releaseLabel.style.left = (releaseLeft - 29) + 'px';
+
+            timelineContainer.appendChild(releaseLabel);
+
             return timelineContainer;
 
         } else {
             return null;
         }
+
+    }
+
+    function buildMovieBudgetBars(movieData) {
+
+        var maxBarWidth = 275;
+
+        if (movieData.budget == null) {
+            return null;
+        }
+
+        if (movieData.costToDate == null) {
+            movieData.costToDate = 0;
+        }
+
+        if (movieData.efc == null) {
+            movieData.efc = 0;
+        }
+        
+        var barContainer = document.createElement('div');
+        barContainer.id = 'budget-bar-container';
+
+        //
+        // nested function to create bar row
+        //
+        var addBarRow = function (container, barName, width, amount) {
+
+            if (width > 0) {
+
+                var barRow = document.createElement('div');
+                barRow.className = 'budget-bar-row';
+                container.appendChild(barRow);
+
+                var labelLeft = document.createElement('div');
+                labelLeft.className = 'budget-bar-label budget-bar-label-left';
+                labelLeft.textContent = barName.toUpperCase() + ' : ';
+                barRow.appendChild(labelLeft);
+
+                var bar = document.createElement('div');
+                bar.id = 'budget-bar-' + barName.toLowerCase();
+                bar.className = 'budget-bar';
+                bar.style.width = width + 'px';
+                barRow.appendChild(bar);
+
+                var labelRight = document.createElement('div');
+                labelRight.className = 'budget-bar-label budget-bar-label-right';
+                labelRight.textContent = formatDollarsInMillions(amount);
+                barRow.appendChild(labelRight);
+
+            }
+
+        }
+
+        //
+        // calculate bar lengths
+        //
+
+        var budgetBar;
+        var ctdBar;
+        var efcBar;
+
+        if (movieData.budget > movieData.costToDate &&
+            movieData.budget > movieData.efc) {
+           
+            //
+            // budget drives bar length
+            //
+
+            budgetBar = maxBarWidth;
+            ctdBar = Math.round(maxBarWidth * (movieData.costToDate / movieData.budget));
+            efcBar = Math.round(maxBarWidth * (movieData.efc / movieData.budget));
+
+
+        } else if (movieData.costToDate > movieData.budget &&
+                   movieData.costToDate > movieData.efc) {
+
+            //
+            // ctd drives bar length
+            //
+
+            budgetBar = Math.round(maxBarWidth * (movieData.budget / movieData.costToDate));
+            ctdBar = maxBarWidth;
+            efcBar = Math.round(maxBarWidth * (movieData.efc / movieData.costToDate));
+
+        } else {
+
+            //
+            // efc drives bar length
+            //
+
+            budgetBar = Math.round(maxBarWidth * (movieData.budget / movieData.efc));
+            ctdBar = Math.round(maxBarWidth * (movieData.costToDate / movieData.efc));
+            efcBar = maxBarWidth;            
+
+        } 
+
+        //
+        // create/add bar rows
+        //
+        addBarRow(barContainer, 'bud', budgetBar, movieData.budget);
+        addBarRow(barContainer, 'ctd', ctdBar, movieData.costToDate);
+        addBarRow(barContainer, 'efc', efcBar, movieData.efc);
+
+        return barContainer;
+        
+    }
+
+    function formatDollarsInMillions(number) {
+
+        var preciseRound = function (value){
+            var decPlaces = 2;
+            var val = value * Math.pow(10, decPlaces);
+            var fraction = (Math.round((val-parseInt(val))*10)/10);
+                        
+            if (fraction == -0.5) {
+
+                // enssure proper rounding
+                fraction = -0.6;
+
+            }
+
+            val = Math.round(parseInt(val) + fraction) / Math.pow(10, decPlaces);
+
+            return val;
+        }
+
+        var millions = preciseRound(number / 1000000);
+
+        if (millions % 1 == 0) {
+
+            // don't show decimals if decimal value is .00
+            millions = Math.round(millions);
+
+        }
+
+        return '$' + millions + 'M';
 
     }
 
@@ -2511,6 +2757,7 @@ CG.Demo1.StartApp = function () {
 
                 _hammer.off('tap', '.timeline-event', onTimelineDepartmentClick);
                 _hammer.on('tap', '.timeline-event', onTimelineMovieClick);
+
             } else {
 
                 renderTimeline = false;
@@ -2527,7 +2774,7 @@ CG.Demo1.StartApp = function () {
             //
             if (timelineData.length > 1) {
 
-                setBackNav(CG.Demo1.Views.CatalogSchedule, 'Pipeline Catalog');
+                setBackNav(CG.Demo1.Views.CatalogSchedule, CATALOG_LABEL);
 
                 _timeline = new links.Timeline(document.getElementById('timeline-container'));
 
@@ -2760,6 +3007,23 @@ CG.Demo1.StartApp = function () {
     function hideMovieSlider() {
         $movieSlider.hide();
         $movieSlider.css('bottom', '-55px');
+    }
+
+    function showPopUpBox(left, top, contentElement) {
+
+        $popupBox.empty();
+        $popupBox.append(contentElement);
+        $popupBox.css({
+            'left': left + 'px',
+            'top': top + 'px'
+        });
+        $popupBox.fadeIn(500);
+    }
+
+    function hidePopUpBox() {
+
+        $popupBox.fadeOut(500);
+
     }
     
     initialize();

@@ -1,4 +1,60 @@
-﻿
+﻿*********************************
+  CineGlass v0.0.8 on 6-3-2013
+*********************************
+
+--- ENHANCEMENTS ---
+- Added budget, ctd, efc progress indicators in popup box when user touch-holds a movie or department's schedule slug.
+
+--- IN-PROGRESS ---
+- Add Call Sheets folder under Shoot department and place the artifacts that Brian sent.
+
+--- IN-QUEUE ---
+- Integrating/testing new Jupiter Ascending dates that Brian provided.
+- Add upload asset feature.
+- Add a notification area pulldown panel.
+
+
+*********************************
+  CineGlass v0.0.7 on 5-31-2013
+*********************************
+--- BUG FIXES ---
+- Fixed trailer video playback issue.
+- Fixed image viewer to always scalefit/center image content to window area.
+
+--- ENHANCEMENTS ---
+- Added budget, cost-to-date, and EFC data to movie details box.
+- Removed movie info (cast, etc.) from movie details box to recover screen real-estate.
+- Added release date indicator/label to mini-timeline.
+
+--- IN-PROGRESS ---
+- Add budget vs. actual progress indicators as popup when user touch-holds a department's schedule slug.
+- Add Call Sheets folder under Shoot department and place the artifacts that Brian sent.
+
+--- IN-QUEUE ---
+- Integrating/testing new Jupiter Ascending dates that Brian provided.
+- Add upload asset feature.
+- Add a notification area pulldown panel.
+
+
+*********************************
+  CineGlass v0.0.6 on 5-30-2013
+*********************************
+--- ENHANCEMENTS ---
+- Added trailer button to movie details box (for movies that have trailers).
+- Modified video player to automatically play video without requiring user to press play button.
+- Changed "Studio Catalog" vernacular to "Production Portfolio".
+- Made details exander box's expand/collapse tap area larger.
+- Made 3D/2D/Schedule view toggle tap area's larger.
+
+--- IN-PROGRESS ---
+- Add budget vs. actual progress indicators in movie details box.
+- Add budget vs. actual progress indicators as popup when user touch-holds a department's schedule slug.
+
+--- IN-QUEUE ---
+- Integrating/testing new Jupiter Ascending dates that Brian provided.
+- Add upload asset feature.
+- Add a notification area pulldown panel.
+
 *********************************
   CineGlass v0.0.5 on 5-29-2013
 *********************************

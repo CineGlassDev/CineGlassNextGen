@@ -16,6 +16,7 @@ CG.Demo1.DemoData = function () {
     var allYouNeedIsSkill = {
         name: 'All You Need Is Kill',
         oneSheet: 'assets/one-sheets/allyouneediskill.jpg',
+        trailerUrl: null,
         genre: 'Action | Sci-Fi',
         releaseDate: new Date('3/7/2014'),
         releaseCountry: 'USA',
@@ -27,6 +28,9 @@ CG.Demo1.DemoData = function () {
         currentPhase: 'Post-Production',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
         budgetType: 'xls',
+        budget: 140000000,
+        costToDate: 90542545,
+        efc: 165252000,
         phases: null,
         status: null
     };
@@ -35,6 +39,7 @@ CG.Demo1.DemoData = function () {
     var conjuring = {
         name: 'The Conjuring',
         oneSheet: 'assets/one-sheets/conjuring.jpg',
+        trailerUrl: '/assets/cdn/conjuring.mp4',
         genre: 'Horror | Thriller',
         releaseDate: new Date('7/19/2013'),
         releaseCountry: 'USA',
@@ -46,6 +51,9 @@ CG.Demo1.DemoData = function () {
         currentPhase: 'Distribution',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
         budgetType: 'xls',
+        budget: 13000000,
+        costToDate: 11540000,
+        efc: 12635200,
         phases: null,
         status: null
     }
@@ -54,6 +62,7 @@ CG.Demo1.DemoData = function () {
     var godzilla = {
         name: 'Godzilla',
         oneSheet: 'assets/one-sheets/Godzillia2014.jpeg',
+        trailerUrl: null,
         genre: 'Action | Sci-Fi | Thriller',
         releaseDate: new Date('5/16/2014'),
         releaseCountry: 'USA',
@@ -65,6 +74,9 @@ CG.Demo1.DemoData = function () {
         currentPhase: 'Production',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
         budgetType: 'xls',
+        budget: 100000000,
+        costToDate: 100000000,
+        efc: 113545250,
         phases: null,
         status: null
     }
@@ -73,6 +85,7 @@ CG.Demo1.DemoData = function () {
     var gravity = {
         name: 'Gravity',
         oneSheet: 'assets/one-sheets/gravity.jpg',
+        trailerUrl: '/assets/cdn/gravity.mp4',
         genre: 'Sci-Fi | Thriller',
         releaseDate: new Date('10/4/2013'),
         releaseCountry: 'USA',
@@ -84,6 +97,9 @@ CG.Demo1.DemoData = function () {
         currentPhase: 'Distribution',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
         budgetType: 'xls',
+        budget: 80000000,
+        costToDate: 72530250,
+        efc: 82045455,
         phases: null,
         status: null
     }
@@ -92,6 +108,7 @@ CG.Demo1.DemoData = function () {
     var greatGatsby = {
         name: 'The Great Gatsby',
         oneSheet: 'assets/one-sheets/great_gatsby.jpg',
+        trailerUrl: '/assets/cdn/the_great_gatsby.mp4',
         genre: 'Drama | Romance',
         releaseDate: new Date('5/10/2013'),
         releaseCountry: 'USA',
@@ -103,6 +120,9 @@ CG.Demo1.DemoData = function () {
         currentPhase: 'Distribution',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
         budgetType: 'xls',
+        budget: 105000000,
+        costToDate: 108683500,
+        efc: 108683500,
         phases: null,
         status: null
     }
@@ -111,6 +131,7 @@ CG.Demo1.DemoData = function () {
     var hangover3 = {
         name: 'The Hangover Part III',
         oneSheet: 'assets/one-sheets/hangover_part_3.jpg',
+        trailerUrl: '/assets/cdn/the_hangover_3.mp4',
         genre: 'Comedy',
         releaseDate: new Date('5/24/2013'),
         releaseCountry: 'USA',
@@ -122,6 +143,9 @@ CG.Demo1.DemoData = function () {
         currentPhase: 'Distribution',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
         budgetType: 'xls',
+        budget: 80000000,
+        costToDate: 103298200,
+        efc: 103298200,
         phases: null,
         status: null
     }
@@ -130,6 +154,7 @@ CG.Demo1.DemoData = function () {
     var hobbitDesolation = {
         name: 'The Hobbit: The Desolation of Smaug',
         oneSheet: 'assets/one-sheets/Hobbit-desolation.jpg',
+        trailerUrl: null,
         genre: 'Adventure | Fantasy',
         releaseDate: new Date('12/13/2013'),
         releaseCountry: 'USA',
@@ -141,6 +166,9 @@ CG.Demo1.DemoData = function () {
         currentPhase: 'Post-Production',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
         budgetType: 'xls',
+        budget: 250000000,
+        costToDate: 163544200,
+        efc: 256525240,
         phases: null,
         status: null
     }
@@ -149,6 +177,7 @@ CG.Demo1.DemoData = function () {
     var jupiterAscending = {
         name: 'Jupiter Ascending',
         oneSheet: 'assets/one-sheets/Jupiter Ascending.jpg',
+        trailerUrl: '/assets/cdn/immersive_cocoon.mp4',
         genre: 'Action | Sci-Fi',
         releaseDate: new Date('7/25/2014'),
         releaseCountry: 'USA',
@@ -160,6 +189,9 @@ CG.Demo1.DemoData = function () {
         currentPhase: 'Production',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
         budgetType: 'xls',
+        budget: 200000000,
+        costToDate: 72525000,
+        efc: 225025540,
         phases: {
             development: {
                 name: 'Development',
@@ -171,6 +203,9 @@ CG.Demo1.DemoData = function () {
                         name: 'Script',
                         start: new Date("11/2/2012"),
                         end: new Date("11/20/2012"),
+                        budget: null,
+                        costToDate: null,
+                        efc: null,
                         assets: [
                             {
                                 name: 'dark-knight-rises.pdf',
@@ -196,6 +231,9 @@ CG.Demo1.DemoData = function () {
                         iconUri: 'img/icons/art.jpg',
                         start: new Date("11/20/2012"),
                         end: new Date("1/22/2013"),
+                        budget: null,
+                        costToDate: null,
+                        efc: null,
                         assets: [
                             {
                                 name: 'storyboard-1.jpg',
@@ -294,6 +332,9 @@ CG.Demo1.DemoData = function () {
                         iconUri: 'img/icons/prod.png',
                         start: new Date("1/22/2013"),
                         end: new Date("8/23/2013"),
+                        budget: null,
+                        costToDate: null,
+                        efc: null,
                         assets: [
                             {
                                 name: 'EDIT_DeliveryReport20130423.pdf',
@@ -327,6 +368,9 @@ CG.Demo1.DemoData = function () {
                         iconUri: 'img/icons/dailies.jpg',
                         start: new Date("1/22/2013"),
                         end: new Date("8/23/2013"),
+                        budget: null,
+                        costToDate: null,
+                        efc: null,
                         assets: [
                             {
                                 name: 'A0070.ale',
@@ -648,6 +692,9 @@ CG.Demo1.DemoData = function () {
                         iconUri: 'img/icons/prod-vfx.jpg',
                         start: new Date("1/22/2013"),
                         end: new Date("8/23/2013"),
+                        budget: 56000000,
+                        costToDate: 8000000,
+                        efc: 54000000,
                         assets: [
                             {
                                 name: '0089_003_A0070.1271972_look.jpg',
@@ -920,6 +967,9 @@ CG.Demo1.DemoData = function () {
                         name: 'Script Notes',
                         start: new Date("1/22/2013"),
                         end: new Date("5/23/2013"),
+                        budget: null,
+                        costToDate: null,
+                        efc: null,
                         iconUri: 'img/icons/script-notes.png',
                         assets: [
                             {
@@ -1002,6 +1052,9 @@ CG.Demo1.DemoData = function () {
                         iconUri: 'img/icons/dist-planning.png',
                         start: new Date("6/3/2014"),
                         end: new Date("6/8/2014"),
+                        budget: null,
+                        costToDate: null,
+                        efc: null,
                         assets: [
                             {
                                 name: 'IM3_CG_Reel_By_Reel_Plan_20130326.pdf',
@@ -1035,6 +1088,9 @@ CG.Demo1.DemoData = function () {
                         iconUri: 'img/icons/post-vfx.jpg',
                         start: new Date("8/23/2013"),
                         end: new Date("6/8/2014"),
+                        budget: null,
+                        costToDate: null,
+                        efc: null,
                         assets: [
                             {
                                 name: 'A0070.ALE',
@@ -1440,6 +1496,7 @@ CG.Demo1.DemoData = function () {
     var manOfSteel = {
         name: 'Man of Steel',
         oneSheet: 'assets/one-sheets/man_of_steel.jpg',
+        trailerUrl: '/assets/cdn/man_of_steel.mp4',
         genre: 'Action | Adventure | Fantasy',
         releaseDate: new Date('6/14/2013'),
         releaseCountry: 'USA',
@@ -1451,6 +1508,9 @@ CG.Demo1.DemoData = function () {
         currentPhase: 'Distribution',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
         budgetType: 'xls',
+        budget: 225000000,
+        costToDate: 220422000,
+        efc: 232563000,
         phases: null,
         status: null
     }
@@ -1459,6 +1519,7 @@ CG.Demo1.DemoData = function () {
     var pacificRim = {
         name: 'Pacific Rim',
         oneSheet: 'assets/one-sheets/pacific_rim.jpg',
+        trailerUrl: '/assets/cdn/pacific_rim.mp4',
         genre: 'Action | Adventure | Sci-Fi',
         releaseDate: new Date('7/12/2013'),
         releaseCountry: 'USA',
@@ -1470,6 +1531,9 @@ CG.Demo1.DemoData = function () {
         currentPhase: 'Distribution',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
         budgetType: 'xls',
+        budget: 150000000,
+        costToDate: 155654000,
+        efc: 165650500,
         phases: null,
         status: null
     }
@@ -1478,6 +1542,7 @@ CG.Demo1.DemoData = function () {
     var legoMovie = {
         name: 'The Lego Movie',
         oneSheet: 'assets/one-sheets/thelegomovie.jpg',
+        trailerUrl: null,
         genre: 'Animation | Action | Comedy',
         releaseDate: new Date('2/7/2014'),
         releaseCountry: 'USA',
@@ -1489,6 +1554,9 @@ CG.Demo1.DemoData = function () {
         currentPhase: 'Production',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
         budgetType: 'xls',
+        budget: 120000000,
+        costToDate: 80425200,
+        efc: 80425200,
         phases: null,
         status: null
     }
@@ -1497,6 +1565,7 @@ CG.Demo1.DemoData = function () {
     var seventhSon = {
         name: 'The Seventh Son',
         oneSheet: 'assets/one-sheets/theseventhson.jpg',
+        trailerUrl: null,
         genre: 'Adventure | Family | Fantasy',
         releaseDate: new Date('10/18/2013'),
         releaseCountry: 'USA',
@@ -1508,6 +1577,9 @@ CG.Demo1.DemoData = function () {
         currentPhase: 'Post-Production',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
         budgetType: 'xls',
+        budget: 110000000,
+        costToDate: 78532530,
+        efc: 106252549,
         phases: null,
         status: null
     }
@@ -1516,6 +1588,7 @@ CG.Demo1.DemoData = function () {
     var threeHundred2 = {
         name: '300: Rise of an Empire',
         oneSheet: 'assets/one-sheets/three_hundred_rise_of_an_empire.jpg',
+        trailerUrl: null,
         genre: 'Action | Drama',
         releaseDate: new Date('8/2/2013'),
         releaseCountry: 'USA',
@@ -1527,6 +1600,9 @@ CG.Demo1.DemoData = function () {
         currentPhase: 'Production',
         budgetUri: 'assets/budget/Movie Budget__CASH_FLOW.xls',
         budgetType: 'xls',
+        budget: 140000000,
+        costToDate: 125653560,
+        efc: 143534200,
         phases: null,
         status: null
     }

@@ -5,451 +5,73 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>CineGlass Layout</title>
+    <link href="css/demo-1.main.css" rel="stylesheet" />
     <link rel="prefetch" href="/" />
     <style>
-        html, body {
-            height: 100%;
-        }
 
-        body {
-            background-color: #000000;
-            background-image: url("../img/cg-bg-2.jpg") !important;
-            margin: 0;
-            font-family: 'Segoe UI', 'Trebuchet MS', Verdana;
-            overflow: hidden;
-            /*background-image: url("../assets/one-sheets/conjuring.jpg") !important;*/
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            min-width:600px;
-        }
+#popup-box {
+    text-align: center;
+    background: rgba(0,0,0, 0.85);
+    background-clip: padding-box;
+    box-shadow: 0 0px 10px rgba(255,255,255, 0.85);
+    padding: 10px;
+    display: inline-block;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    position: absolute;
+    width:400px;
+}
+
+#popup-box:after, #popup-box:before
+{
+    border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+#popup-box.below:after, #popup-box.below:before {
+	bottom: 100%;
+	left: 50%;
+}
+
+#popup-box.below:after {
+	border-color: rgba(0, 0, 0, 0);
+	border-bottom-color: #000000;
+	border-width: 15px;
+	margin-left: -15px;
+}
+#popup-box.below:before {
+	border-color: rgba(245, 245, 245, 0);
+	border-bottom-color: #f5f5f5;
+	border-width: 16px;	
+	margin-left: -16px;
+}
+
+#popup-box.above:after, #popup-box.above:before {
+	top: 100%;
+    left: 50%;
+}
+
+#popup-box.above:after {
+	border-color: rgba(0, 0, 0, 0);
+	border-top-color: #000000;
+	border-width: 15px;
+	margin-left: -15px;
+}
+#popup-box.above:before {
+	border-color: rgba(245, 245, 245, 0);
+	border-top-color: #f5f5f5;
+	border-width: 16px;
+	margin-left: -16px;
+}
 
-        a {
-            color: #ffffff;
-        }
 
-        #viewport {
-            background-image: url("../img/warner-brothers-pictures.jpg") !important;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: contain;
-            width: 100%;
-            height: 100%;
-        }
 
-        
 
-        #details-container {
-            position:relative;
-            top:10px;
-            width:400px;
-            margin: 5px auto;
-            padding: 5px 0px 10px 0px;
-            background-color:rgba(0,0,0,0.5);
-            z-index:500;
-            border:1px solid rgba(255,255,255,0.5);
 
-            -webkit-box-shadow: 7px 7px 5px rgba(50, 50, 50, 0.75);
-            -moz-box-shadow:    7px 7px 5px rgba(50, 50, 50, 0.75);
-            box-shadow:         7px 7px 5px rgba(50, 50, 50, 0.75);
-        }
-
-        #details-caption {
-            position:relative;
-            font-size:24px;
-            font-weight:bold;
-            color:rgba(255,255,255, 0.85);
-            text-align:center;
-            line-height:26px;
-        }
-
-        .details-item-phase {
-            position:relative;
-            font-size: 20px;
-            font-style:italic;
-            font-weight:bold;
-            color:rgba(255,255,255, 0.75);
-            color:rgba(127,255,255,0.5);
-            text-align:center;
-            line-height:24px;
-
-
-
-            color:rgba(196,104,173,1.0);
-            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #48cdcd, 0 0 70px #48cdcd, 0 0 80px #48cdcd, 0 0 100px #48cdcd, 0 0 150px #48cdcd;
-
-        }
-
-        .details-item-info {
-            position:relative;
-            font-size: 14px;
-            color:rgba(255,255,255, 0.75);
-            text-align: center;   
-            line-height: 24px;        
-        }
-
-        #details-budget {
-            position:absolute;
-            right:5px;
-            top:0px;
-            width: 35px;
-            height: 35px;
-            background-image: url('img/icons/budget4.png');
-            background-position:center;
-            background-size:contain;
-            background-repeat:no-repeat;
-            cursor:pointer;
-            opacity:0.75;
-        }
-
-            #details-budget:hover {
-                opacity:1.0;
-            }
-
-        #budget-container {
-            position:relative;
-            width:250px;
-            margin:2px auto;
-            height: 44px;
-            cursor:pointer;
-        }
-
-        .budget-item {
-            float:left;
-            margin:0px 10px;          
-        }
-
-        .budget-item .label {
-            font-size:10px;
-            color:rgba(255,255,255,0.5);
-        }
-
-        .budget-item .icon {
-            position:relative;
-            left:12px;
-            width: 35px;
-            height: 35px;
-            background-image: url('img/icons/budget4.png');
-            background-position:center;
-            background-size:contain;
-            background-repeat:no-repeat;
-            opacity:0.75;
-        }
-
-            .budget-item .icon:hover {
-                opacity:1.0;
-            }
-
-        .studio-budget-icon {
-            width: 35px;
-            height: 35px;
-            background-image: url('img/icons/budget4.png');
-            background-position:center;
-            background-size:contain;
-            background-repeat:no-repeat;
-            opacity:0.75;
-            text-align:center;
-            margin:2px auto;
-        }
-
-        .studio-budget-label {
-            text-align:center;
-            font-size:10px;
-            color:rgba(255,255,255,0.5);
-        }
-
-        .details-item-cast {
-            position:relative;
-            font-size: 12px;
-            color:rgba(255,255,255, 0.75);
-            width:250px;
-            margin:auto;
-        }
-
-        .details-item-cast .label {
-            font-size: 10px;
-            font-weight:bold;
-            text-align:left;
-            color:rgba(255,255,255, 0.75);
-        }
-
-        .details-item-cast .value {
-            margin-left:5px;
-            font-size: 12px;
-            color:rgba(255,255,255, 0.75);
-            text-align: left;
-        }
-
-
-
-        #mini-timeline-container
-        {
-            position:relative;
-            height:30px;
-        }
-
-        #mini-timeline-label-beginning
-        {
-            position:absolute;
-            width:28px;
-            height:26px;
-            left:8px;
-            top:-26px;
-            font-size:10px;
-            color:#fff;
-            text-align:center;
-        }
-
-        #mini-timeline-label-ending
-        {
-            position:absolute;
-            width:28px;
-            height:26px;
-            right:7px;
-            top:-26px;
-            font-size:10px;
-            color:#fff;
-            text-align:center;
-        }
-
-        #mini-timeline-label-today
-        {
-            position:absolute;
-            width:28px;
-            height:14px;
-            left:267px;
-            top:24px;
-            font-size:10px;
-            color:rgb(0,255,0);
-            text-align:center;
-        }
-
-        #mini-timeline-marker-beginning
-        {
-            position:absolute;
-            width:2px;
-            height:20px;
-            background-color:#fff;
-            display:inline-block;
-            left:20px;
-        }
-
-        #mini-timeline-marker-middle
-        {
-            position:absolute;
-            width:356px;
-            height:2px;
-            background-color:#fff;
-            display:inline-block;
-            left:22px;
-            top:9px;
-        }
-
-        #mini-timeline-marker-ending
-        {
-            position:absolute;
-            width:2px;
-            height:20px;
-            background-color:#fff;
-            display:inline-block;
-            right:20px;
-        }
-
-        #mini-timeline-marker-today
-        {
-            position:absolute;
-            width:2px;
-            height:24px;
-            background-color:rgb(0,255,0);
-            display:inline-block;
-            left:280px;
-        }
-
-        #mini-timeline-development
-        {
-            position:absolute;
-            width:30px;
-            height: 14px;
-            background-color: rgba(174,208,207,0.85);
-            left:22px;
-            top:3px;
-        }
-
-        #mini-timeline-pre-production
-        {
-            position:absolute;
-            width:80px;
-            height: 14px;
-            background-color: rgba(104,154,196,0.85);
-            left:52px;
-            top:3px;
-        }
-
-        #mini-timeline-production
-        {
-            position:absolute;
-            width:100px;
-            height: 14px;
-            background-color: rgba(196,104,173,0.85);
-            left:132px;
-            top:3px;
-        }
-
-        #mini-timeline-post-production
-        {
-            position:absolute;
-            width:146px;
-            height: 14px;
-            background-color: rgba(196,154,104,0.85);
-            left:232px;
-            top:3px;
-        }
-
-
-
-
-
-
-
-        #movie-slider
-        {
-            position:absolute;
-            min-width: 430px;
-            bottom:0px;
-            width: 70%;
-            height: 75px;
-            bottom:-55px;
-            margin: 0px 15%;
-            background-color:#000;
-            border-top-left-radius:75px 55px;
-            border-top-right-radius:75px 55px; 
-            cursor:pointer;          
-            
-            -webkit-box-shadow: 0 1px 0px rgba(255,255,255,0.1) inset, 0 0px 1px rgba(0,0,0,0.7);
-	        -moz-box-shadow: 0 1px 0px rgba(255,255,255,0.1) inset, 0 0px 1px rgba(0,0,0,0.7);
-	        box-shadow: 0 1px 0px rgba(255,255,255,0.1) inset, 0 0px 1px rgba(0,0,0,0.7);
-	        background-color: #1a0804;
-	        background-image: -webkit-gradient(linear, left top, left bottom, from(#e9ede8), to(#1a0804),color-stop(0.4, #0e0301));              
-
-            -webkit-transform: translate3d(0,0,0);
-            -o-transform: translate3d(0,0,0);
-            -ms-transform: translate3d(0,0,0);
-            -moz-transform: translate3d(0,0,0);
-            transform: translate3d(0,0,0);
-        }
-
-        #movie-slider-pane
-        {
-            position: absolute;
-            bottom:-10px;
-            width: 90%;
-            height: 60px;
-            margin: 0px 5%; 
-            background-color: rgba(0,0,0,0.75);
-            border:3px groove rgba(255,255,255,0.5);
-            border-radius:6px;
-
-            border-top-left-radius:70px 50px;
-            border-top-right-radius:70px 50px;
-                        
-            text-align:center;
-            overflow:hidden;
-        }
-
-        #movie-slider-thumbnailcontainer
-        {
-            position: absolute;
-            width:20000px;
-            height:auto;
-
-            -webkit-transform: translate3d(0,0,-5);
-            -o-transform: translate3d(0,0,-5);
-            -ms-transform: translate3d(0,0,-5);
-            -moz-transform: translate3d(0,0,-5);
-            transform: translate3d(0,0,-5);
-
-
-            text-align:left;
-        }
-
-        /* aspect ratio: .675 , 1.48 */
-        .movie-slider-thumbnail
-        {
-            position:relative;
-            width:60px;
-            height:89px;
-            background-color:blue;
-            color:#fff;
-            font-size:14px;
-
-            display:inline-block;
-
-            background-size: contain;
-            background-repeat:no-repeat;
-            background-position:center;
-            opacity: 0.95;
-            background-color:transparent;
-
-            border:1px solid rgba(0,0,0,1);
-
-            cursor: pointer;
-
-            -webkit-transform: translate3d(0,0,-5);
-            -o-transform: translate3d(0,0,-5);
-            -ms-transform: translate3d(0,0,-5);
-            -moz-transform: translate3d(0,0,-5);
-            transform: translate3d(0,0,-5);
-
-        }
-
-
-        .rivet
-        {
-            position:absolute;
-            width:4px;
-            height:4px;
-            border-radius:2px;
-            border:1px groove rgba(0,0,0,0.5);
-            top: 6px;
-            cursor:pointer;
-            
-            background-image: linear-gradient(left top, rgb(214,214,214) 2%, rgb(54,54,54) 51%);
-            background-image: -o-linear-gradient(left top, rgb(214,214,214) 2%, rgb(54,54,54) 51%);
-            background-image: -moz-linear-gradient(left top, rgb(214,214,214) 2%, rgb(54,54,54) 51%);
-            background-image: -webkit-linear-gradient(left top, rgb(214,214,214) 2%, rgb(54,54,54) 51%);
-            background-image: -ms-linear-gradient(left top, rgb(214,214,214) 2%, rgb(54,54,54) 51%);
-
-            background-image: -webkit-gradient(
-	            linear,
-	            left top,
-	            right bottom,
-	            color-stop(0.02, rgb(214,214,214)),
-	            color-stop(0.51, rgb(54,54,54))
-            );
-        }
-
-        #rivet-left
-        {            
-            left: 70px;
-        }
-
-        #rivet-center
-        {            
-            left: 50%;
-        }
-
-        #rivet-right
-        {
-            right:70px;
-        }
-
-
-
-
-
-
-        
-    
 
     </style>
 
@@ -475,199 +97,15 @@
 <body ontouchmove="disableEvent(event);" ondragstart="disableEvent(event);">
 
 
-    <div id="movie-slider">
-        <div id="rivet-left" class="rivet"></div>
-        <div id="rivet-center" class="rivet"></div>
-        <div id="movie-slider-pane">
-            <div id="movie-slider-thumbnailcontainer">
-                <div class="movie-slider-thumbnail" movie-name="All You Need Is Kill" style="background-image:url('assets/one-sheets/allyouneediskill.jpg')"></div>
-                <div class="movie-slider-thumbnail" movie-name="The Conjuring" style="background-image:url('assets/one-sheets/conjuring.jpg')"></div>
-                <div class="movie-slider-thumbnail" movie-name="Godzilla" style="background-image:url('assets/one-sheets/Godzillia2014.jpeg')"></div>
-                <div class="movie-slider-thumbnail" movie-name="The Great Gatsby" style="background-image:url('assets/one-sheets/great_gatsby.jpg')"></div>
-                <div class="movie-slider-thumbnail" movie-name="The Hangover Part III" style="background-image:url('assets/one-sheets/hangover_part_3.jpg')"></div>
-                <div class="movie-slider-thumbnail" movie-name="The Hobbit: The Desolation of Smaug" style="background-image:url('assets/one-sheets/Hobbit-desolation.jpg')"></div>
-                <div class="movie-slider-thumbnail" movie-name="Jupiter Ascending" style="background-image:url('assets/one-sheets/Jupiter Ascending.jpg')"></div>
-                <div class="movie-slider-thumbnail" movie-name="Man of Steel" style="background-image:url('assets/one-sheets/man_of_steel.jpg')"></div>
-                <div class="movie-slider-thumbnail" movie-name="Pacific Rim" style="background-image:url('assets/one-sheets/pacific_rim.jpg')"></div>
-                <div class="movie-slider-thumbnail" movie-name="The Lego Movie" style="background-image:url('assets/one-sheets/thelegomovie.jpg')"></div>
-                <div class="movie-slider-thumbnail" movie-name="The Seventh Son" style="background-image:url('assets/one-sheets/theseventhson.jpg')"></div>
-                <div class="movie-slider-thumbnail" movie-name="300: Rise of an Empire" style="background-image:url('assets/one-sheets/three_hundred_rise_of_an_empire.jpg')"></div>
-            </div>
-        </div>
-        <div id="rivet-right" class="rivet"></div>
+    <div id="popup-box" class="below">
+        bla-bla-bla-bla-bla-bla-<br />blabalbalbalalkdfal;dskjfa;lksdfja;lskdfj<br />a;lksdjfa;lskdfja;lskdfja;sldkfj
+
+
+        place it at:
+            mousePoint.X - 200
+            mousePoint.Y - 16
     </div>
 
-
-    <div id="viewport">
-
-        
-
-        <script>
-
-            var $movieSliderThumbnailContainer = $('#movie-slider-thumbnailcontainer');
-            var _movieSliderSlideDistance = 150;
-
-            // initialize hammer touch event manager
-            var _hammer = $(document).hammer({
-                swipe_velocity: 0.1
-            });
-
-            _hammer.on('swipeleft', '#movie-slider-thumbnailcontainer', function (event) {
-
-                event.gesture.preventDefault();
-
-                var moveDistance = _movieSliderSlideDistance * event.gesture.velocityX;
-
-                var startLeft = $movieSliderThumbnailContainer.position().left;
-
-                new TWEEN.Tween({ x: startLeft })
-                   .to({ x: startLeft - moveDistance }, 1500)
-                   .easing(TWEEN.Easing.Exponential.Out)
-                   .onUpdate(function () {
-                       $movieSliderThumbnailContainer.css('transform', 'translateX(' + this.x + 'px)');
-                   })
-                   .start();
-
-            });
-
-            _hammer.on('swiperight', '#movie-slider-thumbnailcontainer', function (event) {
-
-                event.gesture.preventDefault();
-
-                var moveDistance = _movieSliderSlideDistance * event.gesture.velocityX;
-
-                var startLeft = $movieSliderThumbnailContainer.position().left;
-                
-                new TWEEN.Tween({ x: startLeft })
-                   .to({ x: startLeft + moveDistance }, 1500)
-                   .easing(TWEEN.Easing.Exponential.Out)
-                   .onUpdate(function () {
-                       $movieSliderThumbnailContainer.css('transform', 'translateX(' + this.x + 'px)');
-                   })
-                   .start();
-
-            });
-
-            _hammer.on('tap', '#movie-slider-thumbnailcontainer .movie-slider-thumbnail', function (event) {
-
-                event.gesture.preventDefault();
-
-                var thumbnail = event.gesture.target;
-                console.log(thumbnail);
-
-            });
-
-            _hammer.on('tap', '#movie-slider', function (event) {
-
-                event.gesture.preventDefault();
-
-                var $slider = $('#movie-slider');
-
-                var sliderBottom = window.innerHeight - $slider.position().top - $slider.height();
-                
-                if (sliderBottom < 0) {
-
-                    new TWEEN.Tween({ x: sliderBottom })
-                      .to({ x: 0 }, 1000)
-                      .easing(TWEEN.Easing.Quadratic.Out)
-                      .onUpdate(function () {
-                          $slider.css('bottom', this.x + 'px');
-                      })
-                      .start();
-
-                } else {
-
-                    new TWEEN.Tween({ x: sliderBottom })
-                      .to({ x: -55 }, 1000)
-                      .easing(TWEEN.Easing.Quadratic.Out)
-                      .onUpdate(function () {
-                          $slider.css('bottom', this.x + 'px');
-                      })
-                      .start();
-                }
-
-            });
-
-            function animate() {
-
-                requestAnimationFrame(animate); // js/RequestAnimationFrame.js needs to be included too.
-                TWEEN.update();
-
-            }
-
-            animate();
-
-        </script>
-
-
-
-
-        <div id="details-container">
-            <div id="details-caption">
-                Jupiter Ascending
-            </div>
-            <div class="details-item-phase">
-                In Production                
-            </div>
-            <div class="details-item-info">                
-                Action | Sci-Fi&nbsp;&nbsp;-&nbsp;&nbsp;7/25/2014 (USA)
-            </div>
-            
-            <div class="details-item-cast">
-                <span class="label">Directors:</span>
-                <span class="value">Andy Wachowski, Lana Wachowski</span>
-                                
-            </div>
-            <div class="details-item-cast">
-                <span class="label">Writers:</span>
-                <span class="value">Andy Wachowski, Lana Wachowski</span>             
-            </div>
-            <div class="details-item-cast">
-                <span class="label">Stars:</span>
-                <span class="value">Channing Tatum, Mila Kunis, Sean Bean</span>         
-            </div>
-
-            <div id="budget-container">
-                <div class="budget-item">
-                    <div class="icon"></div>
-                    <div class="label">Movie Budget</div>
-                </div>
-                <div class="budget-item">
-                    <div class="icon"></div>
-                    <div class="label">Prod Budget</div>
-                </div>
-                <div class="budget-item">
-                    <div class="icon"></div>
-                    <div class="label">Post Budget</div>
-                </div>
-            </div>
-
-            <div id="mini-timeline-container">
-                <div id="mini-timeline-label-beginning">
-                    Jan<br />2014
-                </div>
-                <div id="mini-timeline-marker-beginning"></div>
-                <div id="mini-timeline-development" title="Development"></div>
-                <div id="mini-timeline-pre-production" title="Pre-Production"></div>
-                <div id="mini-timeline-production" title="Production"></div>
-                <div id="mini-timeline-post-production" title="Post-Production"></div>
-                <div id="mini-timeline-marker-middle"></div>
-                <div id="mini-timeline-marker-ending"></div>
-                <div id="mini-timeline-label-ending">
-                    Oct<br />2015
-                </div>
-                <div id="mini-timeline-marker-today"></div>
-                <div id="mini-timeline-label-today">
-                    Today
-                </div>
-            </div>
-
-        </div>
-
-   </div>
-
-
-    
 
 
 
