@@ -40,6 +40,7 @@ a
     left:5px;
     text-align: left;
     display:none;
+    z-index:3;
 }
 
 
@@ -125,11 +126,41 @@ a
 
 #viewport 
 {
+    /*background-position: center;
+    background-repeat:no-repeat;
+    background-size: contain;*/
+    position:absolute;
+    width:100%;
+    height:100%;
+    z-index:2;
+}
+
+#pageBackgroundWrapper
+{
+    opacity:0.25;
+}
+
+#pageBackground
+{
+    position:absolute;
     background-position: center;
     background-repeat:no-repeat;
     background-size: contain;
     width:100%;
-    height:100%;
+    height:100%; 
+    z-index:1;  
+}
+
+.grayscale
+{
+    filter: grayscale(100%); /* Current draft standard */
+    -webkit-filter: grayscale(100%); /* New WebKit */
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%); 
+    -o-filter: grayscale(100%); /* Not yet supported in Gecko, Opera or IE */ 
+    filter: url(resources.svg#desaturate); /* Gecko */
+    filter: gray; /* IE */
+    -webkit-filter: grayscale(1); /* Old WebKit */
 }
 
 #backNav
@@ -799,12 +830,14 @@ button
     box-shadow:0 0 15px #ffffff;*/
 
     border-top:none;
-    border-bottom:1px dashed rgba(255,255,255,0.35);*/
+    border-bottom:1px dashed rgba(255,255,255,0.35);
 
     padding-bottom:2px;
     padding-top:2px;
 
     display:none;
+
+    z-index:3;
 
 }
 
@@ -1030,17 +1063,6 @@ background-image: -webkit-gradient(
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 /*************
  *** TILES ***
  *************/
@@ -1048,14 +1070,15 @@ background-image: -webkit-gradient(
 .movie-tile
 {
     position:absolute;
-    border: 1px solid rgba(0,0,0,0.5);
-    background: rgba(0,0,0,0.5);
+    border: 3px solid rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.75);
 
     -webkit-transform: translate3d(0,0,0);
     -o-transform: translate3d(0,0,0);
     -ms-transform: translate3d(0,0,0);
     -moz-transform: translate3d(0,0,0);
     transform: translate3d(0,0,0);
+
     cursor:pointer;
 
     /* aspect ratio: .675 , 1.48 */
@@ -1094,12 +1117,13 @@ background-image: -webkit-gradient(
         background-size: cover;
         opacity:0.95;
         border: none;
+        border:3px solid rgba(255,255,255,0.85);
     }
 
     .department-tile {
             position: absolute;
-            border: 1px solid rgba(0,0,0,0.5);
-            background: rgba(0,0,0,0.5);
+            border: 3px solid rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.75);
             
             -webkit-transform: translate3d(0,0,0);
             -o-transform: translate3d(0,0,0);
@@ -1147,11 +1171,11 @@ background-image: -webkit-gradient(
                 border: none;
             }
 
-.asset-tile
+    .asset-tile
         {
             position: absolute;
-            border: 1px solid rgba(0,0,0,0.5);
-            background: rgba(0,0,0,0.5);
+            border: 3px solid rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.75);
             
             -webkit-transform: translate3d(0,0,0);
             -o-transform: translate3d(0,0,0);

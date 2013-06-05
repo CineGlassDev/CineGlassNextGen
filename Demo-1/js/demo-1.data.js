@@ -1611,7 +1611,7 @@ CG.Demo1.DemoData = function () {
     warnerBrothers.catalog.push(legoMovie);
 
     var seventhSon = {
-        name: 'The Seventh Son',
+        name: 'Seventh Son',
         oneSheet: 'assets/one-sheets/theseventhson.jpg',
         trailerUrl: null,
         genre: 'Adventure | Family | Fantasy',

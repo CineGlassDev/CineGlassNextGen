@@ -51,9 +51,12 @@ CG.Demo1.StartApp = function () {
         initial3dCameraY: -321,
         initial3dCameraZ: 1971,
         initial2dCameraX: 0,
-        initial2dCameraY: 400,
+        initial2dCameraY: 0,
         initial2dCameraZ: 2300,
-        is3D: true
+        is3D: true,
+
+        columnCountFor3D: 5,
+        rowCountFor2D: 2
     };
 
     var _optionsForDepartmentVectors = {
@@ -66,25 +69,44 @@ CG.Demo1.StartApp = function () {
         initial3dCameraY: -321,
         initial3dCameraZ: 1971,
         initial2dCameraX: 0,
-        initial2dCameraY: 40,
+        initial2dCameraY: 0,
         initial2dCameraZ: 2300,
-        is3D: true
+        is3D: true,
+
+        columnCountFor3D: 3,
+        rowCountFor2D: 2
 
     };
 
     var _optionsForAssetVectors = {
         offsetX: 15,
         offsetY: 15,
-        offsetZ: 550,
-        rise3d: 225,
+        offsetZ: 500,
+        rise3d: 250,
 
         initial3dCameraX: 0,
-        initial3dCameraY: -196,
-        initial3dCameraZ: 2278,
+        initial3dCameraY: -321,
+        initial3dCameraZ: 1971,
         initial2dCameraX: 0,
-        initial2dCameraY: 40,
-        initial2dCameraZ: 3300,        
-        is3D: true
+        initial2dCameraY: 0,
+        initial2dCameraZ: 2300,
+        is3D: true,
+
+        columnCountFor3D: 3,
+        rowCountFor2D: 2
+
+        //offsetX: 15,
+        //offsetY: 15,
+        //offsetZ: 550,
+        //rise3d: 225,
+
+        //initial3dCameraX: 0,
+        //initial3dCameraY: -196,
+        //initial3dCameraZ: 2278,
+        //initial2dCameraX: 0,
+        //initial2dCameraY: 0,
+        //initial2dCameraZ: 3300,        
+        //is3D: true
     };
 
     var _transformOptions;
@@ -162,7 +184,7 @@ CG.Demo1.StartApp = function () {
         initializeTilesAndVectors();
         
         // initialize controls, defaulting to catalog controls
-        setTransformOptions('catalog', (_currentToggle == CG.Demo1.Toggles.Toggle3D));
+        setTransformOptions(CG.Demo1.Views.Catalog, (_currentToggle == CG.Demo1.Toggles.Toggle3D));
         var options = getTransformOptions();
         tileControls = new CG.TileControls(options, camera, render, $('#viewport'), 1000, _hammer);
 
@@ -613,13 +635,12 @@ CG.Demo1.StartApp = function () {
 
         }
     }
-    
-    function initializeVectors(vectorCount, vectorCache, vectorOptions, objectDims) {
 
-        var vectorsPerRow = calculateVectorsPerRow(vectorCount);
+    function initialize3dVectors(vectorCount, vectorCache, vectorOptions, objectDims) {
+
         var tileOffsetWidth = (objectDims.width + vectorOptions.offsetX);
-        var rowCount = Math.ceil(vectorCount / vectorsPerRow);
-        var finalRowCount = vectorCount % vectorsPerRow;
+        var rowCount = Math.ceil(vectorCount / vectorOptions.columnCountFor3D);
+        var finalRowCount = vectorCount % vectorOptions.columnCountFor3D;
         var vectorCounter = 0;
 
         var firstLeft;
@@ -632,54 +653,200 @@ CG.Demo1.StartApp = function () {
 
             firstLeft = tileOffsetWidth / 2 * -1;
 
-        } else if (vectorsPerRow % 2 === 0) {
+        } else if (vectorOptions.columnCountFor3D % 2 === 0) {
 
-            firstLeft = (Math.floor(vectorsPerRow / 2) * tileOffsetWidth - (tileOffsetWidth / 2)) * -1;
+            firstLeft = (Math.floor(vectorOptions.columnCountFor3D / 2) * tileOffsetWidth - (tileOffsetWidth / 2)) * -1;
 
         } else {
 
-            firstLeft = Math.floor(vectorsPerRow / 2) * tileOffsetWidth * -1;
+            firstLeft = Math.floor(vectorOptions.columnCountFor3D / 2) * tileOffsetWidth * -1;
 
         }
 
         for (var rowIndex = 0; rowIndex < rowCount; rowIndex++) {
 
-            var y3d = ((rowIndex % rowCount) * (vectorOptions.offsetY + vectorOptions.rise3d)) - ((vectorOptions.offsetY + vectorOptions.rise3d) * 2);
-            var z3d = (vectorOptions.offsetZ * rowIndex) * -1;
-            var y2d = ((objectDims.height + vectorOptions.offsetY) * Math.floor(rowCount / 2)) - ((rowIndex % rowCount) * (objectDims.height + vectorOptions.offsetY));
+            var y = ((rowIndex % rowCount) * (vectorOptions.offsetY + vectorOptions.rise3d)) - ((vectorOptions.offsetY + vectorOptions.rise3d) * 2);
+            var z = (vectorOptions.offsetZ * rowIndex) * -1;
 
             var x = firstLeft;
 
-            for (var objectIndex = 0; objectIndex < vectorsPerRow; objectIndex++) {
+            for (var objectIndex = 0; objectIndex < vectorOptions.columnCountFor3D; objectIndex++) {
 
                 if (vectorCounter == vectorCount) {
                     break;
                 }
 
-                //
-                // 3D vectors
-                //
-                var vector3D = new THREE.Object3D();
-                vector3D.position.x = x;
-                vector3D.position.y = y3d;
-                vector3D.position.z = z3d;
-                vectorCache.threeD.push(vector3D);
 
-
-                //
-                // 2D vectors
-                //
-                var vector2D = new THREE.Object3D();
-                vector2D.position.x = x;
-                vector2D.position.y = y2d;
-                vector2D.position.z = 0;
-                vectorCache.twoD.push(vector2D);
+                var vector = new THREE.Object3D();
+                vector.position.x = x;
+                vector.position.y = y;
+                vector.position.z = z;
+                vectorCache.threeD.push(vector);
 
                 x += tileOffsetWidth;
 
                 vectorCounter++;
             }
         }
+    }
+
+    function initialize2dVectors(vectorCount, vectorCache, vectorOptions, objectDims) {
+
+        var tileOffsetHeight = (objectDims.height + vectorOptions.offsetY);
+        var tileOffsetWidth = (objectDims.width + vectorOptions.offsetX);
+
+        var colCount = Math.ceil(vectorCount / vectorOptions.rowCountFor2D);
+        var finalColCount = vectorCount % vectorOptions.rowCountFor2D;
+
+        var vectorCounter = 0;
+
+        var firstTop;
+
+        if (vectorCount <= vectorOptions.rowCountFor2D) {
+
+            firstTop = tileOffsetHeight / 2;
+
+        } else {
+
+            firstTop = tileOffsetHeight * ((vectorOptions.rowCountFor2D - 1) / 2);
+
+        }
+
+        var nextLeft = tileOffsetWidth * ((colCount - 1) / 2) * -1;
+
+        var y = firstTop;        
+
+        for (var objectIndex = 0; objectIndex < vectorOptions.rowCountFor2D; objectIndex++) {
+
+            var x = nextLeft
+
+            if (vectorCounter == vectorCount) {
+                break;
+            }
+
+            for (var colIndex = 0; colIndex < colCount; colIndex++) {
+
+                if (vectorCounter == vectorCount) {
+                    break;
+                }                
+
+                var vector = new THREE.Object3D();
+                vector.position.x = x;
+                vector.position.y = y;
+                vector.position.z = 0;
+                vectorCache.twoD.push(vector);
+
+                vectorCounter++;
+
+                x += tileOffsetWidth;
+
+            }
+
+            y -= tileOffsetHeight;
+
+
+        }
+
+
+
+        //var nextLeft = tileOffsetWidth * ((colCount-1) / 2) * -1;
+
+        //for (var colIndex = 0; colIndex < colCount; colIndex++) {
+
+        //    var y = firstTop;
+        //    var x = nextLeft
+            
+        //    for (var objectIndex = 0; objectIndex < vectorOptions.rowCountFor2D; objectIndex++) {
+
+        //        if (vectorCounter == vectorCount) {
+        //            break;
+        //        }
+
+        //        var vector = new THREE.Object3D();
+        //        vector.position.x = x;
+        //        vector.position.y = y;
+        //        vector.position.z = 0;
+        //        vectorCache.twoD.push(vector);
+
+        //        y -= tileOffsetHeight;
+                
+        //        vectorCounter++;
+        //    }
+
+        //    nextLeft += tileOffsetWidth;
+        //}
+    }
+    
+    function initializeVectors(vectorCount, vectorCache, vectorOptions, objectDims) {
+
+        initialize3dVectors(vectorCount, vectorCache, vectorOptions, objectDims);
+        initialize2dVectors(vectorCount, vectorCache, vectorOptions, objectDims);
+
+
+        //var vectorsPerRow = calculateVectorsPerRow(vectorCount);
+        //var tileOffsetWidth = (objectDims.width + vectorOptions.offsetX);
+        //var rowCount = Math.ceil(vectorCount / vectorsPerRow);
+        //var finalRowCount = vectorCount % vectorsPerRow;
+        //var vectorCounter = 0;
+
+        //var firstLeft;
+
+        //if (vectorCount === 1) {
+
+        //    firstLeft = 0;
+
+        //} else if (vectorCount === 2) {
+
+        //    firstLeft = tileOffsetWidth / 2 * -1;
+
+        //} else if (vectorsPerRow % 2 === 0) {
+
+        //    firstLeft = (Math.floor(vectorsPerRow / 2) * tileOffsetWidth - (tileOffsetWidth / 2)) * -1;
+
+        //} else {
+
+        //    firstLeft = Math.floor(vectorsPerRow / 2) * tileOffsetWidth * -1;
+
+        //}
+
+        //for (var rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+
+        //    var y3d = ((rowIndex % rowCount) * (vectorOptions.offsetY + vectorOptions.rise3d)) - ((vectorOptions.offsetY + vectorOptions.rise3d) * 2);
+        //    var z3d = (vectorOptions.offsetZ * rowIndex) * -1;
+        //    var y2d = ((objectDims.height + vectorOptions.offsetY) * Math.floor(rowCount / 2)) - ((rowIndex % rowCount) * (objectDims.height + vectorOptions.offsetY));
+
+        //    var x = firstLeft;
+
+        //    for (var objectIndex = 0; objectIndex < vectorsPerRow; objectIndex++) {
+
+        //        if (vectorCounter == vectorCount) {
+        //            break;
+        //        }
+
+        //        //
+        //        // 3D vectors
+        //        //
+        //        var vector3D = new THREE.Object3D();
+        //        vector3D.position.x = x;
+        //        vector3D.position.y = y3d;
+        //        vector3D.position.z = z3d;
+        //        vectorCache.threeD.push(vector3D);
+
+
+        //        //
+        //        // 2D vectors
+        //        //
+        //        var vector2D = new THREE.Object3D();
+        //        vector2D.position.x = x;
+        //        vector2D.position.y = y2d;
+        //        vector2D.position.z = 0;
+        //        vectorCache.twoD.push(vector2D);
+
+        //        x += tileOffsetWidth;
+
+        //        vectorCounter++;
+        //    }
+        //}
     }
     
     function initializeEventHandlers() {
@@ -880,6 +1047,9 @@ CG.Demo1.StartApp = function () {
         _hammer.on('swipeleft', '#movie-slider-thumbnailcontainer', function (event) {
 
             event.gesture.preventDefault();
+            event.stopPropagation();
+            event.gesture.stopPropagation();
+            event.gesture.stopDetect();
 
             console.log('swipeleft');
 
@@ -900,6 +1070,9 @@ CG.Demo1.StartApp = function () {
         _hammer.on('swiperight', '#movie-slider-thumbnailcontainer', function (event) {
 
             event.gesture.preventDefault();
+            event.stopPropagation();
+            event.gesture.stopPropagation();
+            event.gesture.stopDetect();
 
             var moveDistance = _movieSliderSlideDistance * event.gesture.velocityX;
 
@@ -1046,11 +1219,14 @@ CG.Demo1.StartApp = function () {
         });
                 
     }
-    
+
     function showMovieTiles(isScheduleView) {
         
         // change page background to use studio's logo
-        $viewport.css('background-image', 'url("' + _tileObjects.logo + '")');
+
+        //$viewport.css('background-image', 'url("' + _tileObjects.logo + '")');
+
+        changeBackgroundImage(_tileObjects.logo, true);
 
         // hide movie countdown clock
         hideReleaseCountdown();
@@ -1109,7 +1285,7 @@ CG.Demo1.StartApp = function () {
         //if (!isScheduleView) {
 
             // set options for rendering
-            setTransformOptions('catalog', (_currentToggle == CG.Demo1.Toggles.Toggle3D));
+            setTransformOptions(CG.Demo1.Views.Catalog, (_currentToggle == CG.Demo1.Toggles.Toggle3D));
             var options = getTransformOptions();
 
             // initialize controls
@@ -1134,7 +1310,9 @@ CG.Demo1.StartApp = function () {
         _lastMovieTile = movieTile;
 
         // change page background to one-sheet
-        $viewport.css('background-image', 'url("' + getFileDirectory(movieTile.movieData.oneSheet) + '/original-size/' + getFileName(movieTile.movieData.oneSheet) + '")');
+        //$viewport.css('background-image', 'url("' + getFileDirectory(movieTile.movieData.oneSheet) + '/original-size/' + getFileName(movieTile.movieData.oneSheet) + '")');
+        var imgUrl = getFileDirectory(movieTile.movieData.oneSheet) + '/original-size/' + getFileName(movieTile.movieData.oneSheet);
+        changeBackgroundImage(imgUrl, true);
 
         // show countdown clock for this movie
         showReleaseCountdown(movieTile.movieData.releaseDate, movieTile.movieData.releaseCountry);
@@ -1148,7 +1326,7 @@ CG.Demo1.StartApp = function () {
         if (!isScheduleView) {
 
             // set options for rendering
-            setTransformOptions('department', (_currentToggle == CG.Demo1.Toggles.Toggle3D));
+            setTransformOptions(CG.Demo1.Views.Departments, (_currentToggle == CG.Demo1.Toggles.Toggle3D));
             var options = getTransformOptions();
 
             // initialize the controls
@@ -1403,7 +1581,7 @@ CG.Demo1.StartApp = function () {
         contextWrapper.appendChild(dates);
      
         // set options for rendering
-        setTransformOptions('asset', (_currentToggle == CG.Demo1.Toggles.Toggle3D));
+        setTransformOptions(CG.Demo1.Views.Assets, (_currentToggle == CG.Demo1.Toggles.Toggle3D));
         var options = getTransformOptions();
 
         // initialize the controls
@@ -1430,7 +1608,7 @@ CG.Demo1.StartApp = function () {
         _lastAssetTile = assetTile;
 
         // set options for rendering
-        setTransformOptions('asset', (_currentToggle == CG.Demo1.Toggles.Toggle3D));
+        setTransformOptions(CG.Demo1.Views.Assets, (_currentToggle == CG.Demo1.Toggles.Toggle3D));
         var options = getTransformOptions();
 
         // initialize the controls
@@ -1586,6 +1764,13 @@ CG.Demo1.StartApp = function () {
                 var maxDuration = 0;
                 var initialPosition = getInitialCameraPosition((toggle == CG.Demo1.Toggles.Toggle3D));
 
+                //
+                // reset controls
+                // 
+                setTransformOptions(CG.Demo1.Views.Catalog, (toggle == CG.Demo1.Toggles.Toggle3D));
+                var options = getTransformOptions();                
+                tileControls.reset(options, camera, render, $('#viewport'), 1000, _hammer);
+
                 if (camera.position.x != initialPosition.x ||
                     camera.position.y != initialPosition.y ||
                     camera.position.z != initialPosition.z) {
@@ -1628,6 +1813,7 @@ CG.Demo1.StartApp = function () {
                     .onUpdate(render)
                     .onComplete(function () {
 
+                        camera.updateProjectionMatrix();
                         tileControls.disabled = false;
 
                     })
@@ -1724,6 +1910,8 @@ CG.Demo1.StartApp = function () {
 
 			    _currentVectorKey = toVectorKey;
 			    _currentTileObjects = toTileObjects;
+
+			    camera.updateProjectionMatrix();
 			    tileControls.disabled = false;
 
 			})
@@ -1761,6 +1949,7 @@ CG.Demo1.StartApp = function () {
                 .easing(TWEEN.Easing.Exponential.Out)
                 .onUpdate(render)
                 .onComplete(function () {
+                    camera.updateProjectionMatrix();
                     tileControls.disabled = false;
                 })
                 .start();
@@ -1775,14 +1964,6 @@ CG.Demo1.StartApp = function () {
 
     }
       
-    function calculateVectorsPerRow(vectorCount) {
-        if (vectorCount > 15) {
-            return 5;
-        } else {
-            return 3;
-        }
-    }
-
     function getDimsFromCss(cssClass) {
 
         var $temp = $("<div class='" + cssClass + "'></div>").hide().appendTo("body");
@@ -1799,14 +1980,14 @@ CG.Demo1.StartApp = function () {
     }
 
     function setTransformOptions(view, is3D) {
-        switch (view.toLowerCase()) {
-            case 'catalog':
+        switch (view) {
+            case CG.Demo1.Views.Catalog:
                 _transformOptions = _optionsForMovieVectors;
                 break;
-            case 'department':
+            case CG.Demo1.Views.Departments:
                 _transformOptions = _optionsForDepartmentVectors;
                 break;
-            case 'asset':
+            case CG.Demo1.Views.Assets:
                 _transformOptions = _optionsForAssetVectors;
                 break;
         }
@@ -1846,7 +2027,6 @@ CG.Demo1.StartApp = function () {
         redrawTimeline();
 
     	camera.aspect = window.innerWidth / window.innerHeight;
-
     	camera.updateProjectionMatrix();
 
     	renderer.setSize(window.innerWidth, window.innerHeight);
@@ -2468,7 +2648,7 @@ CG.Demo1.StartApp = function () {
         //
         // create milestone items
         //
-        var milestoneCount = movie.milestones.length;
+        var milestoneCount = (typeof movie.milestones != 'undefined' ? movie.milestones.length : 0);
         for (var index = 0; index < milestoneCount; index++) {
 
             var milestoneData = movie.milestones[index];
@@ -2779,7 +2959,7 @@ CG.Demo1.StartApp = function () {
             }            
         } else {
 
-            var milestoneCount = _lastMovieTile.movieData.milestones.length;
+            var milestoneCount = (typeof _lastMovieTile.movieData.milestones != 'undefined' ? _lastMovieTile.movieData.milestones.length : 0);
 
             // show movie schedule
             timelineData = getTimelineDataForMovie(_lastMovieTile.movieData);
@@ -3065,6 +3245,25 @@ CG.Demo1.StartApp = function () {
     function hidePopUpBox() {
 
         $popupBox.fadeOut(500);
+
+    }
+
+    function changeBackgroundImage(imgUrl, convertToGrayscale) {
+
+        // change page background to use given url
+        var $background = $('#pageBackground');
+        $background.css('background-image', 'url("' + imgUrl + '")');
+
+        if (convertToGrayscale === true) {
+
+            $background.addClass('grayscale');
+
+
+        } else {
+
+            $background.removeClass('grayscale');
+
+        }
 
     }
     

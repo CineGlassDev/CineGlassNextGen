@@ -1,4 +1,29 @@
 ﻿*********************************
+  CineGlass v0.0.9 on 6-5-2013
+*********************************
+
+--- BUG FIXES ---
+- Fixed bug where touch-holding on a movie timeline slug would not show it's financial popup if that movie's data did not contain milestones.
+
+--- ENHANCEMENTS ---
+- Changed 2D Tile view to render horizontally instead of vertically.
+- Changed 3D movie tiles to render in 5 columns instead of 3 to take better advantage of screen real-estate.
+- Added white border around movie one-sheets to better frame them.
+- Increased tile border widths.
+- Increased opacity of tiles so page background was less prevalent.
+- Styled page background so it converts image to grayscale, so focus is less on background and more on content.
+- Made sure page background image displays on schedule views.
+
+--- IN-QUEUE ---
+- Integrating/testing new Jupiter Ascending dates that Brian provided.
+- Add upload asset feature.
+- Add a reveal panel at top of page (to hold notifications).
+- Add a reveal panel at left of page (to hold front-end process items).
+- Add a reveal panel at right of page (to hold back-end process items).
+- Add filter capability to all views (for 3D views, fold down filtered-out tiles; for 2D views, sink filtered-out tiles).
+
+
+*********************************
   CineGlass v0.0.8 on 6-3-2013
 *********************************
 
