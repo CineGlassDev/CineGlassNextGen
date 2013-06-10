@@ -1638,7 +1638,7 @@ CG.Demo1.DemoData = function () {
         oneSheet: 'assets/one-sheets/three_hundred_rise_of_an_empire.jpg',
         trailerUrl: null,
         genre: 'Action | Drama',
-        releaseDate: new Date('8/2/2013'),
+        releaseDate: new Date('3/7/2014'),
         releaseCountry: 'USA',
         topCredits: {
             directors: 'Noam Murro',

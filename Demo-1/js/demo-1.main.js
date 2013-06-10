@@ -16,6 +16,17 @@ CG.Demo1.Toggles = {
     ToggleSchedule: 3
 }
 
+CG.Demo1.NotificationCategories = {
+    Critical: 1,
+    Warning: 2,
+    Informational: 3,
+    DevelopmentPhase: 4,
+    PreProductionPhase: 5,
+    ProductionPhase: 6,
+    PostProductionPhase: 7,
+    DistributionPhase: 8
+};
+
 
 CG.Demo1.StartApp = function () {
 
@@ -24,6 +35,9 @@ CG.Demo1.StartApp = function () {
     var DEFAULT_CAMERA_Z = 2100;
 
     var CATALOG_LABEL = 'Production Portfolio';
+
+    var LS_LAST_NOTIFICATION_UPDATE_KEY = 'last-notification-update';
+    var LS_NOTIFICATIONS_KEY = 'notifications';
 
     var _active3dObject = null;
     var _navBackTo = CG.Demo1.Views.none;
@@ -141,6 +155,7 @@ CG.Demo1.StartApp = function () {
     $movieSliderThumbnailContainer = $('#movie-slider-thumbnailcontainer');
     $movieSlider = $('#movie-slider');
     $popupBox = $('#popup-box');
+    $notificationPanel = $('#notification-panel');
 
     //////////////////////////////////
     //////////////////////////////////
@@ -188,6 +203,11 @@ CG.Demo1.StartApp = function () {
         var options = getTransformOptions();
         tileControls = new CG.TileControls(options, camera, render, $('#viewport'), 1000, _hammer);
 
+        // intialize message panel
+        $notificationPanel = $('#notification-panel');
+        $notificationPanel.css('top', ($notificationPanel.height() * -1 + 7) + 'px');
+        pullNotifications();
+        
         // initialize event handlers
         initializeEventHandlers();
 
@@ -213,6 +233,7 @@ CG.Demo1.StartApp = function () {
                 $('#product-logo').show();
                 $('#details-container').show();
                 $('#toggle-menu').show();
+                $notificationPanel.show();
                 $('#release-notes').show();
 
                 renderDetailsContext(_currentView);
@@ -746,35 +767,6 @@ CG.Demo1.StartApp = function () {
 
 
         }
-
-
-
-        //var nextLeft = tileOffsetWidth * ((colCount-1) / 2) * -1;
-
-        //for (var colIndex = 0; colIndex < colCount; colIndex++) {
-
-        //    var y = firstTop;
-        //    var x = nextLeft
-            
-        //    for (var objectIndex = 0; objectIndex < vectorOptions.rowCountFor2D; objectIndex++) {
-
-        //        if (vectorCounter == vectorCount) {
-        //            break;
-        //        }
-
-        //        var vector = new THREE.Object3D();
-        //        vector.position.x = x;
-        //        vector.position.y = y;
-        //        vector.position.z = 0;
-        //        vectorCache.twoD.push(vector);
-
-        //        y -= tileOffsetHeight;
-                
-        //        vectorCounter++;
-        //    }
-
-        //    nextLeft += tileOffsetWidth;
-        //}
     }
     
     function initializeVectors(vectorCount, vectorCache, vectorOptions, objectDims) {
@@ -782,71 +774,6 @@ CG.Demo1.StartApp = function () {
         initialize3dVectors(vectorCount, vectorCache, vectorOptions, objectDims);
         initialize2dVectors(vectorCount, vectorCache, vectorOptions, objectDims);
 
-
-        //var vectorsPerRow = calculateVectorsPerRow(vectorCount);
-        //var tileOffsetWidth = (objectDims.width + vectorOptions.offsetX);
-        //var rowCount = Math.ceil(vectorCount / vectorsPerRow);
-        //var finalRowCount = vectorCount % vectorsPerRow;
-        //var vectorCounter = 0;
-
-        //var firstLeft;
-
-        //if (vectorCount === 1) {
-
-        //    firstLeft = 0;
-
-        //} else if (vectorCount === 2) {
-
-        //    firstLeft = tileOffsetWidth / 2 * -1;
-
-        //} else if (vectorsPerRow % 2 === 0) {
-
-        //    firstLeft = (Math.floor(vectorsPerRow / 2) * tileOffsetWidth - (tileOffsetWidth / 2)) * -1;
-
-        //} else {
-
-        //    firstLeft = Math.floor(vectorsPerRow / 2) * tileOffsetWidth * -1;
-
-        //}
-
-        //for (var rowIndex = 0; rowIndex < rowCount; rowIndex++) {
-
-        //    var y3d = ((rowIndex % rowCount) * (vectorOptions.offsetY + vectorOptions.rise3d)) - ((vectorOptions.offsetY + vectorOptions.rise3d) * 2);
-        //    var z3d = (vectorOptions.offsetZ * rowIndex) * -1;
-        //    var y2d = ((objectDims.height + vectorOptions.offsetY) * Math.floor(rowCount / 2)) - ((rowIndex % rowCount) * (objectDims.height + vectorOptions.offsetY));
-
-        //    var x = firstLeft;
-
-        //    for (var objectIndex = 0; objectIndex < vectorsPerRow; objectIndex++) {
-
-        //        if (vectorCounter == vectorCount) {
-        //            break;
-        //        }
-
-        //        //
-        //        // 3D vectors
-        //        //
-        //        var vector3D = new THREE.Object3D();
-        //        vector3D.position.x = x;
-        //        vector3D.position.y = y3d;
-        //        vector3D.position.z = z3d;
-        //        vectorCache.threeD.push(vector3D);
-
-
-        //        //
-        //        // 2D vectors
-        //        //
-        //        var vector2D = new THREE.Object3D();
-        //        vector2D.position.x = x;
-        //        vector2D.position.y = y2d;
-        //        vector2D.position.z = 0;
-        //        vectorCache.twoD.push(vector2D);
-
-        //        x += tileOffsetWidth;
-
-        //        vectorCounter++;
-        //    }
-        //}
     }
     
     function initializeEventHandlers() {
@@ -996,17 +923,7 @@ CG.Demo1.StartApp = function () {
 
             event.gesture.preventDefault();
 
-            // clear the viewer's contents
-            $('#itemViewer').attr({
-                src: 'about:blank'
-            });
-            $('#videoPlayer').attr({
-                src: ''
-            });
-
-            $('#item-viewer-mask, #item-viewer-dialog').fadeOut(300, function () {
-                $('#item-viewer-mask').remove();
-            });
+            hideItemViewer();
 
             return false;
 
@@ -1216,6 +1133,11 @@ CG.Demo1.StartApp = function () {
 
             hidePopUpBox();
 
+        });
+
+        _hammer.on('tap', '#notification-panel-grip', function (event) {
+            event.gesture.preventDefault();
+            handleNotificationPanelShellTap();
         });
                 
     }
@@ -2021,6 +1943,10 @@ CG.Demo1.StartApp = function () {
         return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
     }
 
+    function formatDateTime(date) {
+        return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + ' ' + date.toTimeString();
+    }
+
     function onWindowResize() {
 
         resizeItemViewer();
@@ -2040,7 +1966,7 @@ CG.Demo1.StartApp = function () {
 
         var isIpad = isIDevice();
 
-        var useItemViewer = (itemType == 'img' || itemType == 'mov' || itemType == '5th');
+        var useItemViewer = (itemType == 'img' || itemType == 'mov' || itemType == '5th' || itemType == 'content');
 
         if (useItemViewer) {
 
@@ -2054,13 +1980,15 @@ CG.Demo1.StartApp = function () {
             if (itemType == 'img' || itemType == '5th') {
 
                 $videoPlayer.hide();
-
                 $itemViewer.css('background-image', 'url("' + itemSrc + '")');
-                //$itemViewer.attr({
-                //    src: itemSrc,
-                //    alt: caption
-                //});
+                $itemViewer.show();
 
+            } else if (itemType == 'content') {
+
+                $videoPlayer.hide();
+                $itemViewer.empty();
+                $itemViewer.css('background-image', 'none');                
+                $itemViewer.append(itemSrc);
                 $itemViewer.show();
 
             } else {
@@ -2077,7 +2005,7 @@ CG.Demo1.StartApp = function () {
 
             $('#item-viewer-dialog').fadeIn(300);
 
-            // Add the mask to body
+            // add the mask to body
             $('body').append('<div id="item-viewer-mask"></div>');
             $('#item-viewer-mask').fadeIn(300);
 
@@ -2086,6 +2014,22 @@ CG.Demo1.StartApp = function () {
             window.open(itemSrc, caption);
 
         }
+
+    }
+
+    function hideItemViewer() {
+
+        // clear the viewer's contents
+        $('#itemViewer').attr({
+            src: 'about:blank'
+        });
+        $('#videoPlayer').attr({
+            src: ''
+        });
+
+        $('#item-viewer-mask, #item-viewer-dialog').fadeOut(300, function () {
+            $('#item-viewer-mask').remove();
+        });
 
     }
 
@@ -3262,6 +3206,437 @@ CG.Demo1.StartApp = function () {
         } else {
 
             $background.removeClass('grayscale');
+
+        }
+
+    }
+
+    function pushNotifications(notifications) {
+
+        // THIS IS THE SOCKET-BASED METHOD OF RECEIVING PUSH NOTIFICATIONS
+
+        // go ahead and determine next last updated timestamp
+        // here, so we're sure not to have any window of error
+        // for missing future notifications
+        var newLastUpdated = new Date();
+
+        // store the incoming notifications
+        storeNotifications(newLastUpdated, notifications);
+
+    }
+
+    function pullNotifications() {
+
+        // TODO:
+        // 1. Retrieve last notification update timestamp from local storage
+        // 2. Pull notifications from server using last notification update timestamp
+        // 3. Update last notification update timestamp in local storage
+        // 4. Store notifications in local storage
+        // 5. if notifications were returned, then show new message indicator on notification bar
+
+        if (typeof (Storage) !== "undefined") {
+
+            // retrieve last notification update timestamp from local storage
+            var lastUpdated = localStorage.getItem(LS_LAST_NOTIFICATION_UPDATE_KEY);
+
+            if (typeof lastUpdated == 'undefined') {
+                lastUpdated = new Date('1/1/1970');
+            }
+
+            // go ahead and determine next last updated timestamp
+            // here, so we're sure not to have any window of error
+            // for missing future notifications
+            var newLastUpdated = new Date();
+
+
+            //
+            // TODO: call server to get latest notifications since last update
+            //
+
+
+            //
+            // THIS IS TEMPORARY FOR TESTING
+            //
+            var notifications = [
+                {
+                    id: '1',
+                    issueDate: new Date('6/6/2014 08:00'),
+                    category: CG.Demo1.NotificationCategories.Critical,
+                    caption: 'Shoot schedule slipped...',
+                    message: 'The shoot schedule has slipped by two weeks because of contract complications and union concerns.  The new shoot date is 10/17/2013.'
+                },
+                {
+                    id: '2',
+                    issueDate: new Date('6/6/2014 08:00'),
+                    category: CG.Demo1.NotificationCategories.DevelopmentPhase,
+                    caption: 'Script Revision #9...',
+                    message: 'Script Revision #9 changes include making inciding incident more believable while still hooking the audience.'
+                },
+                {
+                    id: '3',
+                    issueDate: new Date('6/7/2014 14:35'),
+                    category: CG.Demo1.NotificationCategories.DevelopmentPhase,
+                    caption: 'John Smith brought on as co-writer...',
+                    message: 'John Smith has been brought on to focus primarily on spicing up the story\'s turning points.'
+                }
+            ];
+
+            // store the notifications
+            storeNotifications(newLastUpdated, notifications);
+        }
+
+    }
+
+    function storeNotifications(newTimestamp, notifications) {
+
+        if (notifications != null && notifications.length > 0) {
+
+            // FUTURE: Pull this from server and don't use local storage.
+
+            localStorage.setItem(LS_NOTIFICATIONS_KEY, JSON.stringify(notifications));
+
+            // TODO: Set some kind of visual indicator so user knows there's new alerts
+
+        }
+
+        localStorage.setItem(LS_LAST_NOTIFICATION_UPDATE_KEY, newTimestamp.toUTCString());
+
+    }
+
+    function deleteNotificationsByCategory(category) {
+
+        // FUTURE: Perform delete on the server and not from local storage
+
+        var notifications = JSON.parse(localStorage.getItem(LS_NOTIFICATIONS_KEY));
+
+        var originalCount = notifications.length;
+
+        notifications = $.grep(notifications, function (n, i) {
+
+            return (n.category != category);
+
+        });
+
+
+        if (notifications.length != originalCount) {
+
+            var notificationsSerialized = JSON.stringify(notifications);
+            localStorage.setItem(LS_NOTIFICATIONS_KEY, notificationsSerialized);
+
+            showNotificationPanel(true);
+
+        }
+
+    }
+
+    function deleteNotification(notificationId) {
+
+        // FUTURE: Perform delete on the server and not from local storage
+
+        var notifications = JSON.parse(localStorage.getItem(LS_NOTIFICATIONS_KEY));
+
+        var wasDeleted = false;
+        var notificationCount = notifications.length;
+        for (var index = 0; index < notificationCount; index++) {
+
+            if (notifications[index].id === notificationId) {
+
+                // remove this notification
+                notifications.splice(index, 1);
+
+                wasDeleted = true;
+
+                break;
+
+            }
+
+        }
+
+        if (wasDeleted) {
+            var notificationsSerialized = JSON.stringify(notifications);
+            localStorage.setItem(LS_NOTIFICATIONS_KEY, notificationsSerialized);
+
+            showNotificationPanel(true);
+        }
+
+    }
+
+    function hideNotificationPanel() {
+
+        $notificationPanel.animate({
+            'top': ($notificationPanel.height() * -1 + 7) + 'px'
+        });
+
+    }
+
+    function showNotificationPanel(isAlreadyShowing) {
+
+        // FUTURE: Pull this from server and don't use local storage
+        var notifications = JSON.parse(localStorage.getItem(LS_NOTIFICATIONS_KEY));
+
+        var $content = $('#notification-panel-content');
+
+        $content.empty();
+
+        var caption = document.createElement('div');
+        caption.id = 'notification-panel-caption';
+        caption.textContent = 'CineGlass Notifications';
+        $(caption).hammer().on('tap', function (event) {
+            event.gesture.preventDefault();
+            handleNotificationPanelShellTap();
+        });
+        $content.append(caption);
+
+        notifications.sort(function (notification1, notification2) {
+            if (notification1.category < notification2.category) {
+                return -1;
+            } else if (notification1.category > notification2.category) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
+        var lastCategory = -1;
+        var notificationsCount = notifications.length;
+        for (var index = 0; index < notificationsCount; index++) {
+
+            var notification = notifications[index];
+
+            if (notification.category != lastCategory) {
+
+                var category = document.createElement('div');
+                var categoryContent = getNotificationCategoryContent(notification.category);
+                category.className = categoryContent.className;
+                category.textContent = categoryContent.categoryName;
+                $content.append(category);
+
+                var categoryDeleteInitial = document.createElement('img');
+                categoryDeleteInitial.className = 'notification-delete-initial';
+                categoryDeleteInitial.src = '/img/icons/notification-delete-initial.png';
+                category.appendChild(categoryDeleteInitial);
+                $(categoryDeleteInitial).hammer().on('tap', function (event) {
+
+                    event.gesture.preventDefault();
+
+                    //
+                    // hide initial close and show confirm close
+                    //
+                    $(event.gesture.target).css('display', 'none');
+                    $(event.gesture.target).siblings(0).css('display', 'block');
+
+                });
+
+                var categoryDeleteConfirm = document.createElement('div');
+                categoryDeleteConfirm.className = 'notification-delete-confirm';
+                categoryDeleteConfirm.category = notification.category;
+                categoryDeleteConfirm.textContent = 'Confirm';
+                category.appendChild(categoryDeleteConfirm);
+                $(categoryDeleteConfirm).hammer().on('tap', function (event) {
+
+                    event.gesture.preventDefault();
+
+                    // delete all messages in this category
+                    deleteNotificationsByCategory(event.gesture.target.category);
+
+
+                });
+
+                lastCategory = notification.category;
+            }
+
+            var headline = document.createElement('div');
+            headline.className = 'notification-panel-headline';
+            headline.textContent = notification.caption;
+            headline.notification = notification;
+            $content.append(headline);
+
+            var messageDeleteInitial = document.createElement('img');
+            messageDeleteInitial.className = 'notification-delete-initial';
+            messageDeleteInitial.style.top = '0px';
+            messageDeleteInitial.style.right = '8px';
+            messageDeleteInitial.src = '/img/icons/notification-delete-initial.png';
+            headline.appendChild(messageDeleteInitial);
+            $(messageDeleteInitial).hammer().on('tap', function (event) {
+
+                event.gesture.preventDefault();
+
+                //
+                // hide initial close and show confirm close
+                //
+                $(event.gesture.target).css('display', 'none');
+                $(event.gesture.target).siblings(0).css('display', 'block');
+
+            });
+
+            var messageDeleteConfirm = document.createElement('div');
+            messageDeleteConfirm.className = 'notification-delete-confirm';
+            messageDeleteConfirm.textContent = 'Confirm';
+            messageDeleteConfirm.messageId = notification.id;
+            headline.appendChild(messageDeleteConfirm);
+            $(messageDeleteConfirm).hammer().on('tap', function (event) {
+
+                event.gesture.preventDefault();
+
+                // delete message
+                deleteNotification(event.gesture.target.messageId);                
+
+            });
+
+            $(headline).hammer().on('tap', function (event) {
+
+                event.gesture.preventDefault();
+
+                if (event.gesture.target.className == 'notification-panel-headline') {
+
+                    var notification = event.gesture.target.notification;
+                    var messageContent = buildMessageContent(notification);
+                    showItemViewer(notification.caption, messageContent, 'content');
+
+                }
+
+            });
+
+        }
+
+        if (typeof isAlreadyShowing == 'undefined' || isAlreadyShowing == false) {
+
+            $notificationPanel.animate({
+                'top': '0px'
+            });
+
+        }
+
+    }
+
+    function buildMessageContent(notification) {
+
+        var contentWrapper = document.createElement('div');
+        contentWrapper.id = 'notification-message-content';
+
+        var categoryLabel = document.createElement('div');
+        categoryLabel.className = 'notification-message-label';
+        categoryLabel.textContent = 'Category:';
+        contentWrapper.appendChild(categoryLabel);
+
+        var categoryValue = document.createElement('div');
+        categoryValue.className = 'notification-message-value';
+        var categoryContent = getNotificationCategoryContent(notification.category);
+        categoryValue.textContent = categoryContent.categoryName;
+        contentWrapper.appendChild(categoryValue);
+
+        var messageDateLabel = document.createElement('div');
+        messageDateLabel.className = 'notification-message-label';
+        messageDateLabel.textContent = 'Message Date:';
+        contentWrapper.appendChild(messageDateLabel);
+
+        var messageDateValue = document.createElement('div');
+        messageDateValue.className = 'notification-message-value';
+        messageDateValue.textContent = formatDateTime(new Date(notification.issueDate));
+        contentWrapper.appendChild(messageDateValue);
+
+        var messageLabel = document.createElement('div');
+        messageLabel.className = 'notification-message-label';
+        messageLabel.textContent = 'Message:';
+        contentWrapper.appendChild(messageLabel);
+
+        var messageValue = document.createElement('div');
+        messageValue.className = 'notification-message-value';
+        messageValue.textContent = notification.message;
+        contentWrapper.appendChild(messageValue);
+
+        var deleteButton = document.createElement('div');
+        deleteButton.id = 'notification-message-delete-button';
+        deleteButton.className = 'notification-message-button';
+        deleteButton.textContent = 'Delete Message';
+        $(deleteButton).hammer().on('tap', function (event) {
+
+            event.gesture.preventDefault();
+
+            //
+            // hide delete and show confirm
+            //
+            $(event.gesture.target).css('display', 'none');
+            $(event.gesture.target).siblings(0).css('display', 'block');
+
+        });
+        contentWrapper.appendChild(deleteButton);
+
+        var confirmButton = document.createElement('div');
+        confirmButton.id = 'notification-message-delete-button-confirm';
+        confirmButton.className = 'notification-message-button';
+        confirmButton.textContent = 'Confirm';
+        confirmButton.messageId = notification.id;
+        $(confirmButton).hammer().on('tap', function (event) {
+
+            event.gesture.preventDefault();
+
+            // delete message
+            deleteNotification(event.gesture.target.messageId);
+
+            hideItemViewer();            
+
+        });
+        contentWrapper.appendChild(confirmButton);
+
+        return contentWrapper;
+
+    }
+
+    function getNotificationCategoryContent(notificationCategory) {
+
+        var content = {
+            className: '',
+            categoryName: ''
+        };
+
+        switch (notificationCategory) {
+
+            case CG.Demo1.NotificationCategories.Informational:
+                content.categoryName = 'Informational';
+                break;
+            case CG.Demo1.NotificationCategories.Warning:
+                content.categoryName = 'Warning';
+                break;
+            case CG.Demo1.NotificationCategories.Critical:
+                content.categoryName = 'Critical';
+                content.className = 'notification-panel-category critical';
+                break;
+            case CG.Demo1.NotificationCategories.DevelopmentPhase:
+                content.categoryName = 'Development';
+                content.className = 'phase-swatch development notification-panel-category';
+                break;
+            case CG.Demo1.NotificationCategories.PreProductionPhase:
+                content.categoryName = 'Pre-Production';
+                content.className = 'phase-swatch pre-production notification-panel-category';
+                break;
+            case CG.Demo1.NotificationCategories.ProductionPhase:
+                content.categoryName = 'Production';
+                content.className = 'phase-swatch production notification-panel-category';
+                break;
+            case CG.Demo1.NotificationCategories.PostProductionPhase:
+                content.categoryName = 'Post-Production';
+                content.className = 'phase-swatch post-production notification-panel-category';
+                break;
+            case CG.Demo1.NotificationCategories.DistributionPhase:
+                content.categoryName = 'Distribution';
+                content.className = 'phase-swatch distribution notification-panel-category';
+                break;
+
+        }
+
+        return content;
+    }
+
+    function handleNotificationPanelShellTap() {
+
+        if ($notificationPanel.position().top == 0) {
+
+            hideNotificationPanel();
+
+        } else {
+
+            showNotificationPanel();
 
         }
 

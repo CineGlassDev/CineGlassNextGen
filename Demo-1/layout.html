@@ -9,67 +9,295 @@
     <link rel="prefetch" href="/" />
     <style>
 
-#popup-box {
-    text-align: center;
-    background: rgba(0,0,0, 0.85);
-    background-clip: padding-box;
-    box-shadow: 0 0px 10px rgba(255,255,255, 0.85);
-    padding: 10px;
-    display: inline-block;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
-    position: absolute;
-    width:400px;
-}
-
-#popup-box:after, #popup-box:before
+#notification-panel
 {
-    border: solid transparent;
-	content: " ";
-	height: 0;
-	width: 0;
-	position: absolute;
-	pointer-events: none;
-}
-
-#popup-box.below:after, #popup-box.below:before {
-	bottom: 100%;
-	left: 50%;
-}
-
-#popup-box.below:after {
-	border-color: rgba(0, 0, 0, 0);
-	border-bottom-color: #000000;
-	border-width: 15px;
-	margin-left: -15px;
-}
-#popup-box.below:before {
-	border-color: rgba(245, 245, 245, 0);
-	border-bottom-color: #f5f5f5;
-	border-width: 16px;	
-	margin-left: -16px;
-}
-
-#popup-box.above:after, #popup-box.above:before {
-	top: 100%;
-    left: 50%;
-}
-
-#popup-box.above:after {
-	border-color: rgba(0, 0, 0, 0);
-	border-top-color: #000000;
-	border-width: 15px;
-	margin-left: -15px;
-}
-#popup-box.above:before {
-	border-color: rgba(245, 245, 245, 0);
-	border-top-color: #f5f5f5;
-	border-width: 16px;
-	margin-left: -16px;
-}
+    position:absolute;
+    width: 30%;
+    min-height: 13px;
+    top:0px;
+    
+    margin: 0px 35%;
+   
+    background-color:#000;
+    border-bottom-left-radius:15px;
+    border-bottom-right-radius:15px;              
+            
+    -webkit-box-shadow: 4px 4px 2px rgba(0,0,0, 0.75);
+    -moz-box-shadow:    4px 4px 2px rgba(0,0,0, 0.75);
+    box-shadow:         4px 4px 2px rgba(0,0,0, 0.75);
 
 
+	background-color: #1a0804;
+    border:2px solid rgba(255,255,255,0.5);
+    border-top:none;
 
+    -webkit-transform: translate3d(0,0,0);
+    -o-transform: translate3d(0,0,0);
+    -ms-transform: translate3d(0,0,0);
+    -moz-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);    
+    
+    z-index:10000;
+            
+}
+
+        #notification-panel-caption
+        {
+            height:20px;
+            line-height:20px;
+            font-size:14px;
+            text-align:center;
+            text-transform:uppercase;
+            color:#000;
+            text-shadow: 0px 1px 2px rgba(255,255,255,0.75);
+            width:100%;
+            background-color:rgba(255,255,255,0.5);
+            margin-bottom:10px;
+
+            border-bottom:2px ridge rgba(255,255,255, 0.2);
+            font-weight:bold;
+
+            cursor:pointer;
+
+
+            background-image: linear-gradient(top, rgb(242,233,233) 33%, rgb(102,95,95) 74%);
+            background-image: -o-linear-gradient(top, rgb(242,233,233) 33%, rgb(102,95,95) 74%);
+            background-image: -moz-linear-gradient(top, rgb(242,233,233) 33%, rgb(102,95,95) 74%);
+            background-image: -webkit-linear-gradient(top, rgb(242,233,233) 33%, rgb(102,95,95) 74%);
+            background-image: -ms-linear-gradient(top, rgb(242,233,233) 33%, rgb(102,95,95) 74%);
+
+            background-image: -webkit-gradient(
+	            linear,
+	            left top,
+	            left bottom,
+	            color-stop(0.33, rgb(242,233,233)),
+	            color-stop(0.74, rgb(102,95,95))
+            );
+
+
+        }
+
+        #notification-panel-grip
+        {
+            position:relative;
+
+            bottom:0px;          
+            width:100%;
+            height:11px;
+            border-top:2px groove rgba(255,255,255, 0.2);
+            padding-top:2px;
+
+
+            background-color:rgba(255,255,255,0.5);
+            border-bottom-left-radius:11px;
+            border-bottom-right-radius:11px; 
+            
+            cursor:pointer; 
+
+            background-image: linear-gradient(top, rgb(242,233,233) 33%, rgb(102,95,95) 74%);
+            background-image: -o-linear-gradient(top, rgb(242,233,233) 33%, rgb(102,95,95) 74%);
+            background-image: -moz-linear-gradient(top, rgb(242,233,233) 33%, rgb(102,95,95) 74%);
+            background-image: -webkit-linear-gradient(top, rgb(242,233,233) 33%, rgb(102,95,95) 74%);
+            background-image: -ms-linear-gradient(top, rgb(242,233,233) 33%, rgb(102,95,95) 74%);
+
+            background-image: -webkit-gradient(
+	            linear,
+	            left top,
+	            left bottom,
+	            color-stop(0.33, rgb(242,233,233)),
+	            color-stop(0.74, rgb(102,95,95))
+            );
+        }
+
+        .grip-groove
+        {
+            position:relative;
+            width:50px;
+            height:2px;
+            left:50%;
+            margin-left: -25px;
+            background-color:rgba(0,0,0,0.65);
+
+            margin-bottom:2px;
+            border-radius:1px;
+        }
+
+        #notification-panel-content
+        {
+            color:#fff;
+            font-size:12px;
+            text-align:center;
+        }
+
+        .notification-panel-category
+        {
+            height:20px !important;
+            width:auto !important;
+            line-height:19px !important;
+
+            border:1px groove rgba(255,255,255,0.2) !important;
+            margin: 0px 0px !important;
+            text-transform:uppercase !important;
+            color:#000 !important;
+            font-weight:bold !important;
+            font-size:12px !important;
+            position:relative !important;
+            text-shadow:none !important;
+
+            cursor:default;
+
+        }
+
+            .notification-panel-category.critical
+            {
+                background-image: linear-gradient(bottom, rgb(240,19,19) 33%, rgb(112,0,0) 74%);
+                background-image: -o-linear-gradient(bottom, rgb(240,19,19) 33%, rgb(112,0,0) 74%);
+                background-image: -moz-linear-gradient(bottom, rgb(240,19,19) 33%, rgb(112,0,0) 74%);
+                background-image: -webkit-linear-gradient(bottom, rgb(240,19,19) 33%, rgb(112,0,0) 74%);
+                background-image: -ms-linear-gradient(bottom, rgb(240,19,19) 33%, rgb(112,0,0) 74%);
+
+                background-image: -webkit-gradient(
+	                linear,
+	                left bottom,
+	                left top,
+	                color-stop(0.33, rgb(240,19,19)),
+	                color-stop(0.74, rgb(112,0,0))
+                );
+
+                color:#fff !important;
+            }
+
+        .notification-panel-headline
+        {
+            position:relative;
+            margin: 3px 10px;
+            width:auto;
+            opacity:0.8;
+            cursor:pointer;
+            text-align:left;
+        }
+
+            .notification-panel-headline:hover
+            {
+                opacity:1.0;
+                text-decoration:underline;
+            }
+
+        .notification-delete-initial
+        {
+            position:absolute;
+            right:0px;
+            top:2px;
+            width:16px;
+            height:16px;
+            display:block;
+            cursor:pointer;
+            z-index:20;
+            opacity:1;
+        }
+            .notification-delete-initial:hover
+            {
+                opacity:0.8;
+            }
+
+        .notification-delete-confirm
+        {
+            position:absolute;
+            right:0px;
+            top:2px;
+            width:44px;
+            height:16px;
+            display:none;
+            cursor:pointer;
+            z-index:20;
+            opacity:1;
+        }
+            .notification-delete-confirm:hover
+            {
+                opacity:0.8;
+            }
+
+
+        #notification-message-content
+        {
+            position:relative;
+            padding:5px;
+            width:100%;
+        }
+
+        .notification-message-button
+        {
+            position:absolute;
+            margin-top:20px;
+            right:10px;
+            width: 125px;
+            height: 22px;
+            background-color:red;
+            text-align:center;
+            font-size:14px;
+            line-height:19px;
+            cursor:pointer;
+            border-radius:5px;
+            border:1px outset rgba(0,0,0,0.5);
+
+            color:rgba(255,255,255, 0.65);
+        }
+
+            .notification-message-button:hover
+            {
+                border:1px outset rgba(0,0,0,0.25);
+                color:rgba(255,255,255, 1.0);
+            }
+
+        #notification-message-delete-button
+        {
+            background-image: linear-gradient(bottom, rgb(16,17,20) 10%, rgb(128,128,128) 90%);
+            background-image: -o-linear-gradient(bottom, rgb(16,17,20) 10%, rgb(128,128,128) 90%);
+            background-image: -moz-linear-gradient(bottom, rgb(16,17,20) 10%, rgb(128,128,128) 90%);
+            background-image: -webkit-linear-gradient(bottom, rgb(16,17,20) 10%, rgb(128,128,128) 90%);
+            background-image: -ms-linear-gradient(bottom, rgb(16,17,20) 10%, rgb(128,128,128) 90%);
+
+            background-image: -webkit-gradient(
+	            linear,
+	            left bottom,
+	            left top,
+	            color-stop(0.1, rgb(16,17,20)),
+	            color-stop(0.9, rgb(128,128,128))
+            );
+
+        }
+
+        .notification-message-label
+        {
+            font-size:10px;
+            color:rgba(255,255,255,0.65);
+        }
+
+        .notification-message-value
+        {
+            margin-left:5px;
+            font-size:14px;
+            color:#fff;
+        }
+
+        #notification-message-delete-button-confirm
+        {
+            display:none;
+
+            background-image: linear-gradient(bottom, rgb(179,25,25) 10%, rgb(224,182,182) 90%);
+            background-image: -o-linear-gradient(bottom, rgb(179,25,25) 10%, rgb(224,182,182) 90%);
+            background-image: -moz-linear-gradient(bottom, rgb(179,25,25) 10%, rgb(224,182,182) 90%);
+            background-image: -webkit-linear-gradient(bottom, rgb(179,25,25) 10%, rgb(224,182,182) 90%);
+            background-image: -ms-linear-gradient(bottom, rgb(179,25,25) 10%, rgb(224,182,182) 90%);
+
+            background-image: -webkit-gradient(
+	            linear,
+	            left bottom,
+	            left top,
+	            color-stop(0.1, rgb(179,25,25)),
+	            color-stop(0.9, rgb(224,182,182))
+            );
+        }
 
 
 
@@ -83,6 +311,387 @@
 
     <script>
 
+        var CG = CG || {};
+        CG.Demo1 = CG.Demo1 || {};
+
+        CG.Demo1.NotificationCategories = {
+            Critical: 1,
+            Warning: 2,
+            Informational: 3,          
+            DevelopmentPhase: 4,
+            PreProductionPhase: 5,
+            ProductionPhase: 6,
+            PostProductionPhase: 7,
+            DistributionPhase: 8
+        };
+
+        var LS_LAST_NOTIFICATION_UPDATE_KEY = 'last-notification-update';
+        var LS_NOTIFICATIONS_KEY = 'notifications';
+
+
+        function pushNotifications(notifications) {
+
+            // THIS IS THE SOCKET-BASED METHOD OF RECEIVING PUSH NOTIFICATIONS
+            
+            // go ahead and determine next last updated timestamp
+            // here, so we're sure not to have any window of error
+            // for missing future notifications
+            var newLastUpdated = new Date();
+
+            // store the incoming notifications
+            storeNotifications(newLastUpdated, notifications);
+
+        }
+
+        function pullNotifications() {
+
+            // TODO:
+            // 1. Retrieve last notification update timestamp from local storage
+            // 2. Pull notifications from server using last notification update timestamp
+            // 3. Update last notification update timestamp in local storage
+            // 4. Store notifications in local storage
+            // 5. if notifications were returned, then show new message indicator on notification bar
+
+            if (typeof (Storage) !== "undefined") {
+
+                // retrieve last notification update timestamp from local storage
+                var lastUpdated = localStorage.getItem(LS_LAST_NOTIFICATION_UPDATE_KEY);
+
+                if (typeof lastUpdated == 'undefined') {
+                    lastUpdated = new Date('1/1/1970');
+                }
+
+                // go ahead and determine next last updated timestamp
+                // here, so we're sure not to have any window of error
+                // for missing future notifications
+                var newLastUpdated = new Date();
+                
+
+                //
+                // TODO: call server to get latest notifications since last update
+                //
+
+
+                //
+                // THIS IS TEMPORARY FOR TESTING
+                //
+                var notifications = [
+                    {
+                        id: '1',
+                        issueDate: new Date('6/6/2014 08:00'),
+                        category: CG.Demo1.NotificationCategories.Critical,
+                        caption: 'Shoot schedule slipped...',
+                        message: 'The shoot schedule has slipped by two weeks because of contract complications and union concerns.  The new shoot date is 10/17/2013.'
+                    },
+                    {
+                        id: '2',
+                        issueDate: new Date('6/6/2014 08:00'),
+                        category: CG.Demo1.NotificationCategories.DevelopmentPhase,
+                        caption: 'Script Revision #9...',
+                        message: 'Script Revision #9 changes include making inciding incident more believable while still hooking the audience.'
+                    },
+                    {
+                        id: '3',
+                        issueDate: new Date('6/7/2014 14:35'),
+                        category: CG.Demo1.NotificationCategories.DevelopmentPhase,
+                        caption: 'John Smith brought on as co-writer...',
+                        message: 'John Smith has been brought on to focus primarily on spicing up the story\'s turning points.'
+                    }
+                ];
+
+                // store the notifications
+                storeNotifications(newLastUpdated, notifications);
+            }
+
+        }
+
+        function storeNotifications(newTimestamp, notifications) {
+
+            if (notifications != null && notifications.length > 0) {
+
+                // FUTURE: Pull this from server and don't use local storage.
+
+                localStorage.setItem(LS_NOTIFICATIONS_KEY, JSON.stringify(notifications));
+
+                // TODO: Set some kind of visual indicator so user knows there's new alerts
+
+            }
+
+            localStorage.setItem(LS_LAST_NOTIFICATION_UPDATE_KEY, newTimestamp.toUTCString());
+
+        }
+
+        function deleteNotificationsByCategory(category) {
+
+            // FUTURE: Perform delete on the server and not from local storage
+
+            var notifications = JSON.parse(localStorage.getItem(LS_NOTIFICATIONS_KEY));
+
+            var originalCount = notifications.length;
+
+            notifications = $.grep(notifications, function (n, i) {
+
+                return (n.category != category);
+
+            });
+
+
+            if (notifications.length != originalCount) {
+
+                var notificationsSerialized = JSON.stringify(notifications);
+                localStorage.setItem(LS_NOTIFICATIONS_KEY, notificationsSerialized);
+
+                showNotificationPanel(true);
+
+            }
+            
+        }        
+
+        function deleteNotification(notificationId) {
+
+            // FUTURE: Perform delete on the server and not from local storage
+
+            var notifications = JSON.parse(localStorage.getItem(LS_NOTIFICATIONS_KEY));
+
+            var wasDeleted = false;
+            var notificationCount = notifications.length;
+            for (var index = 0; index < notificationCount; index++) {
+
+                if (notifications[index].id === notificationId) {
+
+                    // remove this notification
+                    notifications.splice(index, 1);
+
+                    wasDeleted = true;
+
+                    break;
+
+                }
+
+            }
+
+            if (wasDeleted) {
+                var notificationsSerialized = JSON.stringify(notifications);
+                localStorage.setItem(LS_NOTIFICATIONS_KEY, notificationsSerialized);
+
+                showNotificationPanel(true);
+            }
+
+        }
+
+        function hideNotificationPanel() {
+
+            var $panel = $('#notification-panel');
+            $panel.animate({
+                'top': ($panel.height() * -1 + 7) + 'px'
+            });
+
+        }
+
+        function showNotificationPanel(isAlreadyShowing) {
+
+            // FUTURE: Pull this from server and don't use local storage
+            var notifications = JSON.parse(localStorage.getItem(LS_NOTIFICATIONS_KEY));
+            
+            var $panel = $('#notification-panel');
+            var $content = $('#notification-panel-content');
+
+            $content.empty();
+
+            var caption = document.createElement('div');
+            caption.id = 'notification-panel-caption';
+            caption.textContent = 'CineGlass Notifications';
+            $(caption).hammer().on('tap', function (event) {
+                event.gesture.preventDefault();
+                handleNotificationPanelShellTap();
+            });
+            $content.append(caption);
+
+            notifications.sort(function (notification1, notification2) {
+                if (notification1.category < notification2.category) {
+                    return -1;
+                } else if (notification1.category > notification2.category) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+
+            var lastCategory = -1;
+            var notificationsCount = notifications.length;
+            for (var index = 0; index < notificationsCount; index++) {
+
+                var notification = notifications[index];
+
+                if (notification.category != lastCategory) {
+
+                    var category = document.createElement('div');
+                    var categoryContent = getNotificationCategoryContent(notification.category);
+                    category.className = categoryContent.className;
+                    category.textContent = categoryContent.categoryName;
+                    $content.append(category);
+
+                    var categoryDeleteInitial = document.createElement('img');
+                    categoryDeleteInitial.className = 'notification-delete-initial';
+                    categoryDeleteInitial.src = '/img/icons/notification-delete-initial.png';
+                    category.appendChild(categoryDeleteInitial);
+                    $(categoryDeleteInitial).hammer().on('tap', function (event) {
+
+                        event.gesture.preventDefault();
+
+                        //
+                        // hide initial close and show confirm close
+                        //
+                        $(event.gesture.target).css('display', 'none');
+                        $(event.gesture.target).siblings(0).css('display', 'block');
+
+                    });
+
+                    var categoryDeleteConfirm = document.createElement('img');
+                    categoryDeleteConfirm.className = 'notification-delete-confirm';
+                    categoryDeleteConfirm.src = '/img/icons/notification-delete-confirm.png';
+                    categoryDeleteConfirm.category = notification.category;
+                    category.appendChild(categoryDeleteConfirm);
+                    $(categoryDeleteConfirm).hammer().on('tap', function (event) {
+
+                        event.gesture.preventDefault();
+
+                        // delete all messages in this category
+                        deleteNotificationsByCategory(event.gesture.target.category);
+
+
+                    });
+
+                    lastCategory = notification.category;
+                }
+
+                var headline = document.createElement('div');
+                headline.className = 'notification-panel-headline';
+                headline.textContent = notification.caption;
+                headline.notification = notification;
+                $content.append(headline);
+
+                var messageDeleteInitial = document.createElement('img');
+                messageDeleteInitial.className = 'notification-delete-initial';
+                messageDeleteInitial.style.top = '0px';
+                messageDeleteInitial.style.right = '8px';
+                messageDeleteInitial.src = '/img/icons/notification-delete-initial.png';
+                headline.appendChild(messageDeleteInitial);
+                $(messageDeleteInitial).hammer().on('tap', function (event) {
+
+                    event.gesture.preventDefault();
+
+                    //
+                    // hide initial close and show confirm close
+                    //
+                    $(event.gesture.target).css('display', 'none');
+                    $(event.gesture.target).siblings(0).css('display', 'block');
+
+                });
+
+                var messageDeleteConfirm = document.createElement('img');
+                messageDeleteConfirm.className = 'notification-delete-confirm';
+                messageDeleteConfirm.style.top = '0px';
+                messageDeleteConfirm.style.right = '8px';
+                messageDeleteConfirm.src = '/img/icons/notification-delete-confirm.png';
+                messageDeleteConfirm.messageId = notification.id;
+                headline.appendChild(messageDeleteConfirm);
+                $(messageDeleteConfirm).hammer().on('tap', function (event) {
+
+                    event.gesture.preventDefault();
+
+                    // delete message
+                    deleteNotification(event.gesture.target.messageId);
+
+                });
+
+                $(headline).hammer().on('tap', function (event) {
+
+                    event.gesture.preventDefault();
+                    
+                    // TODO: Display full message, etc.
+                    console.log('show notification message: ' + this.notification.message);
+
+                    // showItemViewer(this.notification.caption, itemSrc, 'content')
+
+                });
+
+            }
+
+            if (typeof isAlreadyShowing == 'undefined' || isAlreadyShowing == false) {
+
+                $panel.animate({
+                    'top': '0px'
+                });
+
+            }
+                        
+        }
+
+        function getNotificationCategoryContent(notificationCategory) {
+
+            var content = {
+                className : '',
+                categoryName : ''
+            };
+
+            switch (notificationCategory) {
+
+                case CG.Demo1.NotificationCategories.Informational:
+                    content.categoryName = 'Informational';
+                    break;
+                case CG.Demo1.NotificationCategories.Warning:
+                    content.categoryName = 'Warning';
+                    break;
+                case CG.Demo1.NotificationCategories.Critical:
+                    content.categoryName = 'Critical';
+                    content.className = 'notification-panel-category critical';
+                    break;
+                case CG.Demo1.NotificationCategories.DevelopmentPhase:
+                    content.categoryName = 'Development';
+                    content.className = 'phase-swatch development notification-panel-category';
+                    break;
+                case CG.Demo1.NotificationCategories.PreProductionPhase:
+                    content.categoryName = 'Pre-Production';
+                    content.className = 'phase-swatch pre-production notification-panel-category';
+                    break;
+                case CG.Demo1.NotificationCategories.ProductionPhase:
+                    content.categoryName = 'Production';
+                    content.className = 'phase-swatch production notification-panel-category';
+                    break;
+                case CG.Demo1.NotificationCategories.PostProductionPhase:
+                    content.categoryName = 'Post-Production';
+                    content.className = 'phase-swatch post-production notification-panel-category';
+                    break;
+                case CG.Demo1.NotificationCategories.DistributionPhase:
+                    content.categoryName = 'Distribution';
+                    content.className = 'phase-swatch distribution notification-panel-category';
+                    break;
+
+            }
+
+            return content;
+        }
+
+        function handleNotificationPanelShellTap() {
+
+            if ($('#notification-panel').position().top == 0) {
+
+                hideNotificationPanel();
+
+            } else {
+
+                showNotificationPanel();
+
+            }
+
+        }
+
+
+
+
+
+
         function disableEvent(event) {
             event.preventDefault();
         }
@@ -90,6 +699,22 @@
         $(document).on('selectstart', function (event) {
             event.preventDefault();
             return false;
+        });        
+
+        $(document).ready(function () {
+
+            var $notificationPanel = $('#notification-panel');
+
+            // make sure notifications panel is collapsed
+            $notificationPanel.css('top', ($notificationPanel.height() * -1 + 7) + 'px');
+
+            pullNotifications();
+
+            $('#notification-panel-grip').hammer().on('tap', function (event) {
+                event.gesture.preventDefault();
+                handleNotificationPanelShellTap();
+            });
+
         });
 
     </script>
@@ -97,15 +722,73 @@
 <body ontouchmove="disableEvent(event);" ondragstart="disableEvent(event);">
 
 
-    <div id="popup-box" class="below">
-        bla-bla-bla-bla-bla-bla-<br />blabalbalbalalkdfal;dskjfa;lksdfja;lskdfj<br />a;lksdjfa;lskdfja;lskdfja;sldkfj
+    
+    <div id="notification-panel">
 
+        <div id="notification-panel-content">
+            <div id="notification-panel-caption" class="notification-panel-caption">CineGlass Notifications</div>
 
-        place it at:
-            mousePoint.X - 200
-            mousePoint.Y - 16
+            <div class="notification-panel-category critical">Critical</div>
+            <div class="notification-panel-headline">
+                Test notification
+            </div> 
+
+            <div class="phase-swatch development notification-panel-category">Development</div>
+            <div class="notification-panel-headline">
+                Test notification
+            </div> 
+
+            <div class="phase-swatch pre-production notification-panel-category">Pre-Production</div>
+            <div class="notification-panel-headline">
+                Test notification
+            </div>            
+            
+            <div class="phase-swatch production notification-panel-category">Production</div>
+            <div class="notification-panel-headline">
+                Test notification
+            </div>
+            <div class="notification-panel-headline">
+                Test notification
+            </div>
+            <div class="phase-swatch post-production notification-panel-category">Post-Production</div>
+            <div class="notification-panel-headline">
+                Test notification
+            </div>
+            <div class="notification-panel-headline">
+                Test notification
+            </div>
+            <div class="phase-swatch distribution notification-panel-category">Distribution</div>
+            <div class="notification-panel-headline">
+                Test notification
+            </div>
+
+        </div>
+
+        <div id="notification-panel-grip">
+
+            <div class="grip-groove"></div>
+            <div class="grip-groove"></div>
+            <div class="grip-groove"></div>
+
+        </div>
+
     </div>
 
+    <div id="notification-message-content">
+
+        <div class="notification-message-label">Category:</div>
+        <div class="notification-message-value">Critical</div>
+
+        <div class="notification-message-label">Message Date:</div>
+        <div class="notification-message-value">6/6/2014 08:00</div>
+
+        <div class="notification-message-label">Message:</div>
+        <div class="notification-message-value">The shoot schedule has slipped by 10 days.</div>
+
+        <div id="notification-message-delete-button" class="notification-message-button">Delete Message</div>
+        <div id="notification-message-delete-button-confirm" class="notification-message-button">Confirm</div>
+
+    </div>
 
 
 
