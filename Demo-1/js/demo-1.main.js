@@ -37,7 +37,6 @@ CG.Demo1.StartApp = function () {
     var CATALOG_LABEL = 'Production Portfolio';
 
     var LS_LAST_NOTIFICATION_UPDATE_KEY = 'last-notification-update';
-    var LS_NOTIFICATIONS_KEY = 'notifications';
 
     var _active3dObject = null;
     var _navBackTo = CG.Demo1.Views.none;
@@ -138,6 +137,7 @@ CG.Demo1.StartApp = function () {
     var _wasLastTileView3D = true;
     var _lastTileView;    
     var _movieSliderSlideDistance = 150;
+    var _flashNotificationAlertId = 0;
 
     // initialize hammer touch event manager
     var _hammer = $(document).hammer({
@@ -1139,14 +1139,22 @@ CG.Demo1.StartApp = function () {
             event.gesture.preventDefault();
             handleNotificationPanelShellTap();
         });
+
+
+        //
+        // FOR TESTING ONLY!!!!
+        //
+        _hammer.on('tap', '.daysLeft', function (event) {
+            event.gesture.preventDefault();
+            flashNotificationAlert();
+        });
                 
     }
 
     function showMovieTiles(isScheduleView) {
         
-        // change page background to use studio's logo
-
-        //$viewport.css('background-image', 'url("' + _tileObjects.logo + '")');
+        stopNotificationAlert();
+        hideNotificationPanel();
 
         changeBackgroundImage(_tileObjects.logo, true);
 
@@ -1228,6 +1236,14 @@ CG.Demo1.StartApp = function () {
     }
 
     function showDepartments(movieTile, isScheduleView) {
+
+        stopNotificationAlert();
+
+        if (_lastTileView == CG.Demo1.Views.Catalog) {
+
+            hideNotificationPanel();
+
+        }
 
         _lastMovieTile = movieTile;
 
@@ -1949,7 +1965,7 @@ CG.Demo1.StartApp = function () {
 
     function onWindowResize() {
 
-        resizeItemViewer();
+        resizeItemViewerDialog();
         redrawTimeline();
 
     	camera.aspect = window.innerWidth / window.innerHeight;
@@ -1970,14 +1986,18 @@ CG.Demo1.StartApp = function () {
 
         if (useItemViewer) {
 
-            resizeItemViewer();
+            //resizeItemViewerDialog();
 
             $('#item-viewer-header').text(caption);
 
             var $itemViewer = $('#itemViewer');
             var $videoPlayer = $('#videoPlayer');
 
+            $itemViewer.empty();
+
             if (itemType == 'img' || itemType == '5th') {
+
+                resizeItemViewerDialog();
 
                 $videoPlayer.hide();
                 $itemViewer.css('background-image', 'url("' + itemSrc + '")');
@@ -1985,13 +2005,18 @@ CG.Demo1.StartApp = function () {
 
             } else if (itemType == 'content') {
 
-                $videoPlayer.hide();
-                $itemViewer.empty();
+                $videoPlayer.hide();                
                 $itemViewer.css('background-image', 'none');                
                 $itemViewer.append(itemSrc);
-                $itemViewer.show();
+
+                resizeItemViewerDialog(true);
+
+                $itemViewer.show();               
+                
 
             } else {
+
+                resizeItemViewerDialog();
 
                 $itemViewer.hide();
                 
@@ -2033,37 +2058,64 @@ CG.Demo1.StartApp = function () {
 
     }
 
-    function resizeItemViewer() {
+    function resizeItemViewerDialog(isDynamic) {
 
-        var MARGIN = 24;
+        var BORDER_ADJUSTEMENT = 4;
 
         var $dialog = $('#item-viewer-dialog');
         var $header = $('#item-viewer-header');
+        var $closeButton = $('#item-viewer-close');
+        var $content = $('#item-viewer-content');
+        var $viewer = $('#itemViewer');        
 
-        var dialogWidth = Math.round(window.innerWidth * 0.85);
-        var dialogHeight = Math.round(window.innerHeight * 0.85);
+        if (typeof isDynamic != 'undefined' && isDynamic === true) {
 
-        $dialog.css({
-            width: dialogWidth + 'px',
-            height: dialogHeight + 'px'
-        });
+            $dialog.addClass('dynamic');
+            $header.addClass('dynamic');
+            $closeButton.addClass('dynamic');
+            $content.addClass('dynamic');
+            $viewer.addClass('dynamic');            
 
-        var contentHeight = dialogHeight - $header.height() - (MARGIN * 2);
 
-        $('#item-viewer-content').css({
-            'width': dialogWidth + 'px',
-            'height': contentHeight + 'px',
-            'line-height': contentHeight + 'px'
-        });
+        } else {
 
-        // center align
-        var viewerMarginTop = (dialogHeight + MARGIN) / 2;
-        var viewerMarginLeft = (dialogWidth + MARGIN) / 2;
+            $dialog.removeClass('dynamic');
+            $header.removeClass('dynamic');
+            $closeButton.removeClass('dynamic');
+            $content.removeClass('dynamic');
+            $viewer.removeClass('dynamic');
 
-        $dialog.css({
-            'margin-top': -viewerMarginTop,
-            'margin-left': -viewerMarginLeft
-        });
+            var adjustedHeaderHeight = $header.height() + BORDER_ADJUSTEMENT;
+            var halfCloseButtonHeight = $('#item-viewer-close').height() / 2;
+
+            var dialogWidth = Math.round(window.innerWidth * 0.85);
+            var dialogHeight = Math.round(window.innerHeight * 0.85);
+
+            $header.css('width', dialogWidth + 'px');
+
+            $dialog.css({
+                width: dialogWidth + 'px',
+                height: dialogHeight + 'px'
+            });
+
+            var contentHeight = Math.round(dialogHeight - adjustedHeaderHeight);
+
+            $content.css({
+                'width': dialogWidth + 'px',
+                'height': contentHeight + 'px',
+                'top': adjustedHeaderHeight + 'px'
+            });
+
+            // center align
+            var left = Math.round((window.innerWidth - dialogWidth) / 2);
+            var top = Math.round((window.innerHeight - dialogHeight) / 2 - halfCloseButtonHeight);
+
+            $dialog.css({
+                'top': top + 'px',
+                'left': left + 'px'
+            });
+
+        }
 
     }
 
@@ -3215,6 +3267,8 @@ CG.Demo1.StartApp = function () {
 
         // THIS IS THE SOCKET-BASED METHOD OF RECEIVING PUSH NOTIFICATIONS
 
+        var context = getNotificationContext();
+
         // go ahead and determine next last updated timestamp
         // here, so we're sure not to have any window of error
         // for missing future notifications
@@ -3260,7 +3314,7 @@ CG.Demo1.StartApp = function () {
             var notifications = [
                 {
                     id: '1',
-                    issueDate: new Date('6/6/2014 08:00'),
+                    issueDate: new Date(),
                     category: CG.Demo1.NotificationCategories.Critical,
                     caption: 'Shoot schedule slipped...',
                     message: 'The shoot schedule has slipped by two weeks because of contract complications and union concerns.  The new shoot date is 10/17/2013.'
@@ -3282,18 +3336,18 @@ CG.Demo1.StartApp = function () {
             ];
 
             // store the notifications
-            storeNotifications(newLastUpdated, notifications);
+            storeNotifications('Jupiter Ascending', newLastUpdated, notifications);
         }
 
     }
 
-    function storeNotifications(newTimestamp, notifications) {
+    function storeNotifications(contextKey, newTimestamp, notifications) {
 
         if (notifications != null && notifications.length > 0) {
 
             // FUTURE: Pull this from server and don't use local storage.
 
-            localStorage.setItem(LS_NOTIFICATIONS_KEY, JSON.stringify(notifications));
+            localStorage.setItem(contextKey, JSON.stringify(notifications));
 
             // TODO: Set some kind of visual indicator so user knows there's new alerts
 
@@ -3307,7 +3361,9 @@ CG.Demo1.StartApp = function () {
 
         // FUTURE: Perform delete on the server and not from local storage
 
-        var notifications = JSON.parse(localStorage.getItem(LS_NOTIFICATIONS_KEY));
+        var context = getNotificationContext();
+
+        var notifications = JSON.parse(localStorage.getItem(context.key));
 
         var originalCount = notifications.length;
 
@@ -3321,7 +3377,7 @@ CG.Demo1.StartApp = function () {
         if (notifications.length != originalCount) {
 
             var notificationsSerialized = JSON.stringify(notifications);
-            localStorage.setItem(LS_NOTIFICATIONS_KEY, notificationsSerialized);
+            localStorage.setItem(context.key, notificationsSerialized);
 
             showNotificationPanel(true);
 
@@ -3333,7 +3389,9 @@ CG.Demo1.StartApp = function () {
 
         // FUTURE: Perform delete on the server and not from local storage
 
-        var notifications = JSON.parse(localStorage.getItem(LS_NOTIFICATIONS_KEY));
+        var context = getNotificationContext();
+
+        var notifications = JSON.parse(localStorage.getItem(context.key));
 
         var wasDeleted = false;
         var notificationCount = notifications.length;
@@ -3354,7 +3412,7 @@ CG.Demo1.StartApp = function () {
 
         if (wasDeleted) {
             var notificationsSerialized = JSON.stringify(notifications);
-            localStorage.setItem(LS_NOTIFICATIONS_KEY, notificationsSerialized);
+            localStorage.setItem(context.key, notificationsSerialized);
 
             showNotificationPanel(true);
         }
@@ -3362,6 +3420,8 @@ CG.Demo1.StartApp = function () {
     }
 
     function hideNotificationPanel() {
+
+        stopNotificationAlert();
 
         $notificationPanel.animate({
             'top': ($notificationPanel.height() * -1 + 7) + 'px'
@@ -3371,8 +3431,9 @@ CG.Demo1.StartApp = function () {
 
     function showNotificationPanel(isAlreadyShowing) {
 
-        // FUTURE: Pull this from server and don't use local storage
-        var notifications = JSON.parse(localStorage.getItem(LS_NOTIFICATIONS_KEY));
+        stopNotificationAlert();
+
+        var context = getNotificationContext();
 
         var $content = $('#notification-panel-content');
 
@@ -3380,42 +3441,90 @@ CG.Demo1.StartApp = function () {
 
         var caption = document.createElement('div');
         caption.id = 'notification-panel-caption';
-        caption.textContent = 'CineGlass Notifications';
+        caption.className = 'notification-panel-skin';
+        caption.textContent = context.title;
         $(caption).hammer().on('tap', function (event) {
             event.gesture.preventDefault();
             handleNotificationPanelShellTap();
         });
         $content.append(caption);
 
-        notifications.sort(function (notification1, notification2) {
-            if (notification1.category < notification2.category) {
-                return -1;
-            } else if (notification1.category > notification2.category) {
-                return 1;
-            } else {
-                return 0;
-            }
-        });
+        // FUTURE: Pull this from server and don't use local storage
+        var notifications = JSON.parse(localStorage.getItem(context.key));
 
-        var lastCategory = -1;
-        var notificationsCount = notifications.length;
-        for (var index = 0; index < notificationsCount; index++) {
+        if (typeof notifications != 'undefined' && notifications != null) {
 
-            var notification = notifications[index];
+            notifications.sort(function (notification1, notification2) {
+                if (notification1.category < notification2.category) {
+                    return -1;
+                } else if (notification1.category > notification2.category) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
 
-            if (notification.category != lastCategory) {
+            var lastCategory = -1;
+            var notificationsCount = notifications.length;
+            for (var index = 0; index < notificationsCount; index++) {
 
-                var category = document.createElement('div');
-                var categoryContent = getNotificationCategoryContent(notification.category);
-                category.className = categoryContent.className;
-                category.textContent = categoryContent.categoryName;
-                $content.append(category);
+                var notification = notifications[index];
 
-                var categoryDeleteInitial = document.createElement('img');
-                categoryDeleteInitial.className = 'notification-delete-initial';
-                categoryDeleteInitial.src = '/img/icons/notification-delete-initial.png';
-                category.appendChild(categoryDeleteInitial);
-                $(categoryDeleteInitial).hammer().on('tap', function (event) {
+                if (notification.category != lastCategory) {
+
+                    var category = document.createElement('div');
+                    var categoryContent = getNotificationCategoryContent(notification.category);
+                    category.className = categoryContent.className;
+                    category.textContent = categoryContent.categoryName;
+                    $content.append(category);
+
+                    var categoryDeleteInitial = document.createElement('img');
+                    categoryDeleteInitial.className = 'notification-delete-initial';
+                    categoryDeleteInitial.src = '/img/icons/notification-delete-initial.png';
+                    category.appendChild(categoryDeleteInitial);
+                    $(categoryDeleteInitial).hammer().on('tap', function (event) {
+
+                        event.gesture.preventDefault();
+
+                        //
+                        // hide initial close and show confirm close
+                        //
+                        $(event.gesture.target).css('display', 'none');
+                        $(event.gesture.target).siblings(0).css('display', 'block');
+
+                    });
+
+                    var categoryDeleteConfirm = document.createElement('div');
+                    categoryDeleteConfirm.className = 'notification-delete-confirm';
+                    categoryDeleteConfirm.category = notification.category;
+                    categoryDeleteConfirm.textContent = 'Confirm';
+                    category.appendChild(categoryDeleteConfirm);
+                    $(categoryDeleteConfirm).hammer().on('tap', function (event) {
+
+                        event.gesture.preventDefault();
+
+                        // delete all messages in this category
+                        deleteNotificationsByCategory(event.gesture.target.category);
+
+
+                    });
+
+                    lastCategory = notification.category;
+                }
+
+                var headline = document.createElement('div');
+                headline.className = 'notification-panel-headline';
+                headline.textContent = notification.caption;
+                headline.notification = notification;
+                $content.append(headline);
+
+                var messageDeleteInitial = document.createElement('img');
+                messageDeleteInitial.className = 'notification-delete-initial';
+                messageDeleteInitial.style.top = '0px';
+                messageDeleteInitial.style.right = '8px';
+                messageDeleteInitial.src = '/img/icons/notification-delete-initial.png';
+                headline.appendChild(messageDeleteInitial);
+                $(messageDeleteInitial).hammer().on('tap', function (event) {
 
                     event.gesture.preventDefault();
 
@@ -3427,75 +3536,42 @@ CG.Demo1.StartApp = function () {
 
                 });
 
-                var categoryDeleteConfirm = document.createElement('div');
-                categoryDeleteConfirm.className = 'notification-delete-confirm';
-                categoryDeleteConfirm.category = notification.category;
-                categoryDeleteConfirm.textContent = 'Confirm';
-                category.appendChild(categoryDeleteConfirm);
-                $(categoryDeleteConfirm).hammer().on('tap', function (event) {
+                var messageDeleteConfirm = document.createElement('div');
+                messageDeleteConfirm.className = 'notification-delete-confirm';
+                messageDeleteConfirm.textContent = 'Confirm';
+                messageDeleteConfirm.messageId = notification.id;
+                headline.appendChild(messageDeleteConfirm);
+                $(messageDeleteConfirm).hammer().on('tap', function (event) {
 
                     event.gesture.preventDefault();
 
-                    // delete all messages in this category
-                    deleteNotificationsByCategory(event.gesture.target.category);
-
+                    // delete message
+                    deleteNotification(event.gesture.target.messageId);
 
                 });
 
-                lastCategory = notification.category;
+                $(headline).hammer().on('tap', function (event) {
+
+                    event.gesture.preventDefault();
+
+                    if (event.gesture.target.className == 'notification-panel-headline') {
+
+                        var notification = event.gesture.target.notification;
+                        var messageContent = buildMessageContent(notification);
+                        showItemViewer(notification.caption, messageContent, 'content');
+
+                    }
+
+                });
+
             }
 
+        } else {
+
             var headline = document.createElement('div');
-            headline.className = 'notification-panel-headline';
-            headline.textContent = notification.caption;
-            headline.notification = notification;
+            headline.id = 'notification-panel-none';
+            headline.textContent = 'No Notifications At This Time';
             $content.append(headline);
-
-            var messageDeleteInitial = document.createElement('img');
-            messageDeleteInitial.className = 'notification-delete-initial';
-            messageDeleteInitial.style.top = '0px';
-            messageDeleteInitial.style.right = '8px';
-            messageDeleteInitial.src = '/img/icons/notification-delete-initial.png';
-            headline.appendChild(messageDeleteInitial);
-            $(messageDeleteInitial).hammer().on('tap', function (event) {
-
-                event.gesture.preventDefault();
-
-                //
-                // hide initial close and show confirm close
-                //
-                $(event.gesture.target).css('display', 'none');
-                $(event.gesture.target).siblings(0).css('display', 'block');
-
-            });
-
-            var messageDeleteConfirm = document.createElement('div');
-            messageDeleteConfirm.className = 'notification-delete-confirm';
-            messageDeleteConfirm.textContent = 'Confirm';
-            messageDeleteConfirm.messageId = notification.id;
-            headline.appendChild(messageDeleteConfirm);
-            $(messageDeleteConfirm).hammer().on('tap', function (event) {
-
-                event.gesture.preventDefault();
-
-                // delete message
-                deleteNotification(event.gesture.target.messageId);                
-
-            });
-
-            $(headline).hammer().on('tap', function (event) {
-
-                event.gesture.preventDefault();
-
-                if (event.gesture.target.className == 'notification-panel-headline') {
-
-                    var notification = event.gesture.target.notification;
-                    var messageContent = buildMessageContent(notification);
-                    showItemViewer(notification.caption, messageContent, 'content');
-
-                }
-
-            });
 
         }
 
@@ -3544,6 +3620,14 @@ CG.Demo1.StartApp = function () {
         messageValue.className = 'notification-message-value';
         messageValue.textContent = notification.message;
         contentWrapper.appendChild(messageValue);
+
+        var footerDivider = document.createElement('div');
+        footerDivider.id = 'notification-message-footer-divider';
+        contentWrapper.appendChild(footerDivider);
+
+        var emailButton = document.createElement('div');
+        emailButton.id = 'notification-message-email';
+        contentWrapper.appendChild(emailButton);
 
         var deleteButton = document.createElement('div');
         deleteButton.id = 'notification-message-delete-button';
@@ -3641,9 +3725,56 @@ CG.Demo1.StartApp = function () {
         }
 
     }
+
+    function getNotificationContext() {
+
+        var context = {
+            key: '',
+            title: ''
+        };
+
+        if (_currentView == CG.Demo1.Views.Catalog) {
+
+            context.key = _studioData.name;
+            context.title = '"' + _studioData.name + '"  Notifications';
+            
+        } else {
+
+            context.key = _lastMovieTile.movieData.name;
+            context.title = '"' + _lastMovieTile.movieData.name + '"  Notifications';
+
+        }
+
+        return context;
+
+    }    
+
+    function flashNotificationAlert() {
+
+        if (_flashNotificationAlertId == 0) {
+
+            var FLASH_DURATION = 800;
+
+            _flashNotificationAlertId = setInterval(function () {
+
+                $('#notification-panel-caption,#notification-panel-grip').toggleClass('notification-panel-skin-alert');
+
+            }, FLASH_DURATION);
+
+        }
+
+    }
+
+    function stopNotificationAlert() {
+
+        clearInterval(_flashNotificationAlertId);
+        _flashNotificationAlertId = 0;
+        $('#notification-panel-caption,#notification-panel-grip').removeClass('notification-panel-skin-alert');
+
+    }
     
     initialize();
-    resizeItemViewer();
+    resizeItemViewerDialog();
     animate();
 
 

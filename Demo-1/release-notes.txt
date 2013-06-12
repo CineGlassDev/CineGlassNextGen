@@ -1,4 +1,21 @@
 ﻿*********************************
+  CineGlass v0.0.11 on 6-12-2013
+*********************************
+
+--- ENHANCEMENTS ---
+- Improved the notification management functionality.
+- Added notification flash alert functionality.
+- Improved item viewer layout/sizing.
+
+--- IN-QUEUE ---
+- Integrating/testing new Jupiter Ascending dates that Brian provided.
+- Add upload asset feature.
+- Add a reveal panel at left of page (to hold front-end process items).
+- Add a reveal panel at right of page (to hold back-end process items).
+- Add filter capability to all views (for 3D views, fold down filtered-out tiles; for 2D views, sink filtered-out tiles).
+
+
+*********************************
   CineGlass v0.0.10 on 6-10-2013
 *********************************
 
@@ -11,7 +28,6 @@
 - Add a reveal panel at left of page (to hold front-end process items).
 - Add a reveal panel at right of page (to hold back-end process items).
 - Add filter capability to all views (for 3D views, fold down filtered-out tiles; for 2D views, sink filtered-out tiles).
-
 
 
 *********************************

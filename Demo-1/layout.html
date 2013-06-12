@@ -228,8 +228,8 @@
         .notification-message-button
         {
             position:absolute;
-            margin-top:20px;
-            right:10px;
+            margin-top:10px;
+            right: 50px;
             width: 125px;
             height: 22px;
             background-color:red;
@@ -299,6 +299,49 @@
             );
         }
 
+
+
+
+        #notification-message-footer-divider
+        {
+            position:relative;
+            width:98%;
+            margin: 10px 2px;
+            height: 3px;
+
+            background-image: linear-gradient(top, rgb(242,233,233) 33%, rgb(102,95,95) 74%);
+            background-image: -o-linear-gradient(top, rgb(242,233,233) 33%, rgb(102,95,95) 74%);
+            background-image: -moz-linear-gradient(top, rgb(242,233,233) 33%, rgb(102,95,95) 74%);
+            background-image: -webkit-linear-gradient(top, rgb(242,233,233) 33%, rgb(102,95,95) 74%);
+            background-image: -ms-linear-gradient(top, rgb(242,233,233) 33%, rgb(102,95,95) 74%);
+
+            background-image: -webkit-gradient(
+	            linear,
+	            left top,
+	            left bottom,
+	            color-stop(0.33, rgb(242,233,233)),
+	            color-stop(0.74, rgb(102,95,95))
+            );
+        }
+
+        #notification-message-email
+        {
+            position:absolute;
+            background-image: url('/img/icons/email.png');
+            width: 38px;
+            height: 40px;
+            background-position:center;
+            background-size:contain;
+            background-repeat:no-repeat;
+            left: 10px;
+            cursor:pointer;
+            opacity:0.8;
+        }
+
+            #notification-message-email:hover
+            {
+                opacity: 1.0;
+            }
 
 
     </style>
@@ -784,6 +827,10 @@
 
         <div class="notification-message-label">Message:</div>
         <div class="notification-message-value">The shoot schedule has slipped by 10 days.</div>
+                
+
+        <div id="notification-message-footer-divider"></div>
+        <div id="notification-message-email"></div>
 
         <div id="notification-message-delete-button" class="notification-message-button">Delete Message</div>
         <div id="notification-message-delete-button-confirm" class="notification-message-button">Confirm</div>
