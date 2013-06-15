@@ -1,4 +1,17 @@
 ﻿*********************************
+  CineGlass v0.0.12 on 6-14-2013
+*********************************
+
+--- ENHANCEMENTS ---
+- Added east & west flyout panels
+
+--- IN-QUEUE ---
+- Integrating/testing new Jupiter Ascending dates that Brian provided.
+- Add upload asset feature.
+- Add filter capability to all views (for 3D views, fold down filtered-out tiles; for 2D views, sink filtered-out tiles).
+
+
+*********************************
   CineGlass v0.0.11 on 6-12-2013
 *********************************
 

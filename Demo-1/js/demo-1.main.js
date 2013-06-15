@@ -156,6 +156,8 @@ CG.Demo1.StartApp = function () {
     $movieSlider = $('#movie-slider');
     $popupBox = $('#popup-box');
     $notificationPanel = $('#notification-panel');
+    $westPanel = $('#west-panel');
+    $eastPanel = $('#east-panel');
 
     //////////////////////////////////
     //////////////////////////////////
@@ -213,6 +215,10 @@ CG.Demo1.StartApp = function () {
 
         // initialize movie slider
         initializeMovieSlider();
+
+        // hide east/west panels (this will initialize collapsaed positioning)
+        hideEastPanel();
+        hideWestPanel();
 
         $('*').cineGlassPreLoader({
             barColor: 'rgba(0,0,0,0.75)',
@@ -1052,8 +1058,8 @@ CG.Demo1.StartApp = function () {
             if (sliderBottom < 0) {
 
                 new TWEEN.Tween({ x: sliderBottom })
-                  .to({ x: 0 }, 800)
-                  .easing(TWEEN.Easing.Quadratic.Out)
+                  .to({ x: 0 }, 300)
+                  .easing(TWEEN.Easing.Cubic.Out)
                   .onUpdate(function () {
                       $movieSlider.css('bottom', this.x + 'px');
                   })
@@ -1062,13 +1068,110 @@ CG.Demo1.StartApp = function () {
             } else {
 
                 new TWEEN.Tween({ x: sliderBottom })
-                  .to({ x: -55 }, 800)
-                  .easing(TWEEN.Easing.Quadratic.Out)
+                  .to({ x: -55 }, 300)
+                  .easing(TWEEN.Easing.Cubic.Out)
                   .onUpdate(function () {
                       $movieSlider.css('bottom', this.x + 'px');
                   })
                   .start();
             }
+
+        });
+
+        _hammer.on('tap', '#west-panel', function (event) {
+
+            event.gesture.preventDefault();
+
+            if (event.gesture.target.id == 'west-panel-grip' ||
+                event.gesture.target.className.indexOf('eastwest-panel-horiz-bar') > -1 ||
+                event.gesture.target.className == 'eastwest-panel-caption') {
+
+                var left = $westPanel.offset().left;
+
+                if (left < 0) {
+
+                    //
+                    // expand
+                    //
+
+                    new TWEEN.Tween({ x: left })
+                      .to({ x: 0 }, 800)
+                      .easing(TWEEN.Easing.Cubic.Out)
+                      .onUpdate(function () {
+                          $westPanel.css('left', this.x + 'px');
+                      })
+                      .start();
+
+
+                } else {
+
+                    //
+                    // collapse
+                    //
+
+                    var newLeft = getEastWestPanelCollapsedX();
+
+                    new TWEEN.Tween({ x: left })
+                      .to({ x: newLeft }, 800)
+                      .easing(TWEEN.Easing.Cubic.Out)
+                      .onUpdate(function () {
+                          $westPanel.css('left', this.x + 'px');
+                      })
+                      .start();
+
+                }
+
+            }
+
+        });
+
+        _hammer.on('tap', '#east-panel', function (event) {
+
+            event.gesture.preventDefault();
+            
+            if (event.gesture.target.id == 'east-panel-grip' ||
+                event.gesture.target.className.indexOf('eastwest-panel-horiz-bar') > -1 ||
+                event.gesture.target.className == 'eastwest-panel-caption') {
+
+                var right = window.innerWidth - $eastPanel.offset().left - $eastPanel.width();
+
+                console.log(right);
+
+                if (right < 0) {
+
+                    //
+                    // expand
+                    //
+
+                    new TWEEN.Tween({ x: right })
+                      .to({ x: 0 }, 800)
+                      .easing(TWEEN.Easing.Cubic.Out)
+                      .onUpdate(function () {
+                          $eastPanel.css('right', this.x + 'px');
+                      })
+                      .start();
+
+
+                } else {
+
+                    //
+                    // collapse
+                    //
+
+                    var newRight = getEastWestPanelCollapsedX();
+
+                    new TWEEN.Tween({ x: right })
+                      .to({ x: newRight }, 800)
+                      .easing(TWEEN.Easing.Cubic.Out)
+                      .onUpdate(function () {
+                          $eastPanel.css('right', this.x + 'px');
+                      })
+                      .start();
+
+                }
+
+            }
+
 
         });
 
@@ -1160,7 +1263,11 @@ CG.Demo1.StartApp = function () {
 
         // hide movie countdown clock
         hideReleaseCountdown();
+
+        // hide panels
         hideMovieSlider();
+        hideEastPanel();
+        hideWestPanel();
 
         $details.empty();
 
@@ -1255,8 +1362,10 @@ CG.Demo1.StartApp = function () {
         // show countdown clock for this movie
         showReleaseCountdown(movieTile.movieData.releaseDate, movieTile.movieData.releaseCountry);
 
-        // show the movie slider
+        // show panels
         showMovieSlider();
+        showEastPanel();
+        showWestPanel();
 
         // create expander box for movie details
         renderMovieDetails(movieTile);
@@ -3201,6 +3310,48 @@ CG.Demo1.StartApp = function () {
         $movieSlider.css('bottom', '-55px');
     }
 
+    function showWestPanel() {
+        $westPanel.show();
+    }
+
+    function showEastPanel() {
+        $eastPanel.show();
+    }
+
+    function getEastWestPanelCollapsedX() {
+        return Math.max(window.innerWidth * 0.40, 330) * -1 - 34;
+    }
+
+    function hideWestPanel() {       
+
+        if ($westPanel.offset().left == 0) {
+
+            var newLeft = getEastWestPanelCollapsedX();
+
+            $westPanel.css({
+                'left': newLeft + 'px',
+                'display': 'none'
+            });
+
+        }
+
+        $westPanel.hide();
+        
+    }
+
+    function hideEastPanel() {
+
+        if ($eastPanel.offset().left + 34 < window.innerWidth) {
+
+            var newRight = getEastWestPanelCollapsedX();
+            $eastPanel.css('right', newRight + 'px');
+
+        }
+
+        $eastPanel.hide();
+        
+    }
+
     function showPopUpBox(mouseX, mouseY, width, height, contentElement) {
 
         var BUBBLE_POINT_HEIGHT = 16;
@@ -3776,6 +3927,6 @@ CG.Demo1.StartApp = function () {
     initialize();
     resizeItemViewerDialog();
     animate();
-
+    
 
 }
