@@ -1,0 +1,330 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="css/dropzone.css" rel="stylesheet" />
+    <style>
+
+        #tag-panel
+        {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width: 25%;
+            height: 100%;
+            margin:0px; 
+            min-width: 250px;
+            
+            background-color:yellow;           
+        }
+
+        #tags-available
+        {
+            position:absolute;
+            top: 1%;
+            left: 2%;
+            right: 2%;
+            height: 70%;
+            width: auto;
+            padding:5px;
+            overflow-y:auto;
+
+            background-color:blue;            
+        }
+
+        .tags-caption
+        {
+            font-size: 16px;
+            font-weight:bold;
+            line-height: 24px;
+            text-align:center;
+            margin-bottom:5px;
+
+            background-color: #000;
+            color: #fff;
+        }
+
+        #create-new-tag
+        {
+            position:absolute;
+            right: 10px;
+            top: 2px;
+            font-size:10px;
+            color: #fff;
+            cursor:pointer;
+        }
+
+            #create-new-tag:hover
+            {
+                text-decoration:underline;
+            }
+
+        #tags-selected
+        {
+            position:absolute;
+            top: 72%;
+            left: 2%;
+            right: 2%;
+            bottom: 1%;
+            height: auto;
+            width: auto;
+            padding:5px;
+            overflow-y:auto;
+
+            background-color:red;
+        }
+
+        .tag-slug
+        {
+            position:relative;
+            display:inline-block;            
+            border-radius: 5px;            
+            margin:0px 4px 4px 0px;
+            padding: 2px 4px;
+            cursor:pointer;
+        }
+
+        .available
+        {
+            
+            background-color:magenta;
+        }
+
+        .selected
+        {
+
+            background-color: cyan;
+        }
+
+        .tag-category
+        {
+            font-size:10px;
+            height:12px;
+            line-height:12px;
+        }
+
+        .tag-name
+        {
+            font-size: 16px;
+            height:20px;
+            line-height:20px;
+        }
+
+        #fileDropzone
+        {
+            position:absolute;
+            left: 26%;
+            right: 1%;
+            top:1%;
+            bottom:75px;
+            width:auto;
+            height: auto;            
+        }
+
+    </style>
+    <script src="js/jquery/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery/jquery.dropzone.min.js"></script>
+</head>
+<body>
+
+    <div id="tag-panel">
+        <div id="tags-available"></div>
+        <div id="tags-selected"></div>
+    </div>
+
+    <form action="/file-upload" class="dropzone" id="fileDropzone"></form>
+
+    <script>
+
+        var _tags = [
+            {
+                category: 'Country',
+                name: 'Australia',
+                docCount: 10,
+                isSelected: false
+            },
+            {
+                category: 'Country',
+                name: 'China',
+                docCount: 10,
+                isSelected: false
+            },
+            {
+                category: 'Country',
+                name: 'Germany',
+                docCount: 10,
+                isSelected: false
+            },
+            {
+                category: 'Country',
+                name: 'Russia',
+                docCount: 10,
+                isSelected: false
+            },
+            {
+                category: 'Country',
+                name: 'USA',
+                docCount: 10,
+                isSelected: false
+            },
+            {
+                category: 'Country',
+                name: 'Worldwide',
+                docCount: 10,
+                isSelected: false
+            },
+            {
+                category: 'Policy Area',
+                name: 'Critical Infrastructure',
+                docCount: 10,
+                isSelected: false
+            },
+            {
+                category: 'Policy Area',
+                name: 'General Cybersecurity',
+                docCount: 10,
+                isSelected: false
+            },
+            {
+                category: 'Project',
+                name: 'TwC Gallacake',
+                docCount: 10,
+                isSelected: false
+            },
+            {
+                category: 'Project',
+                name: 'BSI',
+                docCount: 10,
+                isSelected: false
+            }
+        ];
+
+        function renderTags() {
+
+            var $selectedTags = $('#tags-selected');
+            var $availableTags = $('#tags-available');
+
+            $selectedTags.empty();
+            $availableTags.empty();
+
+            var selectedCaption = document.createElement('div');
+            selectedCaption.className = 'tags-caption';
+            selectedCaption.textContent = 'Tags To Associate With Document(s)';
+            $selectedTags.append(selectedCaption);
+
+            var availableCaption = document.createElement('div');
+            availableCaption.className = 'tags-caption';
+            availableCaption.textContent = 'Select Desired Tags';
+            $availableTags.append(availableCaption);
+
+            var createNewTag = document.createElement('div');
+            createNewTag.id = 'create-new-tag';
+            createNewTag.textContent = 'Create New Tag';
+            $(createNewTag).on('click', function (event) {
+                alert('Coming soon!');
+            });
+            availableCaption.appendChild(createNewTag);
+
+            var tagCount = _tags.length;
+            for (var index = 0; index < tagCount; index++) {
+
+                var tag = _tags[index];
+
+                var slug = document.createElement('div');                
+                slug.ordinal = index;
+                $(slug).addClass('tag-slug');
+
+                var category = document.createElement('div');
+                category.className = 'tag-category';
+                category.textContent = tag.category;
+                slug.appendChild(category);
+
+                var name = document.createElement('div');
+                name.className = 'tag-name';
+
+                if (tag.isSelected === true) {
+
+                    name.textContent = tag.name;
+
+                    // add to the selected container
+                    $(slug).addClass('selected');
+                    $selectedTags.append(slug);
+
+
+                } else {
+
+                    name.textContent = tag.name + ' (' + tag.docCount + ')';
+
+                    // add to the available container
+                    $(slug).addClass('available');
+                    $availableTags.append(slug);
+                }
+
+                slug.appendChild(name);
+
+                $(slug).on('click', function (event) {
+
+                    var tag = _tags[this.ordinal];
+                    tag.isSelected = !tag.isSelected;
+                    renderTags();
+
+                });
+            }
+            
+        }
+
+        function cacheTags(cb) {
+
+            // TODO: Pull tags from SharePoint
+            // _tags = SHAREPOINT_CALL_RESULT
+
+            //
+            // sort _tags by category and
+            // then by name
+            //
+
+            _tags.sort(function (tag1, tag2) {
+
+                if (tag1.category < tag2.category) {
+                    return -1;
+                } else if (tag1.category > tag2.category) {
+                    return 1;
+                } else if (tag1.name < tag2.name) {
+                    return -1;
+                } else if (tag1.name > tag2.name) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+
+            });
+
+            cb();
+
+        }
+
+        $(document).ready(function() {
+
+           
+            cacheTags(function() {
+                
+                renderTags();
+
+            });
+
+            Dropzone.options.fileDropzone = {
+                url: '/not/a/real/url',
+                enqueueForUpload: false,
+                addRemoveLinks: true,
+                init: function () {
+                    this.on("addedfile", function (file) { console.log(file); });
+                }
+            };
+
+        });
+
+
+    </script>
+
+</body>
+</html>

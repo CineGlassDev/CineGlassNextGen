@@ -3575,7 +3575,7 @@ CG.Demo1.StartApp = function () {
         stopNotificationAlert();
 
         $notificationPanel.animate({
-            'top': ($notificationPanel.height() * -1 + 7) + 'px'
+            'top': ($notificationPanel.height() * -1 + 14) + 'px'
         });
 
     }
