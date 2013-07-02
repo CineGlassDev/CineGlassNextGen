@@ -5,74 +5,85 @@
     <link href="css/dropzone.css" rel="stylesheet" />
     <style>
 
+        html,body
+        {
+            height:100%;
+            width:100%;
+            margin:0px;
+            padding:0px;
+            background: url('/img/gssd/pattern-bg.jpg');
+            font-family:Verdana;
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
         #tag-panel
         {
             position:absolute;
-            top:0px;
             left:0px;
-            width: 25%;
-            height: 100%;
-            margin:0px; 
-            min-width: 250px;
-            
-            background-color:yellow;           
+            width: 33%;
+            height:100%;
+            margin:0px;
+            padding:10px;
+            -moz-box-sizing: border-box; 
+            -webkit-box-sizing: border-box; 
+            box-sizing: border-box;              
         }
 
         #tags-available
         {
-            position:absolute;
-            top: 1%;
-            left: 2%;
-            right: 2%;
-            height: 70%;
-            width: auto;
+            margin: 0px;
+            width: 100%;
+            height: 100%;     
+            -moz-box-sizing: border-box; 
+            -webkit-box-sizing: border-box; 
+            box-sizing: border-box;    
             padding:5px;
+            overflow-x:hidden;
             overflow-y:auto;
-
-            background-color:blue;            
+            border-radius:5px;
+            border:2px solid rgba(0,0,0, 0.85);
         }
+
+            #tags-available hr
+            {
+                height:2px;
+                border:1px dotted rgba(0,0,0,0.25);
+                background-color: rgba(0,0,0, 0.25);
+            }
 
         .tags-caption
         {
-            font-size: 16px;
+            font-size: 18px;
             font-weight:bold;
-            line-height: 24px;
-            text-align:center;
-            margin-bottom:5px;
+            line-height: 34px;
+            text-align:center;            
+            background-color: rgba(0,0,0, 0.85);
+            color: rgba(255,255,255,0.9);
+            white-space:nowrap;
 
-            background-color: #000;
-            color: #fff;
+            border-radius:5px;
+
+            margin: -10px -10px 5px -10px;
         }
 
         #create-new-tag
         {
             position:absolute;
-            right: 10px;
-            top: 2px;
+            right: 20px;
+            top: 7px;
             font-size:10px;
-            color: #fff;
+            color: rgba(255,255,255,0.75);
             cursor:pointer;
+            z-index:100;
         }
-
             #create-new-tag:hover
             {
                 text-decoration:underline;
+                color: rgba(255,255,255,0.9);
             }
-
-        #tags-selected
-        {
-            position:absolute;
-            top: 72%;
-            left: 2%;
-            right: 2%;
-            bottom: 1%;
-            height: auto;
-            width: auto;
-            padding:5px;
-            overflow-y:auto;
-
-            background-color:red;
-        }
 
         .tag-slug
         {
@@ -82,57 +93,353 @@
             margin:0px 4px 4px 0px;
             padding: 2px 4px;
             cursor:pointer;
+            white-space:nowrap;
         }
 
         .available
         {
-            
-            background-color:magenta;
+            border:2px solid rgba(0,0,0, 0.2);
+            background-color:rgba(0, 172, 238, 0.5);
+            color:rgba(0,0,0, 0.8);
         }
+
+            .available:hover
+            {
+                border:2px solid rgba(0,0,0, 0.5);
+                background-color:rgba(0, 172, 238, 0.75);
+                color:rgba(0,0,0, 0.95);
+            }
 
         .selected
         {
-
-            background-color: cyan;
+            
+            border:2px solid rgba(0,0,0, 0.2);
+            background-color:rgba(123,217,117, 0.5);
+            color:rgba(0,0,0, 0.8);
         }
+
+            .selected:hover
+            {
+                border:2px solid rgba(0,0,0, 0.5);
+                background-color:rgba(123,217,117, 0.75);
+                color:rgba(0,0,0, 0.95);
+            }
 
         .tag-category
         {
             font-size:10px;
+            font-weight:bold;
             height:12px;
             line-height:12px;
         }
 
         .tag-name
         {
-            font-size: 16px;
-            height:20px;
-            line-height:20px;
+            font-size: 14px;
+            height:18px;
+            line-height:18px;
+        }
+
+        #main-panel
+        {
+            position:absolute;
+            left:33%;
+            width: 67%;
+            height: 100%;
+            margin: 0px; 
+            padding: 10px;  
+            -moz-box-sizing: border-box; 
+            -webkit-box-sizing: border-box; 
+            box-sizing: border-box;                       
+        }
+
+        #tags-selected
+        {         
+            width: 100%;
+            height:25%;
+            min-height:140px;
+            margin:0px;
+            padding:5px;
+            -moz-box-sizing: border-box; 
+            -webkit-box-sizing: border-box; 
+            box-sizing: border-box;
+            overflow-x:hidden;
+            overflow-y:auto;
+            border-radius:5px;
+            border:2px solid rgba(0,0,0, 0.85);
         }
 
         #fileDropzone
         {
-            position:absolute;
-            left: 26%;
-            right: 1%;
-            top:1%;
-            bottom:75px;
-            width:auto;
-            height: auto;            
+            width: 100%;
+            height:60%;
+            min-height:200px;
+            margin:0px;
+            margin-top:20px;            
+            overflow-y: auto;
+
+            background-color:rgba(0,0,0,0.15);
+            border-radius: 20px;
+            border:2px dashed rgba(0,0,0,0.85);
         }
+
+        #footer-panel
+        {
+            position:absolute;
+            min-height:55px;
+            width:100%;
+            margin:-10px;
+            bottom:10px;
+            -moz-box-sizing: border-box; 
+            -webkit-box-sizing: border-box; 
+            box-sizing: border-box;
+        }
+
+            #footer-panel > .button, #new-tag-panel-footer > .button
+            {
+                position: absolute;                
+                bottom:15px;
+                width: 100px;
+                height: 30px;
+                border-radius:5px;
+                border:none;
+                font-size: 18px;
+                line-height: 28px;
+                text-align:center;
+                cursor:pointer;
+
+                color: #fff; 
+                background-color: #000; 
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #2f2f2f), color-stop(.5, #1e1f1f), color-stop(.51, #0c0c0c), to(#000)); 
+                background: -moz-linear-gradient(top, #2f2f2f, #1e1f1f 50%, #0c0c0c 51%, #000); 
+                border-top: solid 2px #555; 
+                border-bottom: solid 2px #111; 
+                -moz-box-shadow:inset 0 0 15px #000000; 
+                -webkit-box-shadow:inset 0 0 15px #000000; 
+                box-shadow:inset 0 0 15px #000000;
+                text-shadow: 0px 0px 3px #888;
+
+            }
+
+                #footer-panel > .button:hover, #new-tag-panel-footer > .button:hover
+                {
+                    -moz-box-shadow:inset 0 0 50px #000000; 
+                    -webkit-box-shadow:inset 0 0 50px #000000; 
+                    box-shadow:inset 0 0 50px #000000;
+                    text-shadow: 0px 0px 3px #444;
+                }
+
+        #okay-button
+        {
+            right: 125px;
+        }
+
+        #okay-button.disabled-button, #new-tag-okay.disabled-button
+        {
+            border:1px solid rgba(0,0,0,0.25);
+            background-color:rgba(0,0,0,0.15);
+            color:rgba(0,0,0,0.25);
+            cursor:default;
+        }
+
+            #okay-button.disabled-button:hover, #new-tag-okay.disabled-button:hover
+            {
+                border:1px solid rgba(0,0,0,0.25);
+                background-color:rgba(0,0,0,0.15);
+                color:rgba(0,0,0,0.25);
+
+                -moz-box-shadow:inset 0 0 15px #000000; 
+                -webkit-box-shadow:inset 0 0 15px #000000; 
+                box-shadow:inset 0 0 15px #000000;
+                text-shadow: 0px 0px 3px #888;
+            }
+
+        #cancel-button
+        {
+            right: 15px;
+        }
+
+        .modal
+        {
+            position:absolute;
+            left:0px;
+            top:0px;
+            width:100%;
+            height:100%;
+            background-color: rgba(0,0,0,0.95);
+            z-index:1000;
+        }
+
+        #new-tag-panel
+        {
+            position:absolute;
+            width:600px;
+            height:400px;
+            left:50%;
+            top:50%;
+            margin:-200px 0 0 -300px;       
+        }
+
+        .dialog-panel
+        {
+            -moz-box-shadow: 3px 3px 5px rgba(255,255,255,0.5);
+            -webkit-box-shadow: 3px 3px 5px rgba(255,255,255,0.5);       
+            box-shadow: 3px 3px 5px rgba(255,255,255,0.5);
+            -moz-border-radius: 6px 6px 6px 6px;
+            -webkit-border-radius: 6px;  
+            border-radius: 6px 6px 6px 6px;
+            border:2px solid #c7c7c7;
+            background:url('/img/gssd/pattern-bg.jpg');
+        }
+
+        .panel-header
+        {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width:100%;
+            height:26px;
+
+            padding: 4px 4px 4px 4px;
+            background:  rgba(0,0,0,0.75);
+            text-align: center;
+            font-weight: bold;
+            text-decoration: none;
+            color: rgba(255,255,255, 0.85);
+            
+            font-size:14px;
+            line-height:16px;
+
+            -moz-box-sizing: border-box; 
+            -webkit-box-sizing: border-box; 
+            box-sizing: border-box;
+
+            -moz-border-radius: 4px 4px 0 0;
+            -webkit-border-radius: 4px 4px 0 0;    
+            border-radius: 4px 4px 0 0;
+
+            border-bottom:1px solid #000;
+        }
+
+        .panel-body
+        {
+            position:absolute;
+            top:26px;
+            bottom:45px;
+            width:100%;
+            height:auto;
+
+            -moz-box-sizing: border-box; 
+            -webkit-box-sizing: border-box; 
+            box-sizing: border-box;
+
+            padding:15px;
+            font-size:14px;
+        }
+
+        .panel-footer
+        {
+            position:absolute;
+            bottom:0px;
+            height:45px;
+            width:100%;           
+
+            -moz-border-radius: 0 0 4px 4px;
+            -webkit-border-radius: 0 0 4px 4px;
+            border-radius: 0 0 4px 4px;
+
+           
+            background:  rgba(0,0,0,0.75);
+            border-top:1px solid #000;
+            color: rgba(255,255,255, 0.85);
+        }
+
+        #new-tag-panel-footer .button
+        {
+            position: absolute;                
+            bottom:8px;
+            width: 100px;
+            height: 30px;
+            border-radius:5px;
+            font-size: 18px;
+            line-height: 28px;
+            text-align:center;
+            cursor:pointer;
+        }
+
+        #new-tag-okay
+        {
+            right: 118px;
+        }
+
+        #new-tag-cancel
+        {
+            right: 8px;
+        }
+
+        #permission-folder-container
+        {
+            position:absolute;
+            left: 15px;
+            bottom: 20px;
+            width:400px;
+        }
+
+        #permission-folder-label
+        {
+            font-size:16px;
+            line-height:24px;
+            font-weight:bold;
+            padding-left:5px;
+        }
+
+        #permission-folder-select
+        {
+            font-family:Verdana;
+            font-size:18px;
+            width:100%;
+        }
+
 
     </style>
     <script src="js/jquery/jquery-1.9.1.min.js"></script>
-    <script src="js/jquery/jquery.dropzone.min.js"></script>
+    <script src="img/gssd/jquery-dropzone.js"></script>
 </head>
 <body>
 
     <div id="tag-panel">
         <div id="tags-available"></div>
-        <div id="tags-selected"></div>
     </div>
 
-    <form action="/file-upload" class="dropzone" id="fileDropzone"></form>
+    <div id="main-panel">
+        <div id="tags-selected"></div>
+        <div class="dropzone" id="fileDropzone"></div>
+        <div id="footer-panel">
+            <div id="permission-folder-container">
+                <div id="permission-folder-label">Select permission folder for files:</div>
+                <select id="permission-folder-select" onchange="toggleOkayButton()"></select>
+            </div> 
+
+            <div id="okay-button" class="button disabled-button">OK</div>
+            <div id="cancel-button" class="button">Cancel</div>
+        </div>
+    </div>
+
+
+    <div id="new-tag-dialog" class="modal" style="display:none;">
+        <div id="new-tag-panel" class="dialog-panel">              
+            <div id="new-tag-pangel-header" class="panel-header">Create A New File Tag</div>
+            <div id="new-tag-panel-body" class="panel-body">
+                There is where the content will go.
+            </div>
+            <div id="new-tag-panel-footer" class="panel-footer">                             
+                <div id="new-tag-okay" class="button disabled-button">OK</div>
+                <div id="new-tag-cancel" class="button">Cancel</div>
+            </div>
+        </div>
+    </div>
+    
+    
 
     <script>
 
@@ -199,32 +506,57 @@
             }
         ];
 
+        var _permissionFolders = [
+            'MSFT-All',
+            'MSFT-FTE-Only',
+            'Projects\\BSI',
+            'Projects\\TwC Gallacake',
+            'Projects\\Germany Strategy'            
+        ];
+
+        var _fileDropzone;
+
+        function renderPermissionFoldersSelect() {
+
+            var options = '<option></option>';
+            var folderCount = _permissionFolders.length;
+            for (var index = 0; index < folderCount; index++) {
+
+                options += '<option>' + _permissionFolders[index] + '</option>';
+
+            }
+
+            $("#permission-folder-select").html(options);
+
+        }
+
         function renderTags() {
 
             var $selectedTags = $('#tags-selected');
-            var $availableTags = $('#tags-available');
+            var $tagsAvailable = $('#tags-available');
 
             $selectedTags.empty();
-            $availableTags.empty();
+            $tagsAvailable.empty();
 
             var selectedCaption = document.createElement('div');
             selectedCaption.className = 'tags-caption';
-            selectedCaption.textContent = 'Tags To Associate With Document(s)';
+            selectedCaption.textContent = 'Selected Tags To Associate With Files';
             $selectedTags.append(selectedCaption);
 
             var availableCaption = document.createElement('div');
             availableCaption.className = 'tags-caption';
-            availableCaption.textContent = 'Select Desired Tags';
-            $availableTags.append(availableCaption);
+            availableCaption.textContent = 'Available File Tags';
+            $tagsAvailable.append(availableCaption);
 
             var createNewTag = document.createElement('div');
             createNewTag.id = 'create-new-tag';
-            createNewTag.textContent = 'Create New Tag';
+            createNewTag.textContent = 'Add New';
             $(createNewTag).on('click', function (event) {
-                alert('Coming soon!');
+                $('#new-tag-dialog').show();
             });
             availableCaption.appendChild(createNewTag);
 
+            var lastCategory = '';
             var tagCount = _tags.length;
             for (var index = 0; index < tagCount; index++) {
 
@@ -253,11 +585,23 @@
 
                 } else {
 
+                    if (lastCategory.length == 0) {
+                        
+                        lastCategory = tag.category;
+
+                    } else if (lastCategory != tag.category) {
+
+                        var hr = document.createElement('hr');
+                        $tagsAvailable.append(hr);
+
+                        lastCategory = tag.category;
+                    }
+
                     name.textContent = tag.name + ' (' + tag.docCount + ')';
 
                     // add to the available container
                     $(slug).addClass('available');
-                    $availableTags.append(slug);
+                    $tagsAvailable.append(slug);
                 }
 
                 slug.appendChild(name);
@@ -269,8 +613,26 @@
                     renderTags();
 
                 });
+
+                toggleOkayButton();
             }
             
+        }
+
+        function cachePermissionFolders(cb) {
+
+            // TODO: Pull permission folders from SharePoint
+            // _permissionFolders = SHAREPOINT_CALL_RESULT
+
+            // sort folders
+            _permissionFolders.sort();
+
+            if (cb) {
+
+                cb();
+
+            }
+
         }
 
         function cacheTags(cb) {
@@ -299,29 +661,118 @@
 
             });
 
-            cb();
+            if (cb) {
+
+                cb();
+
+            }
 
         }
 
         $(document).ready(function() {
 
-           
+            cachePermissionFolders();
+
             cacheTags(function() {
                 
+                renderPermissionFoldersSelect();
+
                 renderTags();
 
             });
 
-            Dropzone.options.fileDropzone = {
-                url: '/not/a/real/url',
-                enqueueForUpload: false,
-                addRemoveLinks: true,
-                init: function () {
-                    this.on("addedfile", function (file) { console.log(file); });
-                }
-            };
+            Dropzone.autoDiscover = false;
 
-        });
+            _fileDropzone = new Dropzone("#fileDropzone",
+                {
+                    url: '/not/a/real/url',
+                    enqueueForUpload: false,
+                    addRemoveLinks: true,
+                    addTitleLinks: true,
+                    init: function () {
+                        this.on("addedfile", function (file) {
+                            toggleOkayButton();
+                        });
+
+                        this.on("removedfile", function (file) {
+                            toggleOkayButton();
+                        });
+                    }
+                }
+            );
+            
+            $('#okay-button').on('click', function (event) {
+
+                if ($('#okay-button').hasClass('disabled-button') === false) {
+
+                    // TODO: upload files/ save metadata
+                    alert('OK button clicked');
+                }
+
+            });
+
+            $('#cancel-button').on('click', function(event) {
+
+                // TODO: close page
+                alert('Cancel button clicked');
+
+            })
+
+        });       
+
+        function toggleOkayButton() {
+
+            var disable = true;
+
+            // validate that at least one file is attached
+            if (_fileDropzone &&
+                _fileDropzone.files.length > 0) {
+
+                // validate that at least one metadata property is selected
+                if ($('#tags-selected > .tag-slug').length > 0) {
+
+                    // validate that a permissions folder is selected
+                    if ($('#permission-folder-select option:selected').first().text().length > 0) {
+
+                        disable = false;
+
+                    }
+
+                }
+
+            }
+
+            if (disable === false) {
+
+                if ($('#okay-button').hasClass('disabled-button') === true) {
+
+                    $('#okay-button').removeClass('disabled-button');
+
+                }
+
+            } else {
+
+                if ($('#okay-button').hasClass('disabled-button') === false) {
+
+                    $('#okay-button').addClass('disabled-button');
+
+                }
+
+            }
+
+        }
+
+        function disableSelection(target) {
+            if (typeof target.onselectstart != "undefined") //For IE 
+                target.onselectstart = function () { return false }
+            else if (typeof target.style.MozUserSelect != "undefined") //For Firefox
+                target.style.MozUserSelect = "none"
+            else //All other route (For Opera)
+                target.onmousedown = function () { return false }
+            target.style.cursor = "default"
+        }
+
+        disableSelection(document.body);
 
 
     </script>
