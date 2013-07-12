@@ -1084,7 +1084,8 @@ CG.Demo1.StartApp = function () {
 
             if (event.gesture.target.id == 'west-panel-grip' ||
                 event.gesture.target.className.indexOf('eastwest-panel-horiz-bar') > -1 ||
-                event.gesture.target.className == 'eastwest-panel-caption') {
+                event.gesture.target.className == 'eastwest-panel-caption' ||
+                event.gesture.target.className.indexOf('rivet') > -1) {
 
                 var left = $westPanel.offset().left;
 
@@ -1131,7 +1132,8 @@ CG.Demo1.StartApp = function () {
             
             if (event.gesture.target.id == 'east-panel-grip' ||
                 event.gesture.target.className.indexOf('eastwest-panel-horiz-bar') > -1 ||
-                event.gesture.target.className == 'eastwest-panel-caption') {
+                event.gesture.target.className == 'eastwest-panel-caption' ||
+                event.gesture.target.className.indexOf('rivet') > -1) {
 
                 var right = window.innerWidth - $eastPanel.offset().left - $eastPanel.width();
 

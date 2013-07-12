@@ -1486,7 +1486,9 @@ div.timeline-distribution
 	-moz-box-shadow: 0 1px 0px rgba(255,255,255,0.1) inset, 0 0px 1px rgba(0,0,0,0.7);
 	box-shadow: 0 1px 0px rgba(255,255,255,0.1) inset, 0 0px 1px rgba(0,0,0,0.7);
 	background-color: #1a0804;
+    
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#e9ede8), to(#080808),color-stop(0.4, #0e0301));  
+    background-image: -moz-linear-gradient(top, #e9ede8 0%, #0e0301 40%, #080808 100%);
     
     -webkit-transform: translate3d(0,0,0);
     -o-transform: translate3d(0,0,0);
@@ -1652,7 +1654,9 @@ div.timeline-distribution
 	-moz-box-shadow: 0 1px 0px rgba(255,255,255,0.1) inset, 0 0px 1px rgba(0,0,0,0.7);
 	box-shadow: 0 1px 0px rgba(255,255,255,0.1) inset, 0 0px 1px rgba(0,0,0,0.7);
 	background-color: #1a0804;
-	background-image: -webkit-gradient(linear, right top, left top, from(#e9ede8), to(#080808),color-stop(0.45, #0e0301));  
+
+	background-image: -webkit-gradient(linear, right top, left top, from(#e9ede8), to(#080808),color-stop(0.45, #0e0301)); 
+    background-image: -moz-linear-gradient(right, #e9ede8 0%, #0e0301 45%, #080808 100%); 
     
     -webkit-transform: translate3d(0,0,0);
     -o-transform: translate3d(0,0,0);
@@ -1723,7 +1727,9 @@ div.timeline-distribution
 	-moz-box-shadow: 0 1px 0px rgba(255,255,255,0.1) inset, 0 0px 1px rgba(0,0,0,0.7);
 	box-shadow: 0 1px 0px rgba(255,255,255,0.1) inset, 0 0px 1px rgba(0,0,0,0.7);
 	background-color: #1a0804;
+
 	background-image: -webkit-gradient(linear, left top, right top, from(#e9ede8), to(#080808),color-stop(0.45, #0e0301));  
+    background-image: -moz-linear-gradient(left, #e9ede8 0%, #0e0301 45%, #080808 100%);
     
     -webkit-transform: translate3d(0,0,0);
     -o-transform: translate3d(0,0,0);
